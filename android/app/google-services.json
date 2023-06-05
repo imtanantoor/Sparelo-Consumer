@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1004215339784",
+    "project_id": "total-pier-379611",
+    "storage_bucket": "total-pier-379611.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004215339784:android:d8416ae5d4b9352e78babd",
+        "android_client_info": {
+          "package_name": "com.sparelo_consumer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004215339784-20eunmdt2nnok982or9qt7s10gaa3gce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCd3h5UDjF1r-Hu4BEQ4fY8F62XP8EzqgY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004215339784-20eunmdt2nnok982or9qt7s10gaa3gce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
