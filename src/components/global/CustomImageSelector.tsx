@@ -71,7 +71,7 @@ function CustomImageSelector({ assets, multiple, image, style, setAssets }: { as
   async function SelectFromGallery() {
     try {
       const response: any = await launchImageLibrary(ImageOptions)
-      console.log({ response })
+
       if (response.assets) {
         setAssets(response.assets)
         setImageUrl(response?.assets[0]?.uri)
