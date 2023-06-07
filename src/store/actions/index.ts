@@ -149,31 +149,9 @@ const createFormData = (data: any) => {
 const createRequest = createAsyncThunk(
   'Requests/Create Request',
   async (data: CreateRequestPayload) => {
-    const formData = new FormData();
-
-    formData.append('category', data.category);
-    formData.append('user', data.user);
-    formData.append('itemInPair', data.itemInPair);
-    formData.append('quantity', data.quantity);
-    formData.append('additionalNotes', data.additionalNotes);
-    formData.append('voiceNote', data.voiceNote);
-    formData.append('car', data.car);
-
-    if (data.images.length > 0) {
-      data.images.forEach((image: any) => {
-        formData.append('images', {
-          type: image.type,
-          name: image.fileName,
-          path: image.uri,
-          // path:
-          //   Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
-        });
-      });
-    } else formData.append('images', []);
-
     const response = await constants.apiInstance.post(
       'requests/create',
-      formData,
+      createFormData(data),
       {
         headers: {'Content-Type': 'multipart/form-data'},
       },

@@ -55,6 +55,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
     if (creationSuccessful) {
       setModalVisible(true)
       resetCreationState()
+      navigation.popToTop()
     }
   }, [creationFailed, creationSuccessful])
 
@@ -108,6 +109,9 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
       itemInPair: quantity === 2 ? true : false,
       quantity: quantity,
       additionalNotes: additionalNotes,
+      brand: brand ? brand.id : '',
+      model: model ? model.id : '',
+      manufacturingYear: manufacturingYear,
       voiceNote: ''
     }
     createRequest(payload)
