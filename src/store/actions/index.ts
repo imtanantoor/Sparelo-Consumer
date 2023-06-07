@@ -124,7 +124,7 @@ const fetchAllAvailableItemsOfUser = createAsyncThunk(
 const createFormData = (data: any) => {
   const formData = new FormData();
 
-  Object.keys(data).map(key => {
+  Object.keys(data).forEach(key => {
     if (key !== 'images') {
       formData.append(key, data[key]);
     }
