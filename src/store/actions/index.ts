@@ -5,7 +5,6 @@ import {Alert, Platform} from 'react-native';
 import SearchPartsBody from '../../models/searchPartsBody';
 import CreateRequestPayload from '../../models/createRequestPayload';
 import FormData from 'form-data';
-import axios from 'axios';
 
 const fetchCategories = createAsyncThunk('Categories/fetchAll', async () => {
   const response = await constants.apiInstance.get('categories');
