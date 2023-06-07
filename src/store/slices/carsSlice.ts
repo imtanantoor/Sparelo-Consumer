@@ -2,8 +2,8 @@ import {createSlice} from '@reduxjs/toolkit';
 import CarCardProps from '../../models/carCard';
 import actions from '../actions';
 import constants from '../../utils/constants';
-import {Alert} from 'react-native';
 import ToastService from '../../Services/ToastService';
+import {Alert} from 'react-native';
 
 const initialState = {
   fetching: true,
@@ -86,7 +86,6 @@ const carSlice = createSlice({
       .addCase(actions.addCar.rejected, (state, action) => {
         state.addingCar = false;
         state.addingCarError = true;
-        Alert.alert('Add Car', JSON.stringify(action.error));
         ToastService.error(
           'Add Car Error',
           action?.error?.message ? action.error.message : 'Adding car failed',

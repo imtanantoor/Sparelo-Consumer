@@ -11,10 +11,19 @@ const ImageOptions: any = {
   selectionLimit: 1,
   // includeBase64: true,
   // noData: true,
+  // quality: 1.0,
+  // maxWidth: 500,
+  // maxHeight: 500,
   storageOptions: {
     skipBackup: true,
     path: 'images',
+    cameraRoll: true,
+    waitUntilSaved: true,
   },
+  // storageOptions: {
+  //   skipBackup: true,
+  //   path: 'images',
+  // },
 };
 
 function ShowImage({ assets, multiple, imageUrl }: { assets: any[], multiple: boolean, imageUrl: string }) {
@@ -62,7 +71,7 @@ function CustomImageSelector({ assets, multiple, image, style, setAssets }: { as
   async function SelectFromGallery() {
     try {
       const response: any = await launchImageLibrary(ImageOptions)
-
+      console.log({ response })
       if (response.assets) {
         setAssets(response.assets)
         setImageUrl(response?.assets[0]?.uri)

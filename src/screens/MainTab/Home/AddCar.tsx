@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import FilterSection from "../../../components/organism/FilterSection";
 import font from "../../../constants/fonts";
 import CustomImageSelector from "../../../components/global/CustomImageSelector";
@@ -60,7 +60,7 @@ function AddCar({ navigation, submitting, error, success, addCar, resetCreationS
     hideDatePicker()
   }
 
-  function handleAddCar() {
+  async function handleAddCar() {
     const data: AddCarModel = {
       manufacturingYear: values.manufacturingYear,
       brand: values.brand.id,
@@ -68,7 +68,7 @@ function AddCar({ navigation, submitting, error, success, addCar, resetCreationS
       images: images,
       owner: constants.ownerId
     }
-    console.log({ data })
+
     addCar(data)
   }
 

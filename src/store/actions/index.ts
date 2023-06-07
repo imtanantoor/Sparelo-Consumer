@@ -4,6 +4,8 @@ import AddCarModel from '../../models/addCarModel';
 import {Alert, Platform} from 'react-native';
 import SearchPartsBody from '../../models/searchPartsBody';
 import CreateRequestPayload from '../../models/createRequestPayload';
+import FormData from 'form-data';
+import axios from 'axios';
 
 const fetchCategories = createAsyncThunk('Categories/fetchAll', async () => {
   const response = await constants.apiInstance.get('categories');
@@ -119,6 +121,30 @@ const fetchAllAvailableItemsOfUser = createAsyncThunk(
   },
 );
 
+const createFormData = (data: any) => {
+  const formData = new FormData();
+
+  Object.keys(data).map(key => {
+    if (key !== 'images') {
+      formData.append(key, data[key]);
+    }
+  });
+
+  if (data.images && data.images.length > 0) {
+    data.images.forEach((photo: any) => {
+      formData.append('images', {
+        name: photo.fileName,
+        path: photo.uri,
+        type: photo.type,
+        uri: photo.uri,
+        filename: photo.fileName,
+      });
+    });
+  } else formData.append('images', '');
+
+  return formData;
+};
+
 // POST REQUESTS
 const createRequest = createAsyncThunk(
   'Requests/Create Request',
@@ -134,25 +160,15 @@ const createRequest = createAsyncThunk(
     formData.append('car', data.car);
 
     if (data.images.length > 0) {
-      // data.images.forEach((image: any) => {
-      //   formData.append('images', {
-      //     type: image.type,
-      //     name: image.fileName,
-      //     path: image.uri,
-      //     // path:
-      //     //   Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
-      //   });
-      // });
-      formData.append(
-        'images',
-        data.images.map((image: any) => ({
+      data.images.forEach((image: any) => {
+        formData.append('images', {
           type: image.type,
           name: image.fileName,
           path: image.uri,
           // path:
           //   Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
-        })),
-      );
+        });
+      });
     } else formData.append('images', []);
 
     const response = await constants.apiInstance.post(
@@ -166,32 +182,18 @@ const createRequest = createAsyncThunk(
     return response.data;
   },
 );
+
 const addCar = createAsyncThunk('Cars/Add Car', async (data: AddCarModel) => {
-  const formData = new FormData();
-  formData.append('brand', data.brand);
-  formData.append('manufacturingYear', data.manufacturingYear);
-  formData.append('model', data.model);
-  formData.append('owner', data.owner);
-
-  if (data.images.length > 0) {
-    data.images.forEach(async (image: any) => {
-      formData.append('images', {
-        type: image.type,
-        name: image.fileName,
-        path: image.uri,
-        // path:
-        //   Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
-      });
-    });
-  } else formData.append('images', []);
-
-  const response = await constants.apiInstance.post('cars/create', formData, {
-    headers: {
-      // accept: 'application/json',
-      // 'cache-control': 'no-cache',
-      'Content-Type': 'multipart/form-data',
+  const response = await constants.apiInstance.post(
+    'cars/create',
+    createFormData(data),
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      },
     },
-  });
+  );
 
   return response.data;
 });
