@@ -9,21 +9,12 @@ import ToastService from "../../Services/ToastService";
 const ImageOptions: any = {
   mediaType: 'photo',
   selectionLimit: 1,
-  // includeBase64: true,
-  // noData: true,
-  // quality: 1.0,
-  // maxWidth: 500,
-  // maxHeight: 500,
   storageOptions: {
     skipBackup: true,
     path: 'images',
     cameraRoll: true,
     waitUntilSaved: true,
   },
-  // storageOptions: {
-  //   skipBackup: true,
-  //   path: 'images',
-  // },
 };
 
 function ShowImage({ assets, multiple, imageUrl }: { assets: any[], multiple: boolean, imageUrl: string }) {
