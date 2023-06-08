@@ -5,6 +5,8 @@ import font from "../../constants/fonts";
 import CustomButton from "./CustomButton";
 import { useDispatch } from "react-redux";
 import cartSlice from "../../store/slices/cartSlice";
+import ImagesModal from "../organism/ImagesModal";
+import { useState } from "react";
 
 export interface CartCardProps {
   id: string | number
@@ -20,14 +22,23 @@ export interface CartCardProps {
 
 function CartCard({ id, bid, title, offeredBy, make, model, year, images, price }: CartCardProps): JSX.Element {
   const dispatch = useDispatch()
+  const [showImages, setShowImages] = useState<boolean>(false)
+
+  function showModal() {
+    setShowImages(true)
+  }
+
+  function hideModal() {
+    setShowImages(false)
+  }
 
   return <TouchableOpacity style={styles.container}>
     <View style={styles.contentContainer}>
       <View style={{ width: '20%' }}>
         <View style={styles.imageContainer}>
           <CustomImage
-            imageUrl={'https://plus.unsplash.com/premium_photo-1682125726825-3c0049c0aae3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80'}
-            source={{ uri: 'https://plus.unsplash.com/premium_photo-1682125726825-3c0049c0aae3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80' }}
+            imageUrl={images.length > 0 ? images[0] : ''}
+            source={{ uri: images.length > 0 ? images[0] : '' }}
             style={{ height: '100%', width: '100%' }}
           />
         </View>
@@ -54,12 +65,16 @@ function CartCard({ id, bid, title, offeredBy, make, model, year, images, price 
           <CustomButton
             title="View Images"
             type="transparent"
-            onPress={() => { }}
+            onPress={showModal}
             disabled={false}
             submitting={false}
             buttonStyle={{ padding: 0, alignSelf: 'flex-end', marginVertical: 0 }}
             titleStyle={{ color: colors.bannerText, fontSize: 11 }}
           />
+          <ImagesModal
+            visible={showImages}
+            hideModal={hideModal}
+            images={images} />
         </View>
       </View>
     </View>

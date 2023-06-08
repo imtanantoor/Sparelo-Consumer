@@ -28,6 +28,10 @@ function handleRequestsData(requests: any): RequestCardProps[] {
     year: request.manufacturingYear,
     imageBackground:
       request.images.length > 0 ? constants.baseURL + request.images[0] : '',
+    images:
+      request.images.length > 0
+        ? request.images.map((image: string) => constants.baseURL + image)
+        : [],
     buttonDisabled: request.quantity <= 0,
     buttonTitle: `${request.quantity} bids`,
   }));

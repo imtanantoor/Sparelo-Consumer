@@ -33,6 +33,7 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
     <View>
       <SliderBox
         ImageComponentStyle={styles.slider}
+        parentWidth={310}
         paginationBoxStyle={{
           position: "absolute",
           bottom: 0,
@@ -44,7 +45,8 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
           paddingVertical: 10
         }}
         sliderBoxHeight={140}
-        images={images} />
+        images={images}
+      />
     </View>
     <View style={styles.detailContainer}>
       <Text style={styles.description}>{make} | {year} | {model}</Text>
@@ -96,7 +98,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center', alignContent: 'center'
 
   },
-  slider: { borderRadius: 15, width: '80%', marginRight: 60 },
+  slider: {
+    borderRadius: 15,
+    width: '100%'
+  },
   detailContainer: {
     padding: 10
   },
