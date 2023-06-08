@@ -119,6 +119,16 @@ const fetchAllAvailableItemsOfUser = createAsyncThunk(
     return response.data;
   },
 );
+const checkAvailability = createAsyncThunk(
+  'Availability/Check Availability',
+  async (bidId: string | number) => {
+    const response = await constants.apiInstance.get(
+      `bids/checkAvailibility/${bidId}`,
+    );
+
+    return response.data;
+  },
+);
 
 const createFormData = (data: any) => {
   const formData = new FormData();
@@ -193,6 +203,7 @@ const actions = {
   searchModels,
   addCar,
   createRequest,
+  checkAvailability,
 };
 
 export default actions;

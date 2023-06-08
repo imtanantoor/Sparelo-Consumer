@@ -9,6 +9,7 @@ interface PartsCardModel {
   quantity: number;
   audioNote?: any;
   rating: number;
+  checkAvailability: boolean;
 }
 
 export default PartsCardModel;

@@ -46,7 +46,7 @@ function SearchPartsTab({ fetching, error, newParts, oldParts, searchParts, rout
     renderItem={({ item, index }: any) => <AvailabilityCard
       {...item}
       type='results'
-      onButtonPress={() => navigation.navigate('Results', { ...route.params, requestId: item.id })}
+      onButtonPress={() => navigation.navigate('Results', { ...route.params, requestId: item.id, checkAvailability: true })}
       buttonTitle={`${item.quantity} Bids`}
     />}
   />

@@ -31,7 +31,7 @@ function NewParts({ fetching, error, data, fetchNewParts, route }: NewPartsProps
     />}
     style={{ flex: 1, backgroundColor: colors.white }}
     data={data}
-    renderItem={({ item, index }: any) => <PartsCard {...item} />}
+    renderItem={({ item, index }: any) => <PartsCard {...item} checkAvailability={route.params.checkAvailability} />}
   />
 }
 

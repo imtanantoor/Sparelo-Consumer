@@ -7,13 +7,30 @@ import { Rating } from 'react-native-ratings'
 import CustomButton from "../global/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import PartsCardModel from "../../models/partsCard";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CartDataModel } from "../../models/cartModel";
 import cartSlice from "../../store/slices/cartSlice";
+import availabilitySlice from "../../store/slices/availabilitySlice";
+import actions from "../../store/actions";
+import CustomModal from "./CustomModal";
+import RequestCreationSuccess from "../../assets/RequestCreationSuccess";
 
 
-function PartsCard({ id, make, model, year, images, price, bid, audioNote, rating }: PartsCardModel): JSX.Element {
-  const dispatch = useDispatch()
+function PartsCard({ id, make, model, year, images, price, bid, audioNote, rating, checkAvailability }: PartsCardModel): JSX.Element {
+  const dispatch: any = useDispatch()
+  const navigation: any = useNavigation()
+  const { checkingAvailability, checkingAvailabilitySuccess, checkingAvailabilityError } = useSelector((state: any) => state.Availability)
+
+  function determineAvailability() {
+    dispatch(actions.checkAvailability(id))
+  }
+
+  function hideModal() {
+    dispatch(availabilitySlice.actions.resetCheckingState())
+    navigation.popToTop()
+    navigation.navigate('Home', { screen: 'Home', initial: false })
+  }
+
 
   function AddToCart() {
     dispatch(cartSlice.actions.addToCart({
@@ -55,14 +72,21 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
         <View style={styles.voiceCard}>
           <VoiceSVG />
         </View>
-        <CustomButton
+        {!!checkAvailability == false ? <CustomButton
           title="Add to Cart"
           onPress={AddToCart}
           type='primary'
           buttonStyle={{ padding: 10, borderRadius: 5, minWidth: '45%' }}
           titleStyle={{ fontSize: 12 }}
           disabled={false}
-          submitting={false} />
+          submitting={false} /> : <CustomButton
+          title="Check Availability"
+          onPress={determineAvailability}
+          type='primary'
+          buttonStyle={{ padding: 10, borderRadius: 5, minWidth: '45%' }}
+          titleStyle={{ fontSize: 12 }}
+          disabled={checkingAvailability}
+          submitting={checkingAvailability} />}
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Rating
@@ -77,6 +101,17 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
         />
         <Text style={styles.ratingText}> {rating} </Text>
       </View>
+      <CustomModal
+        visible={checkingAvailabilitySuccess}
+        title="Request Sent Successful"
+        description="We sent a request to retailer to check the Availability of that part and you will get the response soon in the availability section of app"
+        hideModal={() => hideModal()}
+        Component={() => <RequestCreationSuccess />}
+        showButton
+        buttonTitle="Done"
+        buttonStyle={{ padding: 10, alignSelf: 'flex-end', width: '100%' }}
+        onButtonPress={() => hideModal()}
+      />
     </View>
   </TouchableOpacity>
 }

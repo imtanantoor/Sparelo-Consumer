@@ -3,14 +3,21 @@ import actions from '../actions';
 import AvailabilityCardModel from '../../models/AvailabilityCardsModel';
 import {constant} from 'lodash';
 import constants from '../../utils/constants';
+import ToastService from '../../Services/ToastService';
 
 const initialState: {
   fetching: boolean;
   error: boolean;
+  checkingAvailability: boolean;
+  checkingAvailabilitySuccess: boolean;
+  checkingAvailabilityError: boolean;
   data: AvailabilityCardModel[];
 } = {
   fetching: true,
   error: false,
+  checkingAvailability: false,
+  checkingAvailabilitySuccess: false,
+  checkingAvailabilityError: false,
   data: [],
 };
 
@@ -38,7 +45,13 @@ function handleAvailabilityResponse(response: any): AvailabilityCardModel[] {
 const availabilitySlice = createSlice({
   name: 'Availability',
   initialState,
-  reducers: {},
+  reducers: {
+    resetCheckingState: state => {
+      state.checkingAvailability = false;
+      state.checkingAvailabilitySuccess = false;
+      state.checkingAvailabilityError = false;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(
@@ -63,6 +76,29 @@ const availabilitySlice = createSlice({
           state.error = true;
         },
       );
+
+    builder
+      .addCase(actions.checkAvailability.pending, (state, action) => {
+        state.checkingAvailability = true;
+        state.checkingAvailabilitySuccess = false;
+        state.checkingAvailabilityError = false;
+      })
+      .addCase(actions.checkAvailability.fulfilled, (state, action) => {
+        state.checkingAvailability = false;
+        state.checkingAvailabilitySuccess = true;
+        state.checkingAvailabilityError = false;
+      })
+      .addCase(actions.checkAvailability.rejected, (state, action) => {
+        state.checkingAvailability = false;
+        state.checkingAvailabilitySuccess = false;
+        ToastService.error(
+          'Availability',
+          action?.error?.message
+            ? action.error.message
+            : 'Something went wrong, please try again',
+        );
+        state.checkingAvailabilityError = true;
+      });
   },
 });
 
