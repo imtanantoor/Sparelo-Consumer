@@ -91,12 +91,14 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
   }
 
   function handleModalClose() {
+    resetCreationState()
     setModalVisible(false)
     // navigation.popToTop()
     navigation.navigate('Home', { screen: 'Home', initial: false })
   }
 
   function handleButton() {
+    resetCreationState()
     // navigation.navigate('FindYourParts', { screen: 'Filter' })
     navigation.navigate('Home', { screen: 'Home', initial: false })
     setModalVisible(false)
@@ -201,7 +203,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
         type="primary"
       />
       <CustomModal
-        visible={true}
+        visible={modalVisible}
         title="Request Successful"
         description="We sent a request to retailer and will let you know about the bid response."
         hideModal={handleModalClose}
