@@ -45,11 +45,7 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
           paddingVertical: 10
         }}
         sliderBoxHeight={140}
-        // images={images}
-        images={["https://source.unsplash.com/1024x768/?nature",
-          "https://source.unsplash.com/1024x768/?water",
-          "https://source.unsplash.com/1024x768/?girl",
-          "https://source.unsplash.com/1024x768/?tree"]}
+        images={images}
       />
     </View>
     <View style={styles.detailContainer}>
