@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SliderBox } from "react-native-image-slider-box";
 import colors from "../../constants/colors";
 import font from "../../constants/fonts";
@@ -33,7 +33,7 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
     <View>
       <SliderBox
         ImageComponentStyle={styles.slider}
-        parentWidth={310}
+        parentWidth={Dimensions.get('screen').width * 0.84}
         paginationBoxStyle={{
           position: "absolute",
           bottom: 0,
@@ -45,7 +45,11 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
           paddingVertical: 10
         }}
         sliderBoxHeight={140}
-        images={images}
+        // images={images}
+        images={["https://source.unsplash.com/1024x768/?nature",
+          "https://source.unsplash.com/1024x768/?water",
+          "https://source.unsplash.com/1024x768/?girl",
+          "https://source.unsplash.com/1024x768/?tree"]}
       />
     </View>
     <View style={styles.detailContainer}>
