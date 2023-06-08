@@ -33,7 +33,7 @@ function FilterScreen({ navigation, route }: NativeStackScreenProps<any>): JSX.E
   }, [])
 
   function openDatePicker() {
-    if (route?.params?.buttonsDisabled) return
+    // if (route?.params?.buttonsDisabled) return
     setDateTimePickerVisible(true)
   }
 
@@ -59,7 +59,7 @@ function FilterScreen({ navigation, route }: NativeStackScreenProps<any>): JSX.E
             title: "Select Brand",
             value: values.brand.name,
             onPress: () => {
-              if (route?.params?.buttonsDisabled) return
+              // if (route?.params?.buttonsDisabled) return
               navigation.navigate('Search', { title: 'Brand', values, setValues })
             }
           },
@@ -72,7 +72,7 @@ function FilterScreen({ navigation, route }: NativeStackScreenProps<any>): JSX.E
             title: "Model",
             value: values.model.name,
             onPress: () => {
-              if (route?.params?.buttonsDisabled) return
+              // if (route?.params?.buttonsDisabled) return
               if (values?.brand?.id)
                 navigation.navigate('Search', { title: 'Model', values, setValues })
               else
@@ -88,7 +88,7 @@ function FilterScreen({ navigation, route }: NativeStackScreenProps<any>): JSX.E
             title: "Select Category",
             value: values.category.name,
             onPress: () => {
-              if (route?.params?.buttonsDisabled) return
+              // if (route?.params?.buttonsDisabled) return
               navigation.navigate('Search', { title: 'Category', values, setValues })
             }
           },
