@@ -40,7 +40,8 @@ function OrderSummary({ navigation, route }: any): JSX.Element {
   }
 
   function handleBackToHome() {
-    navigation.dispatch(StackActions.popToTop())
+    navigation.popToTop()
+    navigation.navigate('Home', { screen: 'Home', initial: false })
     dispatch(cartSlice.actions.reset())
     setModalVisible(false)
   }
