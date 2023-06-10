@@ -2,7 +2,6 @@ import { SafeAreaView, ScrollView, StyleSheet, Text } from "react-native";
 import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import CustomTextInput from "../../components/global/CustomTextInput";
-import CustomForm from "../../components/organism/CustomForm";
 import { useRef, useState } from "react";
 import LocationSelector from "../../components/organism/LocationSelector";
 import { GooglePlaceData, GooglePlaceDetail } from "react-native-google-places-autocomplete";
