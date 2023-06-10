@@ -1,8 +1,13 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-const initialState = {
+const initialState: {
+  authenticated: boolean;
+  showOnBoarding: boolean;
+  mode: 'buyer' | 'vendor';
+} = {
   authenticated: false,
   showOnBoarding: true,
+  mode: 'buyer',
 };
 
 const authSlice = createSlice({
@@ -11,6 +16,9 @@ const authSlice = createSlice({
   reducers: {
     hideOnboarding: state => {
       state.showOnBoarding = false;
+    },
+    setMode: (state, action) => {
+      state.mode = action.payload;
     },
   },
 });

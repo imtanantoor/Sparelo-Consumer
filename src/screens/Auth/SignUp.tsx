@@ -25,11 +25,12 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
     password: ''
   })
   const [submitting, setSubmitting] = useState<boolean>(false)
-  function handleSignIn() {
+  function handleSignUp() {
     setSubmitting(true)
     setTimeout(() => {
       setSubmitting(false)
-      navigation.navigate('Verification', { contact: values.contact })
+      // navigation.navigate('Verification', { contact: values.contact })
+      navigation.navigate('Shop Details')
     }, 2000)
   }
   function handleBlur(fieldName: string, required: boolean) {
@@ -82,7 +83,7 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
         submitting: submitting,
         type: 'primary',
         disabled: submitting || Object.values(errors).some((value) => value !== '') || Object.values(values).some((value) => value == ''),
-        onPress: handleSignIn
+        onPress: handleSignUp
       }}
     >
       <Text style={styles.disclaimerText}>By clicking Sign Up, you agree to our <Text style={styles.link}>Terms & Conditions</Text> and that you have read our <Text style={styles.link}>Privacy Policy.</Text></Text>

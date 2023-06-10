@@ -3,7 +3,7 @@ import StaticPage from "../../components/organism/StaticPage";
 
 function Step2({ navigation }: any): JSX.Element {
   function handleGetStarted() {
-    navigation.navigate('Auth', { screen: 'Sign In' })
+    navigation.navigate('Mode Selection')
   }
   return <StaticPage
     SVG={() => <Step2SVG style={{ alignSelf: 'center' }} />}

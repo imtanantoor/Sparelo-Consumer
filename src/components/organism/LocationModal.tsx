@@ -12,6 +12,7 @@ import AddressSearch from "./AddressSearch";
 import { GooglePlaceData, GooglePlaceDetail } from "react-native-google-places-autocomplete";
 import CustomButton from "../global/CustomButton";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import LocationSelector from "./LocationSelector";
 
 interface LocationModalProps {
   visible: boolean
@@ -106,32 +107,15 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, h
     style={styles.modalContainer}
   >
     <View style={styles.popUp}>
-      <MapView
-        ref={mapRef}
+      <LocationSelector
+        mapRef={mapRef}
         initialRegion={initialRegion}
-        // region={initialRegion}
-        userLocationPriority="high"
-        followsUserLocation
-        provider={PROVIDER_GOOGLE}
-        style={{ height: 200, width: '100%', borderRadius: 8 }}
-        onRegionChange={handleRegionChange}
-      >
-        <Marker coordinate={initialRegion} />
-      </MapView>
-      <TouchableOpacity onPress={handleCurrentLocation} style={styles.currentLocationButton}>
-        <CurrentLocation fill={colors.primary} />
-      </TouchableOpacity>
-      <AddressSearch
-        required={false}
-        disabled={false}
-        label="Your Location"
-        addressValue={address}
-        onAddressChange={(value) => {
-          if (disableAddressFetching === false)
-            setAddress(value)
-        }}
-        onLocationPress={handleLocationPress}
-        placeHolder="Enter address"
+        handleLocationPress={handleLocationPress}
+        handleCurrentLocation={handleCurrentLocation}
+        handleRegionChange={handleRegionChange}
+        disableAddressFetching={disableAddressFetching}
+        address={address}
+        setAddress={setAddress}
       />
       <CustomButton
         title="Confirm Location"

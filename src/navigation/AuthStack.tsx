@@ -6,6 +6,12 @@ import SignIn from "../screens/Auth/SignIn";
 import SignUp from "../screens/Auth/SignUp";
 import Verification from "../screens/Auth/Verification";
 import Verified from "../screens/Auth/Verified";
+import ModeSelection from "../screens/Auth/ModeSelection";
+import ShopDetails from "../screens/Auth/ShopDetails";
+import font from "../constants/fonts";
+import colors from "../constants/colors";
+import HeaderBack from "../components/molecular/HeaderBack";
+import { useNavigation } from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator()
 
@@ -20,6 +26,18 @@ function AuthStack(): JSX.Element {
     <Stack.Screen name="Reset Success" component={ResetSuccess} />
     <Stack.Screen name="Verification" component={Verification} />
     <Stack.Screen name="Verified" component={Verified} />
+    <Stack.Screen name="Shop Details" options={{
+      headerLeft: () => {
+        const navigation = useNavigation()
+        return <HeaderBack onPress={navigation.goBack} />
+      },
+      headerTitleStyle: {
+        fontFamily: font.fontFamilies({ type: 'Inter' }).regular,
+        color: colors.primary,
+        fontSize: font.sizes.fourteen
+      },
+      headerTitleAlign: 'center',
+    }} component={ShopDetails} />
   </Stack.Navigator>
 }
 

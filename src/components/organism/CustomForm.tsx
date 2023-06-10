@@ -43,8 +43,9 @@ interface FormProps {
 }
 
 function CustomForm({ title, subtitle, fields, touched, errors, setTouched, handleBlur, handleChange, submitAction, secondaryAction, fieldsContainerStyle, children }: FormProps): JSX.Element {
-
-  return <ScrollView contentContainerStyle={styles.contentContainer} keyboardShouldPersistTaps="always">
+  return <ScrollView
+    contentContainerStyle={styles.contentContainer}
+    keyboardShouldPersistTaps="always">
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.subTitle}>{subtitle}</Text>
     <View style={[styles.fieldsContainer, { ...fieldsContainerStyle }]}>
