@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import CustomTextInput from "../../components/global/CustomTextInput";
@@ -10,6 +10,8 @@ import { Region } from "react-native-maps";
 import { View } from "react-native";
 import ToastService from "../../Services/ToastService";
 import CustomButton from "../../components/global/CustomButton";
+import CustomImageSelector from "../../components/global/CustomImageSelector";
+import MultipleImageSelector from "../../components/organism/MultipleImageSelector";
 
 const fields = {
   storeName: '',
@@ -39,6 +41,7 @@ function SelectionButton({ onPress, label, value }: { onPress: (props?: any) => 
 }
 
 function ShopDetails({ navigation }: any): JSX.Element {
+  const [assets, setAssets] = useState<any>([])
   const [values, setValues] = useState<any>(fields)
   const [errors, setErrors] = useState(fields)
   const [touched, setTouched] = useState(fields)
@@ -102,6 +105,36 @@ function ShopDetails({ navigation }: any): JSX.Element {
 
     }
   }
+  function handleAssets(asset: any[], index: number, assets: any[]) {
+
+    if (assets.length == 0) {
+      setAssets(asset)
+      return
+    }
+
+    if (!!assets[index]?.uri && index !== -1) {
+      let imageData = asset[0]
+
+      setAssets(assets.map((item: any, currIndex: number) => {
+        if (index === currIndex) {
+          return {
+            ...item,
+            ...imageData
+          }
+        }
+        return item
+      }))
+
+    }
+
+    if (asset && asset[0]?.uri) {
+      let temp = assets.map((item: any) => item)
+      let imageData = asset[0]
+      temp.push(imageData)
+      setAssets(temp)
+      return
+    }
+  }
 
   return <SafeAreaView style={styles.container}>
     <ScrollView
@@ -160,6 +193,11 @@ function ShopDetails({ navigation }: any): JSX.Element {
           navigation.navigate('Search', { title: 'Category', values, setValues })
         }}
       />
+      <MultipleImageSelector
+        assets={assets}
+        handleAssets={handleAssets}
+        contentContainerStyle={{ paddingHorizontal: 0 }}
+      />
       <CustomButton
         title="Sign Up"
         disabled={values.storeName == '' || values.address == '' || values.brand.id === '' || values.model.id === '' || values.category.id === ''}
@@ -167,6 +205,7 @@ function ShopDetails({ navigation }: any): JSX.Element {
         onPress={() => { }}
         type="primary"
       />
+
     </ScrollView>
   </SafeAreaView>
 }
