@@ -15,7 +15,7 @@ function AppStack(): JSX.Element {
     helpers.requestPermissions(permissions)
   }, [])
 
-  return <Stack.Navigator screenOptions={{ headerShown: false }}>
+  return <Stack.Navigator initialRouteName='MainTabs' screenOptions={{ headerShown: false }}>
     <Stack.Screen name='Onboarding' component={OnboardingStack} />
     <Stack.Screen name="Auth" component={AuthStack} />
     <Stack.Screen name="MainTabs" component={MainTabs} />

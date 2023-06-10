@@ -32,8 +32,8 @@ function handleRequestsData(requests: any): RequestCardProps[] {
       request.images.length > 0
         ? request.images.map((image: string) => constants.baseURL + image)
         : [],
-    buttonDisabled: request.quantity <= 0,
-    buttonTitle: `${request.quantity} bids`,
+    buttonDisabled: request.numberOfBids <= 0,
+    buttonTitle: `${request.numberOfBids} bids`,
   }));
 }
 

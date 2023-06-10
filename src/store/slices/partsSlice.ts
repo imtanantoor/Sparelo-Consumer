@@ -112,7 +112,7 @@ const partsSlice = createSlice({
       .addCase(actions.fetchNewParts.fulfilled, (state, action) => {
         state.fetching = false;
         state.error = false;
-        state.newParts = handlePartsResponse(action.payload.request);
+        state.newParts = handlePartsResponse(action.payload.bids);
       })
       .addCase(actions.fetchNewParts.rejected, (state, action) => {
         state.fetching = false;
