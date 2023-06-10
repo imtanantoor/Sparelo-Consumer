@@ -2,16 +2,12 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native";
 import colors from "../../constants/colors";
 import { useLayoutEffect, useState } from "react";
 import font from "../../constants/fonts";
-import HeaderLeft from "../../components/global/HeaderLeft";
 import HeaderBack from "../../components/molecular/HeaderBack";
-import CustomForm from "../../components/organism/CustomForm";
-import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { GooglePlaceData, GooglePlaceDetail } from "react-native-google-places-autocomplete";
 import AddressSearch from "../../components/organism/AddressSearch";
-import CustomTextInput from "../../components/global/CustomTextInput";
 import CustomButton from "../../components/global/CustomButton";
 import CurrentLocation from "../../assets/icons/CurrentLocation";
 import { View } from "react-native";
-import CustomModal from "../../components/organism/CustomModal";
 import LocationModal from "../../components/organism/LocationModal";
 import MapPosition from "../../models/mapPosition";
 

@@ -1,9 +1,10 @@
 import { Fragment } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import CurrentLocation from "../../assets/icons/CurrentLocation";
 import AddressSearch from "./AddressSearch";
 import colors from "../../constants/colors";
+import font from "../../constants/fonts";
 
 interface LocationSelectorProps {
   mapRef: any
@@ -17,9 +18,10 @@ interface LocationSelectorProps {
   label?: string
   required?: boolean
   placeholder?: string
+  showCurrentLocationBtn?: boolean
 }
 
-function LocationSelector({ mapRef, initialRegion, handleRegionChange, address, setAddress, disableAddressFetching, handleLocationPress, handleCurrentLocation, label, required, placeholder }: LocationSelectorProps): JSX.Element {
+function LocationSelector({ mapRef, initialRegion, handleRegionChange, address, setAddress, disableAddressFetching, handleLocationPress, handleCurrentLocation, label, required, placeholder, showCurrentLocationBtn }: LocationSelectorProps): JSX.Element {
   return <Fragment>
     <MapView
       ref={mapRef}
@@ -36,6 +38,10 @@ function LocationSelector({ mapRef, initialRegion, handleRegionChange, address, 
     <TouchableOpacity onPress={handleCurrentLocation} style={styles.currentLocationButton}>
       <CurrentLocation fill={colors.primary} />
     </TouchableOpacity>
+    {showCurrentLocationBtn && <TouchableOpacity onPress={handleCurrentLocation} style={styles.chooseLocation}>
+      <Text style={styles.locationText}>Choose current location</Text>
+      <CurrentLocation />
+    </TouchableOpacity>}
     <AddressSearch
       required={required ?? false}
       disabled={false}
@@ -49,12 +55,24 @@ function LocationSelector({ mapRef, initialRegion, handleRegionChange, address, 
       placeHolder={placeholder ?? "Enter address"}
     />
 
+
   </Fragment>
 }
 
 export default LocationSelector
 
 const styles = StyleSheet.create({
-  currentLocationButton: { alignSelf: 'flex-end', backgroundColor: colors.white, padding: 5, justifyContent: 'center', alignItems: 'center', bottom: 50, right: 20 }
+  currentLocationButton: { alignSelf: 'flex-end', backgroundColor: colors.white, padding: 5, justifyContent: 'center', alignItems: 'center', bottom: 50, right: 20 },
+  chooseLocation: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    borderBottomColor: colors.disabledBorderColor,
+    borderBottomWidth: 1,
+  },
+  locationText: {
+    fontFamily: font.fontFamilies({ type: 'Poppins' }).regular,
+    color: colors.primary
+  }
 
 })

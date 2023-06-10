@@ -12,6 +12,7 @@ import font from "../constants/fonts";
 import colors from "../constants/colors";
 import HeaderBack from "../components/molecular/HeaderBack";
 import { useNavigation } from "@react-navigation/native";
+import Search from "../screens/MainTab/Home/FindYourParts/Search";
 
 const Stack = createNativeStackNavigator()
 
@@ -26,6 +27,7 @@ function AuthStack(): JSX.Element {
     <Stack.Screen name="Reset Success" component={ResetSuccess} />
     <Stack.Screen name="Verification" component={Verification} />
     <Stack.Screen name="Verified" component={Verified} />
+    <Stack.Screen name="Search" options={{ contentStyle: { backgroundColor: colors.white } }} component={Search} />
     <Stack.Screen name="Shop Details" options={{
       headerLeft: () => {
         const navigation = useNavigation()

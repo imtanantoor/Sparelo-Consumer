@@ -51,7 +51,6 @@ function handleSearchedPartsResponse(newPartsData: any[], oldPartsData: any[]) {
 
 function handlePartsResponse(requests: any): PartsCardModel[] {
   let data: PartsCardModel[] = [];
-  console.log({requests});
   // if (requests.length > 0)
   //   requests.forEach((request: any, index: number) => {
   //     if (request?.bids && request?.bids?.length > 0) {
