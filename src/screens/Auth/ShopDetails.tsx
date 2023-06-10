@@ -85,9 +85,6 @@ function ShopDetails({ navigation }: any): JSX.Element {
     }
   }
 
-  function handleConfirmLocation() {
-  }
-
   return <SafeAreaView style={styles.container}>
     <ScrollView
       style={styles.container}
