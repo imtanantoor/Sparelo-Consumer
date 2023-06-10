@@ -51,49 +51,50 @@ function handleSearchedPartsResponse(newPartsData: any[], oldPartsData: any[]) {
 
 function handlePartsResponse(requests: any): PartsCardModel[] {
   let data: PartsCardModel[] = [];
-  if (requests.length > 0)
-    requests.forEach((request: any, index: number) => {
-      if (request?.bids && request?.bids?.length > 0) {
-        data = request?.bids?.map((bid: any) => ({
-          id: request?._id,
-          bid: bid?._id,
-          images:
-            request?.images && request?.images?.length > 0
-              ? request?.images.map(
-                  (image: string) => constants.baseURL + image,
-                )
-              : [],
-          make: request?.brand?.name ? request?.brand?.name : 'make',
-          model: request?.model?.name ? request?.model?.name : 'model',
-          year: request?.manufacturingYear
-            ? request?.manufacturingYear
-            : 'year',
-          price: bid?.price ? bid?.price : '',
-          audioNote: request?.bids[index]?.voiceNote
-            ? request.bids[index].voiceNote
-            : '',
-          quantity: request?.quantity,
-          rating: request.user.rating,
-        }));
-      }
-    });
+  console.log({requests});
+  // if (requests.length > 0)
+  //   requests.forEach((request: any, index: number) => {
+  //     if (request?.bids && request?.bids?.length > 0) {
+  //       data = request?.bids?.map((bid: any) => ({
+  //         id: request?._id,
+  //         bid: bid?._id,
+  //         images:
+  //           request?.images && request?.images?.length > 0
+  //             ? request?.images.map(
+  //                 (image: string) => constants.baseURL + image,
+  //               )
+  //             : [],
+  //         make: request?.brand?.name ? request?.brand?.name : 'make',
+  //         model: request?.model?.name ? request?.model?.name : 'model',
+  //         year: request?.manufacturingYear
+  //           ? request?.manufacturingYear
+  //           : 'year',
+  //         price: bid?.price ? bid?.price : '',
+  //         audioNote: request?.bids[index]?.voiceNote
+  //           ? request.bids[index].voiceNote
+  //           : '',
+  //         quantity: request?.quantity,
+  //         rating: request.user.rating,
+  //       }));
+  //     }
+  //   });
 
-  // return requests.map((request: any, index: number) => ({
-  //   id: request._id,
-  //   bid: request?.bids[index]?._id ? request?.bids[index]?._id : index + 1,
-  //   images: request.images.map((image: string) => constants.baseURL + image),
-  //   make: request?.car?.brand?.name ? request?.car?.brand?.name : 'make',
-  //   model: request?.car?.model?.name ? request?.car?.model?.name : 'model',
-  //   year: request?.car?.manufacturingYear
-  //     ? request?.car?.manufacturingYear
-  //     : 'year',
-  //   price: request?.bids[index]?.price ? request?.bids[index]?.price : '',
-  //   audioNote: request?.bids[index]?.voiceNote
-  //     ? request.bids[index].voiceNote
-  //     : '',
-  //   quantity: request.quantity,
-  //   rating: 3,
-  // }));
+  return requests.map((bid: any, index: number) => ({
+    id: bid.request._id,
+    bid: bid?._id,
+    images: bid?.request?.images.map(
+      (image: string) => constants.baseURL + image,
+    ),
+    make: bid?.request?.model?.name ? bid?.request?.model?.name : 'make',
+    model: bid?.request?.model?.name ? bid?.request?.model?.name : 'model',
+    year: bid?.request?.manufacturingYear
+      ? bid?.request?.manufacturingYear
+      : 'year',
+    price: bid?.price ? bid?.price : '',
+    audioNote: bid?.request?.voiceNote ? bid.request.voiceNote : '',
+    quantity: bid.request.quantity,
+    rating: bid?.user?.rating ? bid.user.rating : 3,
+  }));
 
   return data;
 }
