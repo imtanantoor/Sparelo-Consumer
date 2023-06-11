@@ -44,9 +44,10 @@ function SignIn({ navigation, submitting, loginSuccess, loginError, login }: Sig
     const myKey = fieldName as ObjectKey
 
     return () => {
-      const isPhoneValid = constants.phoneNumberRegex.test(values[myKey])
+      let phoneNumberRegex = /([+(\d]{1})(([\d+() -.]){5,13})([+(\d]{1})/gm;
 
-      if (fieldName === 'contact' && !isPhoneValid) {
+
+      if (fieldName === 'contact' && !phoneNumberRegex.test(values.contact)) {
         return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
       }
 
@@ -64,9 +65,9 @@ function SignIn({ navigation, submitting, loginSuccess, loginError, login }: Sig
 
   function handleChange(value: string, fieldName: string) {
     setValues({ ...values, [fieldName]: value })
-    const isPhoneValid = constants.phoneNumberRegex.test(value)
+    let phoneNumberRegex = /([+(\d]{1})(([\d+() -.]){5,13})([+(\d]{1})/gm;
 
-    if (fieldName === 'contact' && !isPhoneValid) {
+    if (fieldName === 'contact' && !phoneNumberRegex.test(value)) {
       return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
     } else {
       setErrors({ ...errors, [fieldName]: '' })
