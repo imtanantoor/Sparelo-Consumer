@@ -54,6 +54,8 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
 
       if (fieldName === 'contact' && !constants.phoneNumberRegex.test(values.contact)) {
         return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
+      } else {
+        setErrors({ ...errors, [fieldName]: '' })
       }
 
       if (fieldName === 'password' && values[fieldName].length < 8) {

@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import actions from '../actions';
+import ToastService from '../../Services/ToastService';
 
 const initialState: {
   authenticated: boolean;
@@ -55,6 +56,29 @@ const authSlice = createSlice({
         state.registering = false;
         state.registerError = true;
         state.registerSuccess = false;
+      });
+
+    builder
+      .addCase(actions.loginUser.pending, (state, action) => {
+        state.loggingIn = true;
+        state.loginError = false;
+        state.loginSuccess = false;
+      })
+      .addCase(actions.loginUser.fulfilled, (state, action) => {
+        state.loggingIn = false;
+        state.loginError = false;
+        state.loginSuccess = true;
+      })
+      .addCase(actions.loginUser.rejected, (state, action) => {
+        state.loggingIn = false;
+        state.loginError = true;
+        state.loginSuccess = false;
+        ToastService.error(
+          'Login',
+          action?.error?.message
+            ? action.error.message
+            : 'Something went wrong',
+        );
       });
   },
 });

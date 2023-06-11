@@ -9,10 +9,21 @@ import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import auth from '@react-native-firebase/auth';
 import ToastService from "../../Services/ToastService";
+import constants from "../../utils/constants";
+import actions from "../../store/actions";
+import { connect } from "react-redux";
 
-function SignIn({ navigation }: NativeStackScreenProps<any>): JSX.Element {
-  const [values, setValues] = useState<any>({
-    contact: '+92',
+interface SignInProps {
+  navigation: any
+  submitting: boolean;
+  loginSuccess: boolean;
+  loginError: boolean;
+  login: (data: LoginPayloadModel) => void
+}
+
+function SignIn({ navigation, submitting, loginSuccess, loginError, login }: SignInProps): JSX.Element {
+  const [values, setValues] = useState<LoginPayloadModel>({
+    contact: '',
     password: ''
   })
   const [touched, setTouched] = useState({
@@ -23,31 +34,44 @@ function SignIn({ navigation }: NativeStackScreenProps<any>): JSX.Element {
     contact: '',
     password: ''
   })
-  const [submitting, setSubmitting] = useState<boolean>(false)
-  const [confirm, setConfirm] = useState(null)
 
-  async function handleSignIn() {
-    setSubmitting(true)
-    try {
-      const confirmation = await auth().signInWithPhoneNumber(values.contact);
-      setConfirm(confirm)
-      navigation.navigate("Verification", { confirmation, contact: values.contact })
-
-      setSubmitting(false)
-    } catch (error: any) {
-      setSubmitting(false)
-      ToastService.error(error?.code)
-    }
+  function handleSignIn() {
+    login(values)
   }
+
   function handleBlur(fieldName: string, required: boolean) {
+    type ObjectKey = keyof typeof values
+    const myKey = fieldName as ObjectKey
+
     return () => {
-      if (values[fieldName] === '' && required) {
+      const isPhoneValid = constants.phoneNumberRegex.test(values[myKey])
+
+      if (fieldName === 'contact' && !isPhoneValid) {
+        return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
+      } else {
+        setErrors({ ...errors, [fieldName]: '' })
+      }
+
+      // if (fieldName === 'password' && values[fieldName].length < 8) {
+      //   return setErrors({ ...errors, [fieldName]: `${fieldName} must be at least 8 characters long` })
+      // }
+
+      if (values[myKey] === '' && required) {
         setErrors({ ...errors, [fieldName]: `${fieldName} is required!` })
       }
     }
   }
+
   function handleChange(value: string, fieldName: string) {
     setValues({ ...values, [fieldName]: value })
+    const isPhoneValid = constants.phoneNumberRegex.test(value)
+
+    if (fieldName === 'contact' && !isPhoneValid) {
+      return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
+    } else {
+      setErrors({ ...errors, contact: '' })
+    }
+
     if (value !== '')
       setErrors({ ...errors, [fieldName]: '' })
   }
@@ -71,21 +95,6 @@ function SignIn({ navigation }: NativeStackScreenProps<any>): JSX.Element {
     })
   }, [])
 
-  function onAuthStateChanged(user: any) {
-    if (user) {
-      console.log({ user })
-      // Some Android devices can automatically process the verification code (OTP) message, and the user would NOT need to enter the code.
-      // Actually, if he/she tries to enter it, he/she will get an error message because the code was already used in the background.
-      // In this function, make sure you hide the component(s) for entering the code and/or navigate away from this screen.
-      // It is also recommended to display a message to the user informing him/her that he/she has successfully logged in.
-    }
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
   return <SafeAreaView style={styles.container}>
     <CustomForm
       title="Sign In"
@@ -93,7 +102,16 @@ function SignIn({ navigation }: NativeStackScreenProps<any>): JSX.Element {
       handleBlur={(fieldName, required) => handleBlur(fieldName, required)}
       handleChange={(text, fieldName) => handleChange(text, fieldName)}
       fields={[
-        { label: 'Contact', placeholder: 'Enter contact', required: true, disabled: false, fieldName: 'contact', value: values.contact },
+        {
+          label: 'Contact',
+          placeholder: 'Enter contact',
+          required: true, disabled: false,
+          fieldName: 'contact',
+          value: values.contact,
+          props: {
+            keyboardType: 'number-pad'
+          }
+        },
         {
           label: 'Password', placeholder: 'Enter your password', required: true, disabled: false, fieldName: 'password', value: values.password,
           props: {
@@ -128,7 +146,17 @@ function SignIn({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   </SafeAreaView>
 }
 
-export default SignIn
+const mapStateToProps = (state: any) => ({
+  submitting: state.Auth.loggingIn,
+  loginSuccess: state.Auth.loginSuccess,
+  loginError: state.Auth.loginError,
+})
+
+const mapDispatchToProps = {
+  login: actions.loginUser
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn)
 
 const styles = StyleSheet.create({
   container: {

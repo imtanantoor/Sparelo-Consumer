@@ -193,6 +193,14 @@ const signUpUser = createAsyncThunk(
   },
 );
 
+const loginUser = createAsyncThunk(
+  'Auth/Login',
+  async (data: LoginPayloadModel) => {
+    const response = await constants.apiInstance.post('/users/login', data);
+    return response.data;
+  },
+);
+
 const actions = {
   fetchCars,
   fetchCarsOfUser,
@@ -213,6 +221,7 @@ const actions = {
   createRequest,
   checkAvailability,
   signUpUser,
+  loginUser,
 };
 
 export default actions;
