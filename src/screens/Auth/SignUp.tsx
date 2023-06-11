@@ -7,41 +7,76 @@ import HeaderLeft from "../../components/global/HeaderLeft";
 import CustomForm from "../../components/organism/CustomForm";
 import colors from "../../constants/colors";
 import font from "../../constants/fonts";
+import auth from '@react-native-firebase/auth';
+
 
 function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   const [values, setValues] = useState<any>({
-    fullName: '',
-    contact: '',
+    name: '',
+    contact: '+92',
     password: ''
   })
   const [touched, setTouched] = useState({
-    fullName: false,
+    name: false,
     contact: false,
     password: false
   })
   const [errors, setErrors] = useState({
-    fullName: '',
+    name: '',
     contact: '',
     password: ''
   })
+  const [confirm, setConfirm] = useState<any>(null);
   const [submitting, setSubmitting] = useState<boolean>(false)
-  function handleSignUp() {
+
+  async function handleSignUp() {
     setSubmitting(true)
-    setTimeout(() => {
+    try {
+      console.log({ contact: values.contact })
+      const confirmation = await auth().signInWithPhoneNumber(values.contact);
+      setConfirm(confirm)
+      navigation.navigate("Verification", {
+        confirmation,
+        contact: values.contact,
+        signUpValues: { ...values }
+      })
+
       setSubmitting(false)
-      // navigation.navigate('Verification', { contact: values.contact })
-      navigation.navigate('Shop Details')
-    }, 2000)
+    } catch (error) {
+      setSubmitting(false)
+      console.log(error)
+    }
   }
+
   function handleBlur(fieldName: string, required: boolean) {
+    let phoneno = /([+(\d]{1})(([\d+() -.]){5,12})([+(\d]{1})/gm;
+
     return () => {
+      if (fieldName === 'contact' && !phoneno.test(values[fieldName])) {
+        setErrors({ ...errors, contact: `${fieldName} is invalid!` })
+      }
+
+      if (fieldName === 'password' && values[fieldName].length < 8) {
+        setErrors({ ...errors, [fieldName]: `${fieldName} must be at least 8 characters long` })
+      }
+
       if (values[fieldName] === '' && required) {
         setErrors({ ...errors, [fieldName]: `${fieldName} is required!` })
       }
     }
   }
   function handleChange(value: string, fieldName: string) {
+    let phoneno = /([+(\d]{1})(([\d+() -.]){5,12})([+(\d]{1})/gm;
     setValues({ ...values, [fieldName]: value })
+
+    if (fieldName === 'contact' && !phoneno.test(value)) {
+      return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
+    }
+
+    if (fieldName === 'password' && value.length < 8) {
+      return setErrors({ ...errors, [fieldName]: `${fieldName} must be at least 8 characters long` })
+    }
+
     if (value !== '')
       setErrors({ ...errors, [fieldName]: '' })
   }
@@ -71,9 +106,25 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
       handleBlur={(fieldName, required) => handleBlur(fieldName, required)}
       handleChange={(text, fieldName) => handleChange(text, fieldName)}
       fields={[
-        { label: 'Full Name', placeholder: 'Enter your full name', required: true, disabled: false, fieldName: 'fullName' },
-        { label: 'Contact', placeholder: 'Enter contact', required: true, disabled: false, fieldName: 'contact' },
-        { label: 'Password', placeholder: 'Enter your password', required: true, disabled: false, props: { secureTextEntry: true }, fieldName: 'password' },
+        {
+          label: 'Full Name',
+          placeholder: 'Enter your full name',
+          required: true, disabled: false, fieldName: 'name',
+          value: values.name
+        },
+        {
+          label: 'Contact',
+          placeholder: 'Enter contact',
+          required: true, disabled: false, fieldName: 'contact',
+          value: values.contact
+        },
+        {
+          label: 'Password',
+          placeholder: 'Enter your password',
+          required: true, disabled: false,
+          props: { secureTextEntry: true }, fieldName: 'password',
+          value: values.password
+        },
       ]}
       errors={errors}
       touched={touched}

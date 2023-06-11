@@ -8,6 +8,7 @@ import CustomForm from "../../components/organism/CustomForm";
 import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import auth from '@react-native-firebase/auth';
+import ToastService from "../../Services/ToastService";
 
 function SignIn({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   const [values, setValues] = useState<any>({
@@ -33,9 +34,9 @@ function SignIn({ navigation }: NativeStackScreenProps<any>): JSX.Element {
       navigation.navigate("Verification", { confirmation, contact: values.contact })
 
       setSubmitting(false)
-    } catch (error) {
+    } catch (error: any) {
       setSubmitting(false)
-      console.log(error)
+      ToastService.error(error?.code)
     }
   }
   function handleBlur(fieldName: string, required: boolean) {

@@ -9,13 +9,41 @@ import auth from '@react-native-firebase/auth';
 
 
 function CodeRefresh({ onResend }: any): JSX.Element {
+  const [seconds, setSeconds] = useState(0)
+  const [buttonDisabled, setButtonDisabled] = useState(true)
+
+  useEffect(() => {
+    let seconds = 60
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        seconds = seconds - 1
+        setSeconds(seconds - 1)
+        if (buttonDisabled == false)
+          setButtonDisabled(true)
+      } else {
+        clearInterval(interval)
+        setSeconds(60)
+        seconds = 60
+        if (buttonDisabled == true)
+          setButtonDisabled(false)
+      }
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
+
+  function handleResend() {
+    onResend()
+  }
 
   return <Fragment>
-    <Text style={styles.expiresText}>Code expires in: <Text style={{ color: colors.red }}>00:54</Text></Text>
+    <Text style={styles.expiresText}>Code expires in: <Text style={{ color: colors.red }}>{seconds}</Text></Text>
     <View style={styles.codeRefreshContainer}>
       <Text style={styles.expiresText}>Didn’t receive code?
       </Text>
-      <TouchableOpacity onPress={onResend} style={styles.resendButton}>
+      <TouchableOpacity disabled={buttonDisabled} onPress={handleResend} style={styles.resendButton}>
         <Text style={styles.resendCode}>Resend Code</Text>
       </TouchableOpacity>
     </View>
@@ -25,7 +53,7 @@ function CodeRefresh({ onResend }: any): JSX.Element {
 function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.Element {
   const codeLength = 6
   const [code, setCode] = useState<string>('')
-  const { confirmation, contact }: any = route?.params;
+  const { confirmation, contact, signUpValues }: any = route?.params;
   const [submitting, setSubmitting] = useState(false)
   const [confirm, setConfirm] = useState(confirmation)
 
@@ -60,7 +88,7 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
     try {
       const result = await confirm.confirm(code);
       setSubmitting(false)
-      navigation.navigate('Verified')
+      navigation.navigate('Verified', { signUpValues })
     } catch (error) {
       setSubmitting(false)
     }
