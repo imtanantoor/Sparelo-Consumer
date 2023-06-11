@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { createRef, Fragment, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { StyleSheet, SafeAreaView, Platform, Text, ScrollView, View, TouchableOpacity, Alert } from "react-native"
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { StyleSheet, SafeAreaView, Platform, Text, ScrollView, View, TouchableOpacity } from "react-native"
 import CodeBox from "../../components/atomic/CodeBox"
 import CustomButton from "../../components/global/CustomButton"
 import colors from "../../constants/colors"

@@ -43,7 +43,7 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
       })
 
       setSubmitting(false)
-    } catch (error) {
+    } catch (error: any) {
       ToastService.error('Sign Up ', error?.message)
       setSubmitting(false)
     }
