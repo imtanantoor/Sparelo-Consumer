@@ -48,8 +48,6 @@ function SignIn({ navigation, submitting, loginSuccess, loginError, login }: Sig
 
       if (fieldName === 'contact' && !isPhoneValid) {
         return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
-      } else {
-        setErrors({ ...errors, [fieldName]: '' })
       }
 
       // if (fieldName === 'password' && values[fieldName].length < 8) {
@@ -58,6 +56,8 @@ function SignIn({ navigation, submitting, loginSuccess, loginError, login }: Sig
 
       if (values[myKey] === '' && required) {
         setErrors({ ...errors, [fieldName]: `${fieldName} is required!` })
+      } else {
+        setErrors({ ...errors, [fieldName]: '' })
       }
     }
   }
@@ -69,7 +69,7 @@ function SignIn({ navigation, submitting, loginSuccess, loginError, login }: Sig
     if (fieldName === 'contact' && !isPhoneValid) {
       return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
     } else {
-      setErrors({ ...errors, contact: '' })
+      setErrors({ ...errors, [fieldName]: '' })
     }
 
     if (value !== '')
