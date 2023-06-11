@@ -17,15 +17,14 @@ function CodeRefresh({ onResend }: any): JSX.Element {
     const interval = setInterval(() => {
       if (seconds > 0) {
         seconds = seconds - 1
-        setSeconds(seconds - 1)
+        setSeconds(seconds)
         if (buttonDisabled == false)
           setButtonDisabled(true)
       } else {
-        clearInterval(interval)
-        setSeconds(60)
         seconds = 60
-        if (buttonDisabled == true)
-          setButtonDisabled(false)
+        setSeconds(60)
+        setButtonDisabled(false)
+        clearInterval(interval)
       }
     }, 1000)
 
