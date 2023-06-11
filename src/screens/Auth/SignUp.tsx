@@ -8,6 +8,7 @@ import CustomForm from "../../components/organism/CustomForm";
 import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import auth from '@react-native-firebase/auth';
+import constants from "../../utils/constants";
 
 
 function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
@@ -32,7 +33,6 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   async function handleSignUp() {
     setSubmitting(true)
     try {
-      console.log({ contact: values.contact })
       const confirmation = await auth().signInWithPhoneNumber(values.contact);
       setConfirm(confirm)
       navigation.navigate("Verification", {
@@ -44,32 +44,32 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
       setSubmitting(false)
     } catch (error) {
       setSubmitting(false)
-      console.log(error)
     }
   }
 
   function handleBlur(fieldName: string, required: boolean) {
-    let phoneno = /([+(\d]{1})(([\d+() -.]){5,12})([+(\d]{1})/gm;
-
     return () => {
-      if (fieldName === 'contact' && !phoneno.test(values[fieldName])) {
-        setErrors({ ...errors, contact: `${fieldName} is invalid!` })
+
+      if (fieldName === 'contact' && !constants.phoneNumberRegex.test(values.contact)) {
+        return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
       }
 
       if (fieldName === 'password' && values[fieldName].length < 8) {
-        setErrors({ ...errors, [fieldName]: `${fieldName} must be at least 8 characters long` })
+        return setErrors({ ...errors, [fieldName]: `${fieldName} must be at least 8 characters long` })
       }
 
       if (values[fieldName] === '' && required) {
-        setErrors({ ...errors, [fieldName]: `${fieldName} is required!` })
+        return setErrors({ ...errors, [fieldName]: `${fieldName} is required!` })
       }
+
+      setErrors({ ...errors, [fieldName]: '' })
     }
   }
+
   function handleChange(value: string, fieldName: string) {
-    let phoneno = /([+(\d]{1})(([\d+() -.]){5,12})([+(\d]{1})/gm;
     setValues({ ...values, [fieldName]: value })
 
-    if (fieldName === 'contact' && !phoneno.test(value)) {
+    if (fieldName === 'contact' && !constants.phoneNumberRegex.test(value)) {
       return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
     }
 
