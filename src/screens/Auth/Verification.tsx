@@ -6,32 +6,33 @@ import CustomButton from "../../components/global/CustomButton"
 import colors from "../../constants/colors"
 import font from "../../constants/fonts"
 import auth from '@react-native-firebase/auth';
+import ToastService from "../../Services/ToastService"
 
 
 function CodeRefresh({ onResend }: any): JSX.Element {
   const [seconds, setSeconds] = useState(0)
-  const [buttonDisabled, setButtonDisabled] = useState(true)
+  const [buttonDisabled, setButtonDisabled] = useState(false)
 
-  useEffect(() => {
-    let seconds = 60
-    const interval = setInterval(() => {
-      if (seconds > 0) {
-        seconds = seconds - 1
-        setSeconds(seconds)
-        if (buttonDisabled == false)
-          setButtonDisabled(true)
-      } else {
-        seconds = 60
-        setSeconds(60)
-        setButtonDisabled(false)
-        clearInterval(interval)
-      }
-    }, 1000)
+  // useEffect(() => {
+  //   let seconds = 60
+  //   const interval = setInterval(() => {
+  //     if (seconds > 0) {
+  //       seconds = seconds - 1
+  //       setSeconds(seconds)
+  //       if (buttonDisabled == false)
+  //         setButtonDisabled(true)
+  //     } else {
+  //       seconds = 60
+  //       setSeconds(60)
+  //       setButtonDisabled(false)
+  //       clearInterval(interval)
+  //     }
+  //   }, 1000)
 
-    return () => {
-      clearInterval(interval)
-    }
-  }, [])
+  //   return () => {
+  //     clearInterval(interval)
+  //   }
+  // }, [])
 
   function handleResend() {
     onResend()
@@ -55,7 +56,6 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
   const { confirmation, contact, signUpValues }: any = route?.params;
   const [submitting, setSubmitting] = useState(false)
   const [confirm, setConfirm] = useState(confirmation)
-
   useLayoutEffect(() => {
 
     navigation.setOptions({
@@ -99,8 +99,8 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
     try {
       const confirmation = await auth().signInWithPhoneNumber(contact)
       setConfirm(confirmation)
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      ToastService.error('OTP Error', error?.nativeErrorMessage ? error.nativeErrorMessage : error?.message ? error.message : '')
     }
   }
 
