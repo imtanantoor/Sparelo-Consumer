@@ -6,7 +6,10 @@ interface RequestsListProps {
   requests: RequestCardProps[];
   fetching: boolean;
   error: boolean;
+  mode: 'buyer' | 'vendor';
+  user: UserModel;
   fetchRequests: (userId: string) => void;
+  fetchRequestsOfVendor: (userId: string) => void;
 }
 
 export default RequestsListProps;

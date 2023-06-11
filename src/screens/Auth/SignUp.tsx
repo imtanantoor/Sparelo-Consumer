@@ -34,7 +34,7 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   async function handleSignUp() {
     setSubmitting(true)
     try {
-      const confirmation = await auth().signInWithPhoneNumber(values.contact);
+      const confirmation = await auth().signInWithPhoneNumber(values.contact, true);
       setConfirm(confirm)
       navigation.navigate("Verification", {
         confirmation,

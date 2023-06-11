@@ -19,7 +19,10 @@ const initialState: {
   data: [],
 };
 
-function handleRequestsData(requests: any): RequestCardProps[] {
+function handleRequestsData(
+  requests: any,
+  isVendor: boolean,
+): RequestCardProps[] {
   return requests.map((request: any) => ({
     id: request._id,
     category: request.category.name,
@@ -33,7 +36,7 @@ function handleRequestsData(requests: any): RequestCardProps[] {
         ? request.images.map((image: string) => constants.baseURL + image)
         : [],
     buttonDisabled: request.numberOfBids <= 0,
-    buttonTitle: `${request.numberOfBids} bids`,
+    buttonTitle: `Send Quotation`,
   }));
 }
 
@@ -57,7 +60,7 @@ const requestsSlice = createSlice({
       .addCase(actions.fetchRequests.fulfilled, (state, action) => {
         state.fetching = false;
         state.error = false;
-        state.data = handleRequestsData(action.payload.requests);
+        state.data = handleRequestsData(action.payload.requests, false);
       })
       .addCase(actions.fetchRequests.rejected, (state, action) => {
         state.fetching = false;
@@ -73,7 +76,7 @@ const requestsSlice = createSlice({
       .addCase(actions.fetchRequestsOfUser.fulfilled, (state, action) => {
         state.fetching = false;
         state.error = false;
-        state.data = handleRequestsData(action.payload.requests);
+        state.data = handleRequestsData(action.payload.requests, false);
       })
       .addCase(actions.fetchRequestsOfUser.rejected, (state, action) => {
         state.fetching = false;
@@ -96,6 +99,21 @@ const requestsSlice = createSlice({
         state.creating = false;
         state.creationFailed = false;
         state.creationSuccessful = true;
+      });
+    // Vendor requests
+    builder
+      .addCase(actions.fetchRequestsOfVendor.pending, (state, action) => {
+        state.fetching = true;
+        state.error = false;
+      })
+      .addCase(actions.fetchRequestsOfVendor.fulfilled, (state, action) => {
+        state.fetching = false;
+        state.error = false;
+        state.data = handleRequestsData(action.payload.requests, true);
+      })
+      .addCase(actions.fetchRequestsOfVendor.rejected, (state, action) => {
+        state.fetching = false;
+        state.error = true;
       });
   },
 });

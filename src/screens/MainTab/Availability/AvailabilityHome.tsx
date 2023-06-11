@@ -11,16 +11,17 @@ interface AvailabilityHomeProps {
   fetching: boolean
   error: boolean
   fetchAllAvailableItemsOfUser: (userId: string) => void
+  user: UserModel
 }
 
-function AvailabilityHome({ data, fetching, error, fetchAllAvailableItemsOfUser }: AvailabilityHomeProps): JSX.Element {
+function AvailabilityHome({ data, fetching, error, user, fetchAllAvailableItemsOfUser }: AvailabilityHomeProps): JSX.Element {
 
   useEffect(() => {
-    fetchAllAvailableItemsOfUser('64656e68bec729d8efdbb90a')
+    fetchAllAvailableItemsOfUser(user._id)
   }, [])
 
   function handleApiCall() {
-    fetchAllAvailableItemsOfUser('64656e68bec729d8efdbb90a')
+    fetchAllAvailableItemsOfUser(user._id)
   }
 
   return <FlatList
@@ -40,7 +41,8 @@ function AvailabilityHome({ data, fetching, error, fetchAllAvailableItemsOfUser 
 const mapStateToProps = (state: any) => ({
   data: state.Availability.data,
   fetching: state.Availability.fetching,
-  error: state.Availability.error
+  error: state.Availability.error,
+  user: state.Auth.user
 })
 
 const mapDispatchToProps = {

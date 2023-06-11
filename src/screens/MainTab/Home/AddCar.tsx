@@ -17,11 +17,12 @@ interface AddCarProps {
   submitting: boolean
   error: boolean
   success: boolean
+  user: UserModel
   addCar: (data: AddCarModel) => void
   resetCreationState: () => void
 }
 
-function AddCar({ navigation, submitting, error, success, addCar, resetCreationState }: AddCarProps): JSX.Element {
+function AddCar({ navigation, submitting, error, success, user, addCar, resetCreationState }: AddCarProps): JSX.Element {
   const initialState = {
     brand: {
       id: '',
@@ -66,7 +67,7 @@ function AddCar({ navigation, submitting, error, success, addCar, resetCreationS
       brand: values.brand.id,
       model: values.model.id,
       images: images,
-      owner: constants.ownerId
+      owner: user._id
     }
 
     addCar(data)
@@ -162,12 +163,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state: any) => ({
   submitting: state.Cars.addingCar,
   error: state.Cars.addingCarError,
-  success: state.Cars.addCarSuccess
+  success: state.Cars.addCarSuccess,
+  user: state.Auth.user
 })
 
 const mapDispatchToProps = {
   addCar: actions.addCar,
-  resetCreationState: carSlice.actions.resetCreationState
+  resetCreationState: carSlice.actions.resetCreationState,
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddCar)

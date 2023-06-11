@@ -40,7 +40,8 @@ function SelectionButton({ onPress, label, value }: { onPress: (props?: any) => 
   </TouchableOpacity>
 }
 
-function ShopDetails({ navigation }: any): JSX.Element {
+function ShopDetails({ navigation, route }: any): JSX.Element {
+  const isProfileStack = route?.params?.isProfileStack
   const [assets, setAssets] = useState<any>([])
   const [values, setValues] = useState<any>(fields)
   const [errors, setErrors] = useState(fields)
@@ -53,6 +54,7 @@ function ShopDetails({ navigation }: any): JSX.Element {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+
 
   function handleBlur(fieldName: string, required: boolean) {
     return () => {
@@ -141,7 +143,7 @@ function ShopDetails({ navigation }: any): JSX.Element {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      <Text style={styles.notification}>Shop details can be changed later from settings.</Text>
+      {!isProfileStack ? <Text style={styles.notification}>Shop details can be changed later from settings.</Text> : null}
       <CustomTextInput
         fieldName="storeName"
         required

@@ -25,6 +25,7 @@ interface GarageListProps {
   fetchingCategories: boolean,
   fetchingCategoriesError: boolean,
   reload: boolean,
+  user: UserModel,
   fetchCarsOfUser: (id: string | number) => void,
   fetchCategories: () => void
 }
@@ -47,7 +48,7 @@ function SubListItemSeparator(): JSX.Element {
   return <View style={{ marginHorizontal: 7.5 }} />
 }
 
-function GarageList({ title, cars, categories, fetchingCars, fetchingCarsError, fetchingCategories, fetchingCategoriesError, reload, sectionActionPress, addToGaragePress, fetchCategories, fetchCarsOfUser }: GarageListProps): JSX.Element {
+function GarageList({ title, cars, categories, fetchingCars, fetchingCarsError, fetchingCategories, fetchingCategoriesError, user, reload, sectionActionPress, addToGaragePress, fetchCategories, fetchCarsOfUser }: GarageListProps): JSX.Element {
   const [selectedCar, setSelectedCar] = useState<CarCardProps | null>(null)
   const navigation: any = useNavigation()
   function handleCarPress(item: CarCardProps) {
@@ -62,7 +63,7 @@ function GarageList({ title, cars, categories, fetchingCars, fetchingCarsError, 
   }
 
   useEffect(() => {
-    fetchCarsOfUser(constants.ownerId)
+    fetchCarsOfUser(user._id)
     fetchCategories()
   }, [reload])
 
@@ -172,10 +173,11 @@ const mapStateToProps = (state: any) => ({
   categories: state.Categories.data,
   fetchingCategories: state.Categories.fetching,
   fetchingCategoriesError: state.Categories.error,
-  reload: state.Cars.addCarSuccess
+  reload: state.Cars.addCarSuccess,
+  user: state.Auth.user
 })
 const mapDispatchToProps = {
   fetchCarsOfUser: actions.fetchCarsOfUser,
-  fetchCategories: actions.fetchCategories
+  fetchCategories: actions.fetchCategories,
 }
 export default connect(mapStateToProps, mapDispatchToProps)(GarageList)

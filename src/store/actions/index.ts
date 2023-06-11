@@ -37,6 +37,15 @@ const fetchRequestsOfUser = createAsyncThunk(
     return response.data;
   },
 );
+const fetchRequestsOfVendor = createAsyncThunk(
+  'Requests/fetchVendorRequests',
+  async (userId: string) => {
+    const response = await constants.apiInstance.get(
+      `requests/getByVendor/${userId}`,
+    );
+    return response.data;
+  },
+);
 const fetchBrands = createAsyncThunk('Brands/fetchAll', async () => {
   const response = await constants.apiInstance.get('brands');
   return response.data;
@@ -207,6 +216,7 @@ const actions = {
   fetchCategories,
   fetchRequests,
   fetchRequestsOfUser,
+  fetchRequestsOfVendor,
   fetchBrands,
   fetchModels,
   fetchNewParts,

@@ -25,6 +25,7 @@ function CustomTextInput({ label, placeholder, containerStyle, required, onBlur,
     <Text style={[styles.label, { color: disabled ? colors.disabledInput : styles.label.color }]}>{label}{required && <Text style={styles.requiredText}> *</Text>}</Text>
     <TextInput
       placeholder={placeholder}
+      editable={disabled ? false : true}
       placeholderTextColor={colors.placeHolderColor}
       style={[styles.textInput, { borderBottomColor: errors[fieldName] && touched[fieldName] ? colors.red : disabled ? colors.disabledBorderColor : styles.textInput.borderBottomColor, ...inputStyle }]}
       onBlur={handleOnBlur}

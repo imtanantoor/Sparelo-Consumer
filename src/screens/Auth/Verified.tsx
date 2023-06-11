@@ -25,6 +25,7 @@ function Verified({ navigation, route, registering, registerError, registerSucce
   function handleSignUp() {
     const data: SignUpUserModel = {
       ...signUpValues,
+      contact: signUpValues.contact.replace('+92', '0'),
       firebaseUid: auth().currentUser?.uid
     }
     signUpUser(data)

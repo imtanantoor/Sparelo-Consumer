@@ -12,6 +12,8 @@ const initialState: {
   loggingIn: boolean;
   loginSuccess: boolean;
   loginError: boolean;
+  user: null | UserModel;
+  accessToken: string;
 } = {
   authenticated: false,
   showOnBoarding: true,
@@ -22,6 +24,8 @@ const initialState: {
   loggingIn: false,
   loginError: false,
   loginSuccess: false,
+  user: null,
+  accessToken: '',
 };
 
 const authSlice = createSlice({
@@ -39,6 +43,7 @@ const authSlice = createSlice({
       state.registering = false;
       state.registerSuccess = false;
     },
+    logout: state => initialState,
   },
   extraReducers: builder => {
     builder
@@ -65,9 +70,13 @@ const authSlice = createSlice({
         state.loginSuccess = false;
       })
       .addCase(actions.loginUser.fulfilled, (state, action) => {
+        const {payload}: any = action;
+
         state.loggingIn = false;
         state.loginError = false;
         state.loginSuccess = true;
+        state.accessToken = payload?.accessToken;
+        state.user = {...payload?.user};
       })
       .addCase(actions.loginUser.rejected, (state, action) => {
         state.loggingIn = false;

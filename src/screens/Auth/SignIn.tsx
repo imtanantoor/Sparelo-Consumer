@@ -75,6 +75,7 @@ function SignIn({ navigation, submitting, loginSuccess, loginError, login }: Sig
     if (value !== '')
       setErrors({ ...errors, [fieldName]: '' })
   }
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,

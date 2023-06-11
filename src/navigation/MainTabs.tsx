@@ -17,25 +17,28 @@ import RequestsStack from "./MainTabs/RequestsStack";
 import CartStack from "./MainTabs/CartStack";
 import MyCartBottomTab from "../components/molecular/MyCartBottomTab";
 import AvailabilityStack from "./MainTabs/Availability/AvailabilityStack";
+import { useSelector } from "react-redux";
 
 const Tab = createBottomTabNavigator()
 
 function MainTabs(): JSX.Element {
+  const { mode } = useSelector((state: any) => state.Auth)
+
   return <Tab.Navigator
-    initialRouteName="Home"
+    initialRouteName={mode === 'buyer' ? 'Home' : 'Requests'}
     screenOptions={{
       tabBarActiveTintColor: colors.textActiveTintColor,
       tabBarInactiveTintColor: colors.textInactiveTintColor,
       headerShown: false
     }}
   >
-    <Tab.Screen name="Home" component={HomeStack}
+    {mode === 'buyer' && <Tab.Screen name="Home" component={HomeStack}
       options={{
         tabBarLabelStyle: { marginBottom: 5 },
         tabBarIcon({ focused, color }) {
           return <HomeIcon stroke={focused ? colors.activeTabIconColor : color} />
         },
-      }} />
+      }} />}
     <Tab.Screen name="Requests" component={RequestsStack} options={{
       tabBarLabelStyle: { marginBottom: 5 },
       tabBarIcon({ focused, color }) {
@@ -48,12 +51,12 @@ function MainTabs(): JSX.Element {
         return <AvailabilityIcon stroke={focused ? colors.activeTabIconColor : color} />
       },
     }} />
-    <Tab.Screen name="My Cart" component={CartStack} options={{
+    {mode === 'buyer' && <Tab.Screen name="My Cart" component={CartStack} options={{
       tabBarLabelStyle: { marginBottom: 5 },
       tabBarIcon({ focused, color }) {
         return <MyCartBottomTab focused={focused} color={color} />
       },
-    }} />
+    }} />}
     <Tab.Screen name="Profile" component={ProfileStack} options={{
       tabBarLabelStyle: { marginBottom: 5 },
       tabBarIcon({ focused, color }) {

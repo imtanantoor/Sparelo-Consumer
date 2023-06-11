@@ -9,30 +9,30 @@ import auth from '@react-native-firebase/auth';
 import ToastService from "../../Services/ToastService"
 
 
-function CodeRefresh({ onResend }: any): JSX.Element {
+function CodeRefresh({ onResend, reset }: any): JSX.Element {
   const [seconds, setSeconds] = useState(0)
   const [buttonDisabled, setButtonDisabled] = useState(false)
 
-  // useEffect(() => {
-  //   let seconds = 60
-  //   const interval = setInterval(() => {
-  //     if (seconds > 0) {
-  //       seconds = seconds - 1
-  //       setSeconds(seconds)
-  //       if (buttonDisabled == false)
-  //         setButtonDisabled(true)
-  //     } else {
-  //       seconds = 60
-  //       setSeconds(60)
-  //       setButtonDisabled(false)
-  //       clearInterval(interval)
-  //     }
-  //   }, 1000)
+  useEffect(() => {
+    let seconds = 60
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        seconds = seconds - 1
+        setSeconds(seconds)
+        if (buttonDisabled == false)
+          setButtonDisabled(true)
+      } else {
+        seconds = 60
+        setSeconds(60)
+        setButtonDisabled(false)
+        clearInterval(interval)
+      }
+    }, 1000)
 
-  //   return () => {
-  //     clearInterval(interval)
-  //   }
-  // }, [])
+    return () => {
+      clearInterval(interval)
+    }
+  }, [reset])
 
   function handleResend() {
     onResend()
@@ -88,7 +88,8 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
       const result = await confirm.confirm(code);
       setSubmitting(false)
       navigation.navigate('Verified', { signUpValues })
-    } catch (error) {
+    } catch (error: any) {
+      ToastService.error('Verification Error', error?.message ? error.message : 'Verification failed')
       setSubmitting(false)
     }
 
@@ -97,7 +98,7 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
   async function resendCode() {
     setCode('')
     try {
-      const confirmation = await auth().signInWithPhoneNumber(contact)
+      const confirmation = await auth().signInWithPhoneNumber(contact, true)
       setConfirm(confirmation)
     } catch (error: any) {
       ToastService.error('OTP Error', error?.nativeErrorMessage ? error.nativeErrorMessage : error?.message ? error.message : '')
@@ -125,7 +126,10 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
               ))
           }
         </View>
-        <CodeRefresh onResend={resendCode} />
+        <CodeRefresh
+          onResend={resendCode}
+          reset={code.length === 0}
+        />
       </View>
       <CustomButton
         type={'primary'}

@@ -16,7 +16,10 @@ import { CartDataModel } from "../../models/cartModel"
 import ToastService from "../../Services/ToastService"
 
 function OrderSummary({ navigation, route }: any): JSX.Element {
-  const { data } = useSelector((state: any) => state.Cart)
+  const { data, user } = useSelector((state: any) => ({
+    data: state.Cart.data,
+    user: state.Auth.user
+  }))
   const [modalVisible, setModalVisible] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const { address, initialRegion } = route.params;
@@ -51,7 +54,7 @@ function OrderSummary({ navigation, route }: any): JSX.Element {
 
     const payload = {
       address,
-      orderBy: constants.ownerId,
+      orderBy: user._id,
       items: data.map((cart: CartDataModel) => ({ request: cart.id, bid: cart.bid }))
     }
 

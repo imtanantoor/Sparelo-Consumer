@@ -3,6 +3,7 @@ import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import EditProfile from "../../screens/MainTab/Profile/EditProfile";
 import Profile from "../../screens/MainTab/Profile/Profile";
+import ShopDetails from "../../screens/Auth/ShopDetails";
 
 const Stack = createNativeStackNavigator()
 
@@ -19,6 +20,7 @@ function ProfileStack(): JSX.Element {
   }}>
     <Stack.Screen name="My Profile" component={Profile} />
     <Stack.Screen name="Edit Profile" component={EditProfile} />
+    <Stack.Screen name="Shop Details" component={ShopDetails} />
   </Stack.Navigator>
 }
 

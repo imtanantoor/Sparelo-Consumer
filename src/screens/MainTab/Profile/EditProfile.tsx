@@ -1,13 +1,22 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useLayoutEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native";
 import CustomButton from "../../../components/global/CustomButton";
 import CustomImage from "../../../components/global/CustomImage";
 import CustomTextInput from "../../../components/global/CustomTextInput";
-import HeaderBack from "../../../components/molecular/HeaderBack";
+import { connect } from "react-redux";
 
-function EditProfile({ navigation }: NativeStackScreenProps<any>): JSX.Element {
+interface EditProfileScreenProps {
+  navigation: NativeStackNavigationProp<any>;
+  user: UserModel
+}
+
+function EditProfile({ navigation, user }: EditProfileScreenProps): JSX.Element {
+  const [values, setValues] = useState<any>({
+    name: user?.name ? user.name : '',
+    contact: user.contact ? user.contact : ''
+  })
   const [errors, setErrors] = useState({
     name: '',
     contact: ''
@@ -40,18 +49,20 @@ function EditProfile({ navigation }: NativeStackScreenProps<any>): JSX.Element {
         touched={touched}
         disabled={false}
         required={false}
+        value={values.name}
         setTouched={setTouched}
         onChangeText={() => { }}
         onBlur={() => { }}
       />
       <CustomTextInput
-        placeholder="03219044503"
+        placeholder={values.contact}
         label="Contact"
         fieldName="contact"
         errors={errors}
         touched={touched}
         disabled
         required={false}
+        // value={values.contact}
         setTouched={setTouched}
         onChangeText={() => { }}
         onBlur={() => { }}
@@ -75,4 +86,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   }
 })
-export default EditProfile
+
+const mapStateToProps = (state: any) => ({
+  user: state.Auth.user,
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile)

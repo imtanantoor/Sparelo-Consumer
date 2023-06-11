@@ -23,11 +23,12 @@ interface RequestSummaryProps {
   creating: boolean,
   creationFailed: boolean,
   creationSuccessful: boolean,
+  user: UserModel
   createRequest: (payload: CreateRequestPayload) => void
   resetCreationState: () => void
 }
 
-function RequestSummary({ navigation, creating, creationFailed, creationSuccessful, route, categories, createRequest, resetCreationState }: RequestSummaryProps): JSX.Element {
+function RequestSummary({ navigation, creating, creationFailed, creationSuccessful, route, categories, user, createRequest, resetCreationState }: RequestSummaryProps): JSX.Element {
   const [assets, setAssets] = useState<any>([])
   const [category, setCategory] = useState<any>({})
   const [quantity, setQuantity] = useState(0)
@@ -110,7 +111,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
       images: assets,
       category: category.id,
       car: carId ? carId : '646577961813d41bd7966fcb',
-      user: constants.ownerId,
+      user: user._id,
       itemInPair: quantity === 2 ? true : false,
       quantity: quantity,
       additionalNotes: additionalNotes,
@@ -222,6 +223,7 @@ const mapStateToProps = (state: any) => ({
   creating: state.Requests.creating,
   creationFailed: state.Requests.creationFailed,
   creationSuccessful: state.Requests.creationSuccessful,
+  user: state.Auth.user
 })
 
 const mapDispatchToProps = {

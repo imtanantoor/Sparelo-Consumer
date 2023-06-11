@@ -8,15 +8,32 @@ import actions from "../../../store/actions";
 import RequestsListProps from "../../../models/requestsList";
 import ListEmptyComponent from "../../../components/global/ListEmptyComponent";
 import constants from "../../../utils/constants";
+import RequestCardProps from "../../../models/requestCard";
+import ToastService from "../../../Services/ToastService";
 
-function RequestsList({ navigation, route, requests, fetching, error, fetchRequests }: RequestsListProps): JSX.Element {
+function RequestsList({ navigation, route, requests, fetching, error, mode, user, fetchRequests, fetchRequestsOfVendor }: RequestsListProps): JSX.Element {
 
   useEffect(() => {
-    fetchRequests(constants.ownerId)
+    if (mode === 'buyer')
+      return fetchRequests(user._id)
+
+    fetchRequestsOfVendor(user._id)
   }, [])
 
   function handleApiCall() {
-    fetchRequests(constants.ownerId)
+    if (mode === 'buyer')
+      return fetchRequests(user._id)
+
+    fetchRequestsOfVendor(user._id)
+  }
+
+  function handleItemPress(item: RequestCardProps) {
+
+    if (mode === 'buyer')
+      return navigation.navigate('Quotations', { requestId: item.id })
+
+    ToastService.warning('Vendor', 'Quotations integration work in progress')
+
   }
 
   return <FlatList
@@ -32,11 +49,12 @@ function RequestsList({ navigation, route, requests, fetching, error, fetchReque
       imageBackground={item.imageBackground}
       category={item.category}
       make={item.make}
+      images={item.images}
       model={item.model}
       year={item.year}
       buttonTitle={item.buttonTitle}
       buttonDisabled={item.buttonDisabled}
-      onButtonPress={() => { navigation.navigate('Quotations', { requestId: item.id }) }}
+      onButtonPress={() => handleItemPress(item)}
     />}
   />
 }
@@ -45,11 +63,14 @@ function RequestsList({ navigation, route, requests, fetching, error, fetchReque
 const mapStateToProps = (state: any) => ({
   requests: state.Requests.data,
   fetching: state.Requests.fetching,
-  error: state.Requests.error
+  error: state.Requests.error,
+  user: state.Auth.user,
+  mode: state.Auth.mode
 })
 
 const mapDispatchToProps = {
   fetchRequests: actions.fetchRequestsOfUser,
+  fetchRequestsOfVendor: actions.fetchRequestsOfVendor
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RequestsList)
