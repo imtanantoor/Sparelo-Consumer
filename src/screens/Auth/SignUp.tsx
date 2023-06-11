@@ -9,6 +9,7 @@ import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import auth from '@react-native-firebase/auth';
 import constants from "../../utils/constants";
+import ToastService from "../../Services/ToastService";
 
 
 function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
@@ -43,6 +44,7 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
 
       setSubmitting(false)
     } catch (error) {
+      ToastService.error('Sign Up ', error?.message)
       setSubmitting(false)
     }
   }
@@ -116,6 +118,9 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
           label: 'Contact',
           placeholder: 'Enter contact',
           required: true, disabled: false, fieldName: 'contact',
+          props: {
+            keyboardType: 'number-pad'
+          },
           value: values.contact
         },
         {

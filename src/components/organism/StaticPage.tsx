@@ -11,16 +11,20 @@ interface StaticPageProps extends PageButtonProps {
   showIndicators: boolean
   step1Type?: 'Active' | 'Inactive'
   step2Type?: 'Active' | 'Inactive'
+  mainButtonSubmitting: boolean
+  mainButtonDisabled: boolean
 }
 
 interface PageButtonProps {
   type: 'general' | 'onboarding'
   mainButtonPress: (props?: any) => any
   secondaryButtonPress?: (props?: any) => any
+  mainButtonSubmitting: boolean
+  mainButtonDisabled: boolean
   mainBtnTitle: string
 }
 
-function PageButtons({ type, mainBtnTitle, mainButtonPress, secondaryButtonPress }: PageButtonProps): JSX.Element {
+function PageButtons({ type, mainBtnTitle, mainButtonDisabled, mainButtonSubmitting, mainButtonPress, secondaryButtonPress }: PageButtonProps): JSX.Element {
   if (type === 'onboarding')
     return <View style={styles.buttonsContainer}>
       <CustomButton
@@ -41,14 +45,14 @@ function PageButtons({ type, mainBtnTitle, mainButtonPress, secondaryButtonPress
     <CustomButton
       title={mainBtnTitle}
       type='primary'
-      submitting={false}
+      submitting={mainButtonSubmitting}
       buttonStyle={{ marginHorizontal: 20, alignSelf: 'stretch' }}
       onPress={mainButtonPress}
-      disabled={false} />
+      disabled={mainButtonDisabled || mainButtonSubmitting} />
   </View>
 }
 
-function StaticPage({ SVG, title, showIndicators, subTitle, mainBtnTitle, step1Type, step2Type, type, mainButtonPress, secondaryButtonPress }: StaticPageProps): JSX.Element {
+function StaticPage({ SVG, title, showIndicators, subTitle, mainBtnTitle, step1Type, step2Type, type, mainButtonDisabled, mainButtonSubmitting, mainButtonPress, secondaryButtonPress }: StaticPageProps): JSX.Element {
   return <SafeAreaView style={styles.container}>
     <ScrollView contentContainerStyle={styles.container}>
       <SVG />
@@ -62,6 +66,8 @@ function StaticPage({ SVG, title, showIndicators, subTitle, mainBtnTitle, step1T
         mainButtonPress={mainButtonPress}
         secondaryButtonPress={secondaryButtonPress}
         mainBtnTitle={mainBtnTitle}
+        mainButtonDisabled={mainButtonDisabled}
+        mainButtonSubmitting={mainButtonSubmitting}
       />
     </ScrollView>
   </SafeAreaView>
