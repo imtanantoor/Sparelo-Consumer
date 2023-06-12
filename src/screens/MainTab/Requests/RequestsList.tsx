@@ -42,7 +42,7 @@ function RequestsList({ navigation, route, requests, fetching, error, mode, user
     refreshControl={<RefreshControl refreshing={fetching} onRefresh={handleApiCall} />}
     ListEmptyComponent={<ListEmptyComponent
       fetching={fetching}
-      onPress={fetchRequests}
+      onPress={handleApiCall}
       error={error} />}
     renderItem={({ item, index }) => <RequestsCard
       id={item.id}

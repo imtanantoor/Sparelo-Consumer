@@ -36,7 +36,8 @@ function handleRequestsData(
         ? request.images.map((image: string) => constants.baseURL + image)
         : [],
     buttonDisabled: request?.numberOfBids <= 0,
-    buttonTitle: `Send Quotation`,
+    // buttonTitle: `Send Quotation`,
+    buttonTitle: isVendor ? 'Send Quotation' : `${request.quantity} bids`,
   }));
 }
 
