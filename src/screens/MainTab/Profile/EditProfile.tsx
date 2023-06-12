@@ -1,18 +1,29 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native";
 import CustomButton from "../../../components/global/CustomButton";
 import CustomImage from "../../../components/global/CustomImage";
 import CustomTextInput from "../../../components/global/CustomTextInput";
 import { connect } from "react-redux";
+import constants from "../../../utils/constants";
+import CustomImageSelector from "../../../components/global/CustomImageSelector";
+import actions from "../../../store/actions";
+import authSlice from "../../../store/slices/authSlice";
+import ToastService from "../../../Services/ToastService";
 
 interface EditProfileScreenProps {
   navigation: NativeStackNavigationProp<any>;
   user: UserModel
+  submitting: boolean
+  error: boolean
+  success: boolean
+  updateUser: (data: UpdateUserModel) => void
+  resetUpdateUserState: () => void
 }
 
-function EditProfile({ navigation, user }: EditProfileScreenProps): JSX.Element {
+function EditProfile({ navigation, user, submitting, error, success, updateUser, resetUpdateUserState }: EditProfileScreenProps): JSX.Element {
+  const [assets, setAssets] = useState<any[]>([])
   const [values, setValues] = useState<any>({
     name: user?.name ? user.name : '',
     contact: user.contact ? user.contact : ''
@@ -34,12 +45,32 @@ function EditProfile({ navigation, user }: EditProfileScreenProps): JSX.Element 
     })
   }, [])
 
+  function handleUpdateUser() {
+    const data: UpdateUserModel = {
+      id: user?._id,
+      profilePic: assets[0],
+      name: values.name
+    }
+    updateUser(data)
+  }
+
+  useEffect(() => {
+    if (success) {
+      ToastService.success('Update User', 'User profile updated!')
+      navigation.goBack()
+      resetUpdateUserState()
+    }
+  }, [success])
+
   return <SafeAreaView style={styles.parentView}>
     <View style={styles.container}>
-      <CustomImage
-        source={{ uri: '' }}
-        imageUrl={'https://images.unsplash.com/photo-1597810743069-cf40e2452aa9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1065&q=80'}
-        style={{ height: 75, width: 75, alignSelf: 'center', marginVertical: 30 }}
+      <CustomImageSelector
+        assets={assets}
+        setAssets={setAssets}
+        showInitialImage
+        image={user?.profilePic && assets.length == 0 ? constants.baseURL + user?.profilePic : ''}
+        multiple={false}
+        style={{ alignSelf: 'center' }}
       />
       <CustomTextInput
         placeholder="Enter your name"
@@ -51,7 +82,7 @@ function EditProfile({ navigation, user }: EditProfileScreenProps): JSX.Element 
         required={false}
         value={values.name}
         setTouched={setTouched}
-        onChangeText={() => { }}
+        onChangeText={(text: string) => { setValues({ ...values, name: text }) }}
         onBlur={() => { }}
       />
       <CustomTextInput
@@ -71,10 +102,10 @@ function EditProfile({ navigation, user }: EditProfileScreenProps): JSX.Element 
     <CustomButton
       type="primary"
       title="Update"
-      submitting={false}
-      disabled={false}
+      submitting={submitting}
+      disabled={submitting || values.name === ''}
       buttonStyle={{ marginHorizontal: 20 }}
-      onPress={() => { }}
+      onPress={handleUpdateUser}
     />
 
   </SafeAreaView>
@@ -89,10 +120,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: any) => ({
   user: state.Auth.user,
+  submitting: state.Auth.updatingUser,
+  error: state.Auth.updatingUserError,
+  success: state.Auth.updatingUserSuccess
 })
 
 const mapDispatchToProps = {
-
+  updateUser: actions.updateUser,
+  resetUpdateUserState: authSlice.actions.resetUpdateUserState
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfile)

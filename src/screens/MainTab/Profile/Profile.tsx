@@ -6,6 +6,7 @@ import MyProfileCard from "../../../components/global/MyProfileCard";
 import colors from "../../../constants/colors";
 import { useDispatch, useSelector } from "react-redux";
 import authSlice from "../../../store/slices/authSlice";
+import constants from "../../../utils/constants";
 
 function Profile({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   const dispatch = useDispatch()
@@ -18,7 +19,7 @@ function Profile({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   return <SafeAreaView>
     <ScrollView style={styles.container}>
       <MyProfileCard
-        imageUrl="https://images.unsplash.com/photo-1597810743069-cf40e2452aa9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1065&q=80"
+        imageUrl={user?.profilePic ? constants.baseURL + user?.profilePic : ''}
         name={user.name}
         contact={user.contact}
         onPress={() => navigation.navigate('Edit Profile')}

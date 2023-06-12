@@ -117,7 +117,8 @@ function SignIn({ navigation, submitting, loginSuccess, loginError, login }: Sig
         {
           label: 'Password', placeholder: 'Enter your password', required: true, disabled: false, fieldName: 'password', value: values.password,
           props: {
-            secureTextEntry: true
+            secureTextEntry: true,
+            onSubmitEditing: handleSignIn
           }
         },
       ]}

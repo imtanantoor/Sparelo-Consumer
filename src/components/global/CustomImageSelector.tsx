@@ -17,10 +17,10 @@ const ImageOptions: any = {
   },
 };
 
-function ShowImage({ assets, multiple, imageUrl }: { assets: any[], multiple: boolean, imageUrl: string }) {
+function ShowImage({ assets, multiple, imageUrl, showInitialImage }: { assets: any[], multiple: boolean, imageUrl: string, showInitialImage?: boolean }) {
 
   return <Fragment>
-    {assets.length == 0 ? <CustomImage
+    {assets.length == 0 && !showInitialImage ? <CustomImage
       imageUrl={''}
       source={multiple ? require(`../../assets/MultipleImagePlaceholder.png`) : require(`../../assets/ImagePlaceholder.png`)}
       isStatic
@@ -34,8 +34,8 @@ function ShowImage({ assets, multiple, imageUrl }: { assets: any[], multiple: bo
   </Fragment>
 }
 
-function CustomImageSelector({ assets, multiple, image, style, setAssets }: { assets: any[], setAssets: (assets: []) => void, multiple: boolean, image: string, style?: any }) {
-  const [imageUrl, setImageUrl] = useState('')
+function CustomImageSelector({ assets, multiple, image, style, showInitialImage, setAssets }: { assets: any[], setAssets: (assets: []) => void, multiple: boolean, image: string, showInitialImage?: boolean, style?: any }) {
+  const [imageUrl, setImageUrl] = useState(image ? image : '')
   const [modalVisible, setModalVisible] = useState(false)
 
   function hideModal() {
@@ -76,10 +76,13 @@ function CustomImageSelector({ assets, multiple, image, style, setAssets }: { as
   }
 
   useEffect(() => {
-    if (assets.length === 0) {
-      setImageUrl('')
-    }
-  }, [assets.length])
+    // if (image) {
+    //   setImageUrl(image)
+    // }
+    // if (assets.length === 0) {
+    //   setImageUrl('')
+    // }
+  }, [])
 
   return <TouchableOpacity style={[styles.uploadImage, { width: multiple ? 200 : '50%', ...style }]} onPress={openModal}>
     <View style={{ height: '100%', width: '100%' }}>
@@ -87,6 +90,7 @@ function CustomImageSelector({ assets, multiple, image, style, setAssets }: { as
         assets={assets}
         imageUrl={multiple ? image : imageUrl}
         multiple={multiple}
+        showInitialImage={showInitialImage}
       />
       {multiple ? null : <TouchableOpacity onPress={openModal} style={{
         height: 26,

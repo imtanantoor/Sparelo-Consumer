@@ -14,6 +14,9 @@ const initialState: {
   loginError: boolean;
   user: null | UserModel;
   accessToken: string;
+  updatingUser: boolean;
+  updatingUserError: boolean;
+  updatingUserSuccess: boolean;
 } = {
   authenticated: false,
   showOnBoarding: true,
@@ -26,6 +29,9 @@ const initialState: {
   loginSuccess: false,
   user: null,
   accessToken: '',
+  updatingUser: false,
+  updatingUserError: false,
+  updatingUserSuccess: false,
 };
 
 const authSlice = createSlice({
@@ -42,6 +48,11 @@ const authSlice = createSlice({
       state.registerError = false;
       state.registering = false;
       state.registerSuccess = false;
+    },
+    resetUpdateUserState: state => {
+      state.updatingUser = false;
+      state.updatingUserError = false;
+      state.updatingUserSuccess = false;
     },
     logout: state => initialState,
   },
@@ -87,6 +98,32 @@ const authSlice = createSlice({
           action?.error?.message
             ? action.error.message
             : 'Something went wrong',
+        );
+      });
+
+    builder
+      .addCase(actions.updateUser.pending, (state, action) => {
+        state.updatingUser = true;
+        state.updatingUserSuccess = false;
+        state.updatingUserError = false;
+      })
+      .addCase(actions.updateUser.fulfilled, (state, action) => {
+        state.updatingUser = false;
+        state.updatingUserSuccess = true;
+        state.updatingUserError = false;
+        if (action?.payload?.user) {
+          state.user = action?.payload?.user;
+        }
+      })
+      .addCase(actions.updateUser.rejected, (state, action) => {
+        state.updatingUser = false;
+        state.updatingUserSuccess = false;
+        state.updatingUserError = true;
+        ToastService.error(
+          'Update User Fail',
+          action?.error?.message
+            ? action?.error?.message
+            : 'Updating User failed',
         );
       });
   },

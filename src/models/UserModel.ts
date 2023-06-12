@@ -6,4 +6,5 @@ interface UserModel {
   rating: number;
   isBlocked: boolean;
   user_type: string[];
+  profilePic: string;
 }

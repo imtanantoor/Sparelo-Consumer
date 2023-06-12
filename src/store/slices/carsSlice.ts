@@ -28,7 +28,6 @@ function handleCarsResponse(cars: any): CarCardProps[] {
     carMake: `${car.brand.name} | ${car.manufacturingYear}`,
     outOfStock: false,
     selected: false,
-    onPress: () => {},
   }));
 }
 

@@ -148,6 +148,18 @@ const createFormData = (data: any) => {
     }
   });
 
+  console.log({data});
+
+  if (data.profilePic) {
+    formData.append('profilePic', {
+      name: data.profilePic.fileName,
+      path: data.profilePic.uri,
+      type: data.profilePic.type,
+      uri: data.profilePic.uri,
+      filename: data.profilePic.fileName,
+    });
+  }
+
   if (data.images && data.images.length > 0) {
     data.images.forEach((photo: any) => {
       formData.append('images', {
@@ -210,6 +222,25 @@ const loginUser = createAsyncThunk(
   },
 );
 
+const updateUser = createAsyncThunk(
+  'Auth/Update User',
+  async (data: UpdateUserModel) => {
+    console.log({formData: createFormData(data)});
+    const resposne = await constants.apiInstance.patch(
+      'users/update',
+      createFormData(data),
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+
+    return resposne.data;
+  },
+);
+
 const actions = {
   fetchCars,
   fetchCarsOfUser,
@@ -232,6 +263,7 @@ const actions = {
   checkAvailability,
   signUpUser,
   loginUser,
+  updateUser,
 };
 
 export default actions;
