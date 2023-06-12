@@ -25,17 +25,17 @@ function handleRequestsData(
 ): RequestCardProps[] {
   return requests.map((request: any) => ({
     id: request._id,
-    category: request.category.name,
-    make: request.brand.name ? request.brand.name : 'N/A',
-    model: request.model.name,
-    year: request.manufacturingYear,
+    category: request?.category?.name,
+    make: request?.brand?.name ? request.brand.name : 'N/A',
+    model: request?.model.name,
+    year: request?.manufacturingYear,
     imageBackground:
-      request.images.length > 0 ? constants.baseURL + request.images[0] : '',
+      request?.images?.length > 0 ? constants.baseURL + request.images[0] : '',
     images:
-      request.images.length > 0
+      request?.images?.length > 0
         ? request.images.map((image: string) => constants.baseURL + image)
         : [],
-    buttonDisabled: request.numberOfBids <= 0,
+    buttonDisabled: request?.numberOfBids <= 0,
     buttonTitle: `Send Quotation`,
   }));
 }

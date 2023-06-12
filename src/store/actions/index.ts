@@ -148,8 +148,6 @@ const createFormData = (data: any) => {
     }
   });
 
-  console.log({data});
-
   if (data.profilePic) {
     formData.append('profilePic', {
       name: data.profilePic.fileName,
@@ -225,7 +223,6 @@ const loginUser = createAsyncThunk(
 const updateUser = createAsyncThunk(
   'Auth/Update User',
   async (data: UpdateUserModel) => {
-    console.log({formData: createFormData(data)});
     const resposne = await constants.apiInstance.patch(
       'users/update',
       createFormData(data),
