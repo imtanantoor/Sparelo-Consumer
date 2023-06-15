@@ -40,8 +40,8 @@ const initialState: PartsState = {
 };
 
 function handleSearchedPartsResponse(newPartsData: any[], oldPartsData: any[]) {
-  let newParts = handlePartsResponse(newPartsData);
-  let oldParts = handlePartsResponse(oldPartsData);
+  let newParts = handlePartsResponse(newPartsData, true);
+  let oldParts = handlePartsResponse(oldPartsData, true);
 
   return {
     newParts,
@@ -49,45 +49,35 @@ function handleSearchedPartsResponse(newPartsData: any[], oldPartsData: any[]) {
   };
 }
 
-function handlePartsResponse(parts: any): PartsCardModel[] {
-  let data: PartsCardModel[] = [];
-  // if (parts.length > 0)
-  //   parts.forEach((part: any, index: number) => {
-  //     if (part?.bids && part?.bids?.length > 0) {
-  //       data = part?.bids?.map((bid: any) => ({
-  //         id: part?._id,
-  //         bid: bid?._id,
-  //         images:
-  //           part?.images && part?.images?.length > 0
-  //             ? part?.images.map((image: string) => constants.baseURL + image)
-  //             : [],
-  //         make: part?.brand?.name ? part?.brand?.name : 'make',
-  //         model: part?.model?.name ? part?.model?.name : 'model',
-  //         year: part?.manufacturingYear ? part?.manufacturingYear : 'year',
-  //         price: bid?.price ? bid?.price : '',
-  //         audioNote: part?.bids[index]?.voiceNote
-  //           ? part.bids[index].voiceNote
-  //           : '',
-  //         quantity: part?.quantity,
-  //         rating: part.user.rating,
-  //       }));
-  //     }
-  //   });
+function handlePartsResponse(bids: any, isSearch: boolean): PartsCardModel[] {
+  if (isSearch)
+    return bids.map((part: any, index: number) => ({
+      id: part?._id,
+      bid: part?.bids[index]?._id ? part?.bids[index]?._id : 0,
+      images: part?.images.map((image: string) => constants.baseURL + image),
+      make: part?.model?.name ? part?.model?.name : 'make',
+      model: part?.model?.name ? part?.model?.name : 'model',
+      year: part?.manufacturingYear ? part?.manufacturingYear : 'year',
+      price: part?.bids[index]?.price ? part?.bids[index]?.price : '',
+      audioNote: part?.voiceNote ? part.request.voiceNote : '',
+      quantity: part?.bids?.length,
+      rating: part?.user?.rating ? part.user.rating : 0,
+    }));
 
-  return parts.map((part: any, index: number) => ({
-    id: part?._id,
-    bid: part?.bids[index]?._id ? part?.bids[index]?._id : 0,
-    images: part?.images.map((image: string) => constants.baseURL + image),
-    make: part?.model?.name ? part?.model?.name : 'make',
-    model: part?.model?.name ? part?.model?.name : 'model',
-    year: part?.manufacturingYear ? part?.manufacturingYear : 'year',
-    price: part?.bids[index]?.price ? part?.bids[index]?.price : '',
-    audioNote: part?.voiceNote ? part.request.voiceNote : '',
-    quantity: part?.bids?.length,
-    rating: part?.user?.rating ? part.user.rating : 0,
+  return bids.map((bid: any, index: number) => ({
+    id: bid?.request?._id,
+    bid: bid?._id,
+    images: bid?.request?.images.map(
+      (image: string) => constants.baseURL + image,
+    ),
+    make: bid?.request?.model?.name ? bid?.request?.model?.name : 'make',
+    model: bid?.request?.model?.name ? bid?.request?.model?.name : 'model',
+    year: bid?.manufacturingYear ? bid?.manufacturingYear : 'year',
+    price: bid?.price,
+    audioNote: bid?.request?.voiceNote ? bid.request.voiceNote : '',
+    quantity: bid?.quantity,
+    rating: bid?.user?.rating,
   }));
-
-  return data;
 }
 
 const partsSlice = createSlice({
@@ -104,7 +94,7 @@ const partsSlice = createSlice({
       .addCase(actions.fetchNewParts.fulfilled, (state, action) => {
         state.fetching = false;
         state.error = false;
-        state.newParts = handlePartsResponse(action.payload.bids);
+        state.newParts = handlePartsResponse(action.payload.bids, false);
       })
       .addCase(actions.fetchNewParts.rejected, (state, action) => {
         state.fetching = false;
@@ -120,7 +110,7 @@ const partsSlice = createSlice({
       .addCase(actions.fetchOldParts.fulfilled, (state, action) => {
         state.fetchingOldParts = false;
         state.fetchingOldPartsError = false;
-        state.oldParts = handlePartsResponse(action.payload.bids);
+        state.oldParts = handlePartsResponse(action.payload.bids, false);
       })
       .addCase(actions.fetchOldParts.rejected, (state, action) => {
         state.fetching = false;
@@ -136,7 +126,7 @@ const partsSlice = createSlice({
       .addCase(actions.fetchAllParts.fulfilled, (state, action) => {
         state.fetchingAllParts = false;
         state.fetchingAllPartsError = false;
-        state.allParts = handlePartsResponse(action.payload.allBids);
+        state.allParts = handlePartsResponse(action.payload.allBids, false);
       })
       .addCase(actions.fetchAllParts.rejected, (state, action) => {
         state.fetchingAllParts = false;

@@ -37,7 +37,7 @@ function handleRequestsData(
         : [],
     buttonDisabled: request?.numberOfBids <= 0,
     // buttonTitle: `Send Quotation`,
-    buttonTitle: isVendor ? 'Send Quotation' : `${request.quantity} bids`,
+    buttonTitle: isVendor ? 'Send Quotation' : `${request.bids.length} bids`,
   }));
 }
 
