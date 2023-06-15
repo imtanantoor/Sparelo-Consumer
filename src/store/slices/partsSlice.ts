@@ -49,50 +49,42 @@ function handleSearchedPartsResponse(newPartsData: any[], oldPartsData: any[]) {
   };
 }
 
-function handlePartsResponse(requests: any): PartsCardModel[] {
+function handlePartsResponse(parts: any): PartsCardModel[] {
   let data: PartsCardModel[] = [];
-  // if (requests.length > 0)
-  //   requests.forEach((request: any, index: number) => {
-  //     if (request?.bids && request?.bids?.length > 0) {
-  //       data = request?.bids?.map((bid: any) => ({
-  //         id: request?._id,
+  // if (parts.length > 0)
+  //   parts.forEach((part: any, index: number) => {
+  //     if (part?.bids && part?.bids?.length > 0) {
+  //       data = part?.bids?.map((bid: any) => ({
+  //         id: part?._id,
   //         bid: bid?._id,
   //         images:
-  //           request?.images && request?.images?.length > 0
-  //             ? request?.images.map(
-  //                 (image: string) => constants.baseURL + image,
-  //               )
+  //           part?.images && part?.images?.length > 0
+  //             ? part?.images.map((image: string) => constants.baseURL + image)
   //             : [],
-  //         make: request?.brand?.name ? request?.brand?.name : 'make',
-  //         model: request?.model?.name ? request?.model?.name : 'model',
-  //         year: request?.manufacturingYear
-  //           ? request?.manufacturingYear
-  //           : 'year',
+  //         make: part?.brand?.name ? part?.brand?.name : 'make',
+  //         model: part?.model?.name ? part?.model?.name : 'model',
+  //         year: part?.manufacturingYear ? part?.manufacturingYear : 'year',
   //         price: bid?.price ? bid?.price : '',
-  //         audioNote: request?.bids[index]?.voiceNote
-  //           ? request.bids[index].voiceNote
+  //         audioNote: part?.bids[index]?.voiceNote
+  //           ? part.bids[index].voiceNote
   //           : '',
-  //         quantity: request?.quantity,
-  //         rating: request.user.rating,
+  //         quantity: part?.quantity,
+  //         rating: part.user.rating,
   //       }));
   //     }
   //   });
 
-  return requests.map((bid: any, index: number) => ({
-    id: bid.request._id,
-    bid: bid?._id,
-    images: bid?.request?.images.map(
-      (image: string) => constants.baseURL + image,
-    ),
-    make: bid?.request?.model?.name ? bid?.request?.model?.name : 'make',
-    model: bid?.request?.model?.name ? bid?.request?.model?.name : 'model',
-    year: bid?.request?.manufacturingYear
-      ? bid?.request?.manufacturingYear
-      : 'year',
-    price: bid?.price ? bid?.price : '',
-    audioNote: bid?.request?.voiceNote ? bid.request.voiceNote : '',
-    quantity: bid.request.quantity,
-    rating: bid?.user?.rating ? bid.user.rating : 3,
+  return parts.map((part: any, index: number) => ({
+    id: part?._id,
+    bid: part?.bids[index]?._id ? part?.bids[index]?._id : 0,
+    images: part?.images.map((image: string) => constants.baseURL + image),
+    make: part?.model?.name ? part?.model?.name : 'make',
+    model: part?.model?.name ? part?.model?.name : 'model',
+    year: part?.manufacturingYear ? part?.manufacturingYear : 'year',
+    price: part?.bids[index]?.price ? part?.bids[index]?.price : '',
+    audioNote: part?.voiceNote ? part.request.voiceNote : '',
+    quantity: part?.bids?.length,
+    rating: part?.user?.rating ? part.user.rating : 0,
   }));
 
   return data;
