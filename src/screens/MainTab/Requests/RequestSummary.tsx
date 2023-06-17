@@ -124,6 +124,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
       manufacturingYear: manufacturingYear,
       voiceNote: voiceNote?.uri ? voiceNote.uri : ''
     }
+
     createRequest(payload)
   }
 

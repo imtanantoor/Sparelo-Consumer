@@ -28,6 +28,8 @@ function VoicePlayer({ duration, uri, showActions, deleteNote = () => { } }: Voi
   function HandlePlay() {
     if (playing) {
       AudioServices.StopAudio()
+      setPlaying(false)
+      return
     }
     AudioServices.PlayAudio(uri).then((data) => {
       setPlaying(true)

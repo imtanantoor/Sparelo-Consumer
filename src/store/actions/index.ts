@@ -150,11 +150,11 @@ const createFormData = (data: any) => {
 
   if (data.voiceNote) {
     formData.append('voiceNote', {
-      name: `note ${new Date()}`,
+      name: `note`,
       path: data.voiceNote,
       type: data?.voiceNote?.split('/Caches/')[1]?.split('.')[1]
-        ? data?.voiceNote?.split('/Caches/')[1]?.split('.')[1]
-        : 'm4a',
+        ? `audio/${data?.voiceNote?.split('/Caches/')[1]?.split('.')[1]}`
+        : 'audio/m4a',
       filename: `note ${new Date()}`,
       uri: data.voiceNote,
     });
