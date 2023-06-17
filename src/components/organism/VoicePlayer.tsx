@@ -16,17 +16,18 @@ interface VoicePlayerProps {
 function VoicePlayer({ duration, uri, showActions, deleteNote = () => { } }: VoicePlayerProps): JSX.Element {
   const [playing, setPlaying] = useState<boolean>(false)
 
-  console.log({ uri })
+  useEffect(() => {
+    AudioServices.handlePlayBack(({ currentPosition, duration }) => {
+      if (currentPosition === duration) {
+        setPlaying(false)
+        AudioServices.StopAudio()
+      }
+    })
+  }, [])
 
   function HandlePlay() {
     if (playing) {
       AudioServices.StopAudio()
-      AudioServices.handlePlayBack(({ currentPosition, duration }) => {
-        if (currentPosition === duration) {
-          setPlaying(false)
-          AudioServices.StopAudio()
-        }
-      })
     }
     AudioServices.PlayAudio(uri).then((data) => {
       setPlaying(true)

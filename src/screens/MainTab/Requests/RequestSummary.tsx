@@ -37,7 +37,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
   const [quantity, setQuantity] = useState(0)
   const [modalVisible, setModalVisible] = useState(false)
   const [additionalNotes, setAdditionalNotes] = useState('')
-  const [voiceNotes, setVoiceNotes] = useState<any[]>([])
+  const [voiceNote, setVoiceNote] = useState<any>(null)
 
   const { category: paramsCategory, model, brand, manufacturingYear, carId } = route.params
 
@@ -122,7 +122,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
       brand: brand ? brand.id : '',
       model: model ? model.id : '',
       manufacturingYear: manufacturingYear,
-      voiceNote: ''
+      voiceNote: voiceNote?.uri ? voiceNote.uri : ''
     }
     createRequest(payload)
   }
@@ -187,18 +187,19 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
           />
         </View>
       </View>
-      {voiceNotes.map((note) => (<VoicePlayer
-        key={note}
-        duration={note.timeInString}
-        uri={note.uri}
+      {!!voiceNote && <VoicePlayer
+        key={voiceNote.uri}
+        duration={voiceNote.timeInString}
+        uri={voiceNote.uri}
         showActions
-        deleteNote={() => setVoiceNotes(voiceNotes.filter(item => item !== note))}
-      />))}
-      <VoiceRecorder setVoiceNotes={(note: string) => {
-        setVoiceNotes([...voiceNotes, { uri: note, ...AudioServices.getDuration() }])
-      }
-      } />
+        deleteNote={() => setVoiceNote(null)}
+      />}
 
+      <VoiceRecorder
+        disabled={!!voiceNote}
+        setVoiceNote={(note: string) => {
+          setVoiceNote({ uri: note, ...AudioServices.getDuration() })
+        }} />
       <View style={{ marginHorizontal: 20 }}>
         <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginBottom: 10, }}>
           Add Notes for retailer (<Text style={{ color: colors.red }}>optional</Text>)

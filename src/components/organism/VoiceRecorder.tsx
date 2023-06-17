@@ -9,6 +9,7 @@ import CheckMark from "../../assets/icons/CheckMark";
 import ButtonWithIcon from "../atomic/ButtonWithIcon";
 import UpArrow from "../../assets/icons/UpArrow";
 import AudioServices from "../../Services/AudioServices";
+import ToastService from "../../Services/ToastService";
 
 interface VoiceRecorderModalProps {
   visible: boolean
@@ -46,10 +47,11 @@ function VoiceRecorderModal({ visible, hideModal, onClose, onSave }: VoiceRecord
 }
 
 interface VoiceRecorderProps {
-  setVoiceNotes: (note: string) => void
+  setVoiceNote: (note: string) => void
+  disabled: boolean
 }
 
-function VoiceRecorder({ setVoiceNotes }: VoiceRecorderProps): JSX.Element {
+function VoiceRecorder({ disabled, setVoiceNote }: VoiceRecorderProps): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false)
 
   function hideModal() {
@@ -57,13 +59,14 @@ function VoiceRecorder({ setVoiceNotes }: VoiceRecorderProps): JSX.Element {
   }
 
   function handleStart() {
+    if (disabled) return ToastService.error('Recorder', 'Only one note is allowed')
     AudioServices.StartRecording().then(() => {
       setModalVisible(true)
     })
   }
 
   function handleSave() {
-    AudioServices.StopRecording().then((result) => setVoiceNotes(result))
+    AudioServices.StopRecording().then((result) => setVoiceNote(result))
     hideModal()
   }
 
