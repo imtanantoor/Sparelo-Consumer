@@ -5,13 +5,12 @@ import font from "../../constants/fonts";
 
 interface StartStopRecorderProps {
   startRecording: (props: any) => void
-  stopRecording: (props: any) => void
   text: string
 }
 
-function StartStopRecorderButton({ startRecording, stopRecording, text }: StartStopRecorderProps): JSX.Element {
+function StartStopRecorderButton({ startRecording, text }: StartStopRecorderProps): JSX.Element {
   return <View style={styles.container}>
-    <Pressable onPressIn={startRecording} onPressOut={stopRecording} style={styles.button} />
+    <Pressable onPressIn={startRecording} style={styles.button} />
     <Text style={styles.text}>{text}</Text>
   </View>
 }

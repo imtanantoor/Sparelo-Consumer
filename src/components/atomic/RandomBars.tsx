@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { FlatList, ScrollView, Text, View } from "react-native";
+import { Dimensions, FlatList, ScrollView, Text, View } from "react-native";
 import helpers from "../../utils/helpers";
 import colors from "../../constants/colors";
 
@@ -10,24 +10,31 @@ interface Bar {
 
 
 
-function RandomBars({ barColor }: { barColor: string }): JSX.Element {
+function RandomBars({ barColor, mode, onSeek }: { barColor: string, mode: 'player' | 'recorder', onSeek?: (position: number) => void }): JSX.Element {
   const [bars, setBars] = useState<Bar[]>([])
   const flatListRef: any = useRef(null)
 
   useEffect(() => {
     let temp: Bar[] = []
+    let interval: any = null
 
-    const interval = setInterval(() => {
-      let item: Bar = {
-        height: helpers.randomHeightGenerator(8, 100),
-        id: temp.length + 1
-      }
+    if (mode === 'recorder') {
+      interval = setInterval(() => {
+        let item: Bar = {
+          height: helpers.randomHeightGenerator(8, 100),
+          id: temp.length + 1
+        }
 
-      temp.push(item)
-      setBars([...bars, ...temp])
-      flatListRef?.current?.scrollToEnd({ animated: false })
+        temp.push(item)
+        setBars([...bars, ...temp])
+        flatListRef?.current?.scrollToEnd({ animated: false })
 
-    }, 1000)
+      }, 1000)
+    }
+
+    if (mode === 'player') {
+      setBars(Array.from({ length: (Dimensions.get('screen').width / 12) * 0.8 }).map((item: any, index: number) => ({ id: index + 1, height: helpers.randomHeightGenerator(8, 100) })))
+    }
 
     return () => {
       clearInterval(interval)
@@ -37,8 +44,13 @@ function RandomBars({ barColor }: { barColor: string }): JSX.Element {
   return <FlatList
     data={bars}
     ref={flatListRef}
+    onTouchMove={(event) => {
+      if (onSeek)
+        onSeek(event.nativeEvent.locationX)
+    }}
+    scrollEnabled={mode === 'recorder'}
     horizontal
-    style={{ height: 50, width: '100%' }}
+    style={{ height: 50, width: '100%', }}
     renderItem={({ item }) => (<View key={item.id} style={{ backgroundColor: barColor ?? colors.red, height: `${item.height}%`, width: 3, marginHorizontal: 4, alignSelf: 'center' }} />)} />
 
 }

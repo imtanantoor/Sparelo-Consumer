@@ -16,6 +16,8 @@ import RequestCreationSuccess from "../../../assets/RequestCreationSuccess";
 import constants from "../../../utils/constants";
 import requestsSlice from "../../../store/slices/requestsSlice";
 import VoiceRecorder from "../../../components/organism/VoiceRecorder";
+import VoicePlayer from "../../../components/organism/VoicePlayer";
+import AudioServices from "../../../Services/AudioServices";
 
 interface RequestSummaryProps {
   categories: CategoryCardProps[],
@@ -35,6 +37,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
   const [quantity, setQuantity] = useState(0)
   const [modalVisible, setModalVisible] = useState(false)
   const [additionalNotes, setAdditionalNotes] = useState('')
+  const [voiceNotes, setVoiceNotes] = useState<any[]>([])
 
   const { category: paramsCategory, model, brand, manufacturingYear, carId } = route.params
 
@@ -184,6 +187,17 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
           />
         </View>
       </View>
+      {voiceNotes.map((note) => (<VoicePlayer
+        key={note}
+        duration={note.timeInString}
+        uri={note.uri}
+        showActions
+        deleteNote={() => setVoiceNotes(voiceNotes.filter(item => item !== note))}
+      />))}
+      <VoiceRecorder setVoiceNotes={(note: string) => {
+        setVoiceNotes([...voiceNotes, { uri: note, ...AudioServices.getDuration() }])
+      }
+      } />
 
       <View style={{ marginHorizontal: 20 }}>
         <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginBottom: 10, }}>
@@ -196,7 +210,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
           style={{ borderColor: '#E3E4E6', borderWidth: 1, borderRadius: 10, padding: 20, minHeight: 100 }}
         />
       </View>
-      <VoiceRecorder />
+
       <CustomButton
         title="Send Request"
         disabled={creating || assets.length == 0 || quantity === 0}
