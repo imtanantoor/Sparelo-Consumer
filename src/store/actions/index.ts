@@ -143,10 +143,22 @@ const createFormData = (data: any) => {
   const formData = new FormData();
 
   Object.keys(data).forEach(key => {
-    if (key !== 'images') {
+    if (key !== 'images' && key !== 'profilePic' && key !== 'voiceNote') {
       formData.append(key, data[key]);
     }
   });
+
+  if (data.voiceNote) {
+    formData.append('voiceNote', {
+      name: `note ${new Date()}`,
+      path: data.voiceNote,
+      type: data?.voiceNote?.split('/Caches/')[1]?.split('.')[1]
+        ? data?.voiceNote?.split('/Caches/')[1]?.split('.')[1]
+        : 'm4a',
+      filename: `note ${new Date()}`,
+      uri: data.voiceNote,
+    });
+  }
 
   if (data.profilePic) {
     formData.append('profilePic', {
