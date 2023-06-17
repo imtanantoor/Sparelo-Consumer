@@ -15,6 +15,7 @@ import CustomModal from "../../../components/organism/CustomModal";
 import RequestCreationSuccess from "../../../assets/RequestCreationSuccess";
 import constants from "../../../utils/constants";
 import requestsSlice from "../../../store/slices/requestsSlice";
+import VoiceRecorder from "../../../components/organism/VoiceRecorder";
 
 interface RequestSummaryProps {
   categories: CategoryCardProps[],
@@ -195,6 +196,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
           style={{ borderColor: '#E3E4E6', borderWidth: 1, borderRadius: 10, padding: 20, minHeight: 100 }}
         />
       </View>
+      <VoiceRecorder />
       <CustomButton
         title="Send Request"
         disabled={creating || assets.length == 0 || quantity === 0}

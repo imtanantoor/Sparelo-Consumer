@@ -54,6 +54,8 @@
 	<string>For uploading car images</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>get location while checking out order</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>For recording voice message</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>select car image from library</string>
 	<key>UIAppFonts</key>
