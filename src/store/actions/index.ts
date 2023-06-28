@@ -149,19 +149,18 @@ const createFormData = (data: any) => {
   });
 
   if (data.voiceNote) {
-    let fileExt = data?.voiceNote?.split('/Caches/')[1]?.split('.')[1]
-      ? data?.voiceNote?.split('/Caches/')[1]?.split('.')[1]
-      : '.m4a';
+    // let fileExt = data?.voiceNote?.split('/Caches/')[1]?.split('.')[1]
+    //   ? data?.voiceNote?.split('/Caches/')[1]?.split('.')[1]
+    //   : '.aac';
+    let fileExt = '.aac';
     let fileName = data?.voiceNote?.split('/Caches/')[1]
-      ? data?.voiceNote.split('/Caches/')[1]
+      ? data?.voiceNote.split('/Caches/')[1].replace('.m4a', '.aac')
       : `note${fileExt}`;
-
-    console.log({fileExt, fileName});
 
     formData.append('voiceNote', {
       name: fileName,
       path: data.voiceNote,
-      type: fileExt ? `audio/${fileExt}` : 'audio/m4a',
+      type: fileExt ? `audio/${fileExt}` : 'audio/aac',
       filename: fileName,
       uri: data.voiceNote,
     });

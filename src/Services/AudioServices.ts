@@ -1,4 +1,9 @@
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import AudioRecorderPlayer, {
+  AVEncodingOption,
+  AudioEncoderAndroidType,
+  AudioSet,
+  OutputFormatAndroidType,
+} from 'react-native-audio-recorder-player';
 
 class AudioServices {
   private audioRecorderPlayer = new AudioRecorderPlayer();
@@ -6,13 +11,24 @@ class AudioServices {
   private recordingTime = 0;
 
   async StartRecording() {
-    const result = await this.audioRecorderPlayer.startRecorder();
+    const audioSet: AudioSet = {
+      AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
+      OutputFormatAndroid: OutputFormatAndroidType.AAC_ADTS,
+      AVFormatIDKeyIOS: AVEncodingOption.aac,
+    };
+
+    const result = await this.audioRecorderPlayer.startRecorder(
+      undefined,
+      audioSet,
+    );
+
     this.audioRecorderPlayer.addRecordBackListener(data => {
       this.recordingTime = data.currentPosition;
       this.recordingDuration = this.audioRecorderPlayer.mmssss(
         Math.floor(data.currentPosition),
       );
     });
+
     return result;
   }
 
