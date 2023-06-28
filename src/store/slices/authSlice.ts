@@ -72,6 +72,12 @@ const authSlice = createSlice({
         state.registering = false;
         state.registerError = true;
         state.registerSuccess = false;
+        ToastService.error(
+          'Sign up',
+          action?.error?.message
+            ? action.error.message
+            : 'Something went wrong',
+        );
       });
 
     builder
