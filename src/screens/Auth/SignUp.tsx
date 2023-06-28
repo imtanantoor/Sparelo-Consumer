@@ -51,8 +51,9 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
 
   function handleBlur(fieldName: string, required: boolean) {
     return () => {
+      let phoneNumberRegex = /([+(\d]{1})(([\d+() -.]){5,13})([+(\d]{1})/gm;
 
-      if (fieldName === 'contact' && !constants.phoneNumberRegex.test(values.contact)) {
+      if (fieldName === 'contact' && !phoneNumberRegex.test(values.contact)) {
         return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
       } else {
         setErrors({ ...errors, contact: '' })
@@ -72,8 +73,8 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
 
   function handleChange(value: string, fieldName: string) {
     setValues({ ...values, [fieldName]: value })
-
-    if (fieldName === 'contact' && !constants.phoneNumberRegex.test(value)) {
+    let phoneNumberRegex = /([+(\d]{1})(([\d+() -.]){5,13})([+(\d]{1})/gm;
+    if (fieldName === 'contact' && !phoneNumberRegex.test(value)) {
       return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
     }
 
