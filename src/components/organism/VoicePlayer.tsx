@@ -36,7 +36,7 @@ function VoicePlayer({ duration, uri, showActions, deleteNote = () => { } }: Voi
     })
   }
 
-  return <View style={{ marginTop: 20, marginHorizontal: 20 }}>
+  return <View style={{ marginTop: 20, }}>
     <View style={styles.container}>
       <View style={styles.actionsContainer}>
         <TouchableOpacity onPress={HandlePlay}>

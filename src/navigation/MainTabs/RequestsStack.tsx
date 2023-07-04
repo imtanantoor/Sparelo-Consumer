@@ -3,6 +3,7 @@ import RequestsList from "../../screens/MainTab/Requests/RequestsList"
 import QuotationsTabs from "../QuotationsTabs"
 import RequestSummary from "../../screens/MainTab/Requests/RequestSummary"
 import font from "../../constants/fonts"
+import SendQuotation from "../../screens/MainTab/Home/SendQuotation"
 
 const Stack = createNativeStackNavigator()
 
@@ -17,6 +18,7 @@ function RequestsStack(): JSX.Element {
     headerBackVisible: false,
   }} initialRouteName="Requests" >
     <Stack.Screen name="Requests" component={RequestsList} />
+    <Stack.Screen name="Send Quotation" component={SendQuotation} />
     <Stack.Screen name="Quotations" component={QuotationsTabs} />
   </Stack.Navigator>
 }

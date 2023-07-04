@@ -87,7 +87,7 @@ function VoiceRecorder({ disabled, setVoiceNote }: VoiceRecorderProps): JSX.Elem
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingVertical: 20,
   },
   popUp: {
     padding: 16,

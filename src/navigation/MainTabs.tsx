@@ -51,12 +51,20 @@ function MainTabs(): JSX.Element {
         return <AvailabilityIcon stroke={focused ? colors.activeTabIconColor : color} />
       },
     }} />
-    {mode === 'buyer' && <Tab.Screen name="My Cart" component={CartStack} options={{
+    {mode === 'buyer' ? <Tab.Screen name="My Cart" component={CartStack} options={{
       tabBarLabelStyle: { marginBottom: 5 },
       tabBarIcon({ focused, color }) {
         return <MyCartBottomTab focused={focused} color={color} />
       },
-    }} />}
+    }} /> : <Tab.Screen name="My Offers"
+      component={DummyScreen}
+      options={{
+        tabBarLabelStyle: { marginBottom: 5 },
+        tabBarIcon({ focused, color }) {
+          return <MyCartBottomTab focused={focused} color={color} />
+        },
+      }}
+    />}
     <Tab.Screen name="Profile" component={ProfileStack} options={{
       tabBarLabelStyle: { marginBottom: 5 },
       tabBarIcon({ focused, color }) {

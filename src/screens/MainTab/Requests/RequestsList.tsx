@@ -32,7 +32,8 @@ function RequestsList({ navigation, route, requests, fetching, error, mode, user
     if (mode === 'buyer')
       return navigation.navigate('Quotations', { requestId: item.id })
 
-    ToastService.warning('Vendor', 'Quotations integration work in progress')
+    return navigation.navigate('Send Quotation', { requestId: item.id })
+    // ToastService.warning('Vendor', 'Quotations integration work in progress')
 
   }
 
