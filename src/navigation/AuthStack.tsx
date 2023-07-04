@@ -13,10 +13,21 @@ import colors from "../constants/colors";
 import HeaderBack from "../components/molecular/HeaderBack";
 import { useNavigation } from "@react-navigation/native";
 import Search from "../screens/MainTab/Home/FindYourParts/Search";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const Stack = createNativeStackNavigator()
 
 function AuthStack(): JSX.Element {
+  const { user, mode } = useSelector((state: any) => state.Auth)
+  const navigation: any = useNavigation();
+
+  useEffect(() => {
+    if (mode === 'vendor' && user?.shopAdded === false) {
+      navigation.navigate('Shop Details')
+    }
+  }, [user?.shopAdded])
+
   return <Stack.Navigator screenOptions={{
     headerShadowVisible: false
   }} initialRouteName="Sign In">

@@ -12,6 +12,9 @@ import ToastService from "../../Services/ToastService";
 import CustomButton from "../../components/global/CustomButton";
 import CustomImageSelector from "../../components/global/CustomImageSelector";
 import MultipleImageSelector from "../../components/organism/MultipleImageSelector";
+import { connect } from "react-redux";
+import actions from "../../store/actions";
+import CreateShopModel from "../../models/CreateShopModel";
 
 const fields = {
   storeName: '',
@@ -40,7 +43,7 @@ function SelectionButton({ onPress, label, value }: { onPress: (props?: any) => 
   </TouchableOpacity>
 }
 
-function ShopDetails({ navigation, route }: any): JSX.Element {
+function ShopDetails({ navigation, route, createShop }: any): JSX.Element {
   const isProfileStack = route?.params?.isProfileStack
   const [assets, setAssets] = useState<any>([])
   const [values, setValues] = useState<any>(fields)
@@ -138,6 +141,20 @@ function ShopDetails({ navigation, route }: any): JSX.Element {
     }
   }
 
+  function handleSignUp() {
+    const data: CreateShopModel = {
+      name: '',
+      coordinates: '',
+      address: '',
+      category: '',
+      brand: '',
+      model: '',
+      user: '',
+      images: ''
+    }
+    createShop(data)
+  }
+
   return <SafeAreaView style={styles.container}>
     <ScrollView
       style={styles.container}
@@ -204,7 +221,7 @@ function ShopDetails({ navigation, route }: any): JSX.Element {
         title="Sign Up"
         disabled={values.storeName == '' || values.address == '' || values.brand.id === '' || values.model.id === '' || values.category.id === ''}
         submitting={false}
-        onPress={() => { }}
+        onPress={handleSignUp}
         type="primary"
       />
 
@@ -212,7 +229,17 @@ function ShopDetails({ navigation, route }: any): JSX.Element {
   </SafeAreaView>
 }
 
-export default ShopDetails
+const mapStateToProps = (state: any) => ({
+  creatingShop: state.Auth,
+  creatingShopSuccess: state.Auth,
+  creatingShopFailure: state.Auth,
+})
+
+const mapDispatchToProps = {
+  createShop: actions.createShop
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShopDetails)
 
 const styles = StyleSheet.create({
   container: {

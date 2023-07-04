@@ -1,6 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 import actions from '../actions';
 import ToastService from '../../Services/ToastService';
+import {useNavigation} from '@react-navigation/native';
 
 const initialState: {
   authenticated: boolean;
@@ -17,6 +18,9 @@ const initialState: {
   updatingUser: boolean;
   updatingUserError: boolean;
   updatingUserSuccess: boolean;
+  creatingShop: boolean;
+  creatingShopSuccess: boolean;
+  creatingShopFailure: boolean;
 } = {
   authenticated: false,
   showOnBoarding: true,
@@ -32,6 +36,9 @@ const initialState: {
   updatingUser: false,
   updatingUserError: false,
   updatingUserSuccess: false,
+  creatingShop: false,
+  creatingShopSuccess: false,
+  creatingShopFailure: false,
 };
 
 const authSlice = createSlice({
@@ -131,6 +138,23 @@ const authSlice = createSlice({
             ? action?.error?.message
             : 'Updating User failed',
         );
+      });
+
+    builder
+      .addCase(actions.createShop.pending, (state, action) => {
+        state.creatingShop = true;
+        state.creatingShopFailure = false;
+        state.creatingShopSuccess = false;
+      })
+      .addCase(actions.createShop.fulfilled, (state, action) => {
+        state.creatingShop = false;
+        state.creatingShopFailure = false;
+        state.creatingShopSuccess = true;
+      })
+      .addCase(actions.createShop.rejected, (state, action) => {
+        state.creatingShop = false;
+        state.creatingShopFailure = true;
+        state.creatingShopSuccess = false;
       });
   },
 });

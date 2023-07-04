@@ -5,6 +5,7 @@ import {Alert, Platform} from 'react-native';
 import SearchPartsBody from '../../models/searchPartsBody';
 import CreateRequestPayload from '../../models/createRequestPayload';
 import FormData from 'form-data';
+import CreateShopModel from '../../models/CreateShopModel';
 
 const fetchCategories = createAsyncThunk('Categories/fetchAll', async () => {
   const response = await constants.apiInstance.get('categories');
@@ -256,6 +257,14 @@ const updateUser = createAsyncThunk(
   },
 );
 
+const createShop = createAsyncThunk(
+  'Auth/Create Shop',
+  async (data: CreateShopModel) => {
+    const response = await constants.apiInstance.post('shop/create', data);
+    return response.data;
+  },
+);
+
 const actions = {
   fetchCars,
   fetchCarsOfUser,
@@ -279,6 +288,7 @@ const actions = {
   signUpUser,
   loginUser,
   updateUser,
+  createShop,
 };
 
 export default actions;
