@@ -1,6 +1,6 @@
 interface CreateShopModel {
   name: string;
-  coordinates: string;
+  coordinates: [string, string];
   address: string;
   category: string;
   brand: string;

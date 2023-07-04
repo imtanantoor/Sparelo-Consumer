@@ -61,6 +61,11 @@ const authSlice = createSlice({
       state.updatingUserError = false;
       state.updatingUserSuccess = false;
     },
+    resetCreateShopState: state => {
+      state.creatingShop = false;
+      state.creatingShopSuccess = false;
+      state.creatingShopFailure = false;
+    },
     logout: state => initialState,
   },
   extraReducers: builder => {

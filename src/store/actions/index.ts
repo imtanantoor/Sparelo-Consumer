@@ -167,6 +167,12 @@ const createFormData = (data: any) => {
     });
   }
 
+  if (data.coordinates) {
+    data.coordinates.map((cord: string) =>
+      formData.append('coordinates', cord),
+    );
+  }
+
   if (data.profilePic) {
     formData.append('profilePic', {
       name: data.profilePic.fileName,
@@ -260,7 +266,14 @@ const updateUser = createAsyncThunk(
 const createShop = createAsyncThunk(
   'Auth/Create Shop',
   async (data: CreateShopModel) => {
-    const response = await constants.apiInstance.post('shop/create', data);
+    console.log({formData: createFormData(data)});
+    const response = await constants.apiInstance.post(
+      'shop/create',
+      createFormData(data),
+      {
+        headers: {'Content-Type': 'multipart/form-data'},
+      },
+    );
     return response.data;
   },
 );

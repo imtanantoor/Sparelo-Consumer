@@ -2,7 +2,7 @@ import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity 
 import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import CustomTextInput from "../../components/global/CustomTextInput";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LocationSelector from "../../components/organism/LocationSelector";
 import { GooglePlaceData, GooglePlaceDetail } from "react-native-google-places-autocomplete";
 import LocationServices from "../../Services/LocationServices";
@@ -15,6 +15,7 @@ import MultipleImageSelector from "../../components/organism/MultipleImageSelect
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 import CreateShopModel from "../../models/CreateShopModel";
+import authSlice from "../../store/slices/authSlice";
 
 const fields = {
   storeName: '',
@@ -43,7 +44,7 @@ function SelectionButton({ onPress, label, value }: { onPress: (props?: any) => 
   </TouchableOpacity>
 }
 
-function ShopDetails({ navigation, route, createShop }: any): JSX.Element {
+function ShopDetails({ navigation, route, user, creatingShopSuccess, creatingShop, creatingShopFailure, createShop, resetCreateShopState }: any): JSX.Element {
   const isProfileStack = route?.params?.isProfileStack
   const [assets, setAssets] = useState<any>([])
   const [values, setValues] = useState<any>(fields)
@@ -143,17 +144,24 @@ function ShopDetails({ navigation, route, createShop }: any): JSX.Element {
 
   function handleSignUp() {
     const data: CreateShopModel = {
-      name: '',
-      coordinates: '',
-      address: '',
-      category: '',
-      brand: '',
-      model: '',
-      user: '',
-      images: ''
+      name: values.storeName,
+      coordinates: [initialRegion.latitude.toString(), initialRegion.longitude.toString()],
+      address: values.address,
+      category: values.category.id,
+      brand: values.brand.id,
+      model: values.model.id,
+      user: user._id,
+      images: assets
     }
     createShop(data)
   }
+
+  useEffect(() => {
+    if (creatingShopSuccess) {
+      resetCreateShopState()
+      navigation.navigate('Sign In')
+    }
+  }, [creatingShopSuccess])
 
   return <SafeAreaView style={styles.container}>
     <ScrollView
@@ -219,8 +227,8 @@ function ShopDetails({ navigation, route, createShop }: any): JSX.Element {
       />
       <CustomButton
         title="Sign Up"
-        disabled={values.storeName == '' || values.address == '' || values.brand.id === '' || values.model.id === '' || values.category.id === ''}
-        submitting={false}
+        disabled={values.storeName == '' || values.address == '' || values.brand.id === '' || values.model.id === '' || values.category.id === '' || creatingShop}
+        submitting={creatingShop}
         onPress={handleSignUp}
         type="primary"
       />
@@ -230,13 +238,15 @@ function ShopDetails({ navigation, route, createShop }: any): JSX.Element {
 }
 
 const mapStateToProps = (state: any) => ({
-  creatingShop: state.Auth,
-  creatingShopSuccess: state.Auth,
-  creatingShopFailure: state.Auth,
+  creatingShop: state.Auth.creatingShop,
+  creatingShopSuccess: state.Auth.creatingShopSuccess,
+  creatingShopFailure: state.Auth.creatingShopFailure,
+  user: state.Auth.user
 })
 
 const mapDispatchToProps = {
-  createShop: actions.createShop
+  createShop: actions.createShop,
+  resetCreateShopState: authSlice.actions.resetCreateShopState
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopDetails)
