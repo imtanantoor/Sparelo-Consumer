@@ -1,18 +1,27 @@
 import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import colors from "../../../constants/colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomImageSelector from "../../../components/global/CustomImageSelector";
 import font from "../../../constants/fonts";
 import CustomButton from "../../../components/global/CustomButton";
 import VoicePlayer from "../../../components/organism/VoicePlayer";
 import VoiceRecorder from "../../../components/organism/VoiceRecorder";
 import AudioServices from "../../../Services/AudioServices";
+import actions from "../../../store/actions";
+import { connect } from "react-redux";
+import CustomTextInput from "../../../components/global/CustomTextInput";
 
-function SendQuotation() {
+function SendQuotation({ fetching, data, error, fetchManufacturers }: { fetching: boolean, error: boolean, data: { id: string, name: string }[], fetchManufacturers: () => void }) {
   const [assets, setAssets] = useState<any>([])
   const [isNew, setIsNew] = useState<boolean>(true)
   const [voiceNote, setVoiceNote] = useState<any>(null)
-
+  const [values, setValues] = useState({ price: '' })
+  const [touched, setTouched] = useState({
+    price: false
+  })
+  const [errors, setErrors] = useState({
+    price: ''
+  })
 
   function handleAssets(asset: any[], index: number, assets: any[]) {
 
@@ -44,6 +53,31 @@ function SendQuotation() {
       return
     }
   }
+  function handleBlur(fieldName: string, required: boolean) {
+    type ObjectKey = keyof typeof values
+    const myKey = fieldName as ObjectKey
+
+    return () => {
+
+      if (values[myKey] === '' && required) {
+        setErrors({ ...errors, [fieldName]: `${fieldName} is required!` })
+      } else {
+        setErrors({ ...errors, [fieldName]: '' })
+      }
+    }
+  }
+
+  function handleChange(value: string, fieldName: string) {
+    setValues({ ...values, [fieldName]: value })
+
+    if (value !== '')
+      setErrors({ ...errors, [fieldName]: '' })
+  }
+
+  useEffect(() => {
+    if (!fetching)
+      fetchManufacturers()
+  }, [])
 
   return <SafeAreaView style={styles.container}>
     <ScrollView style={styles.contentContainer}>
@@ -88,7 +122,21 @@ function SendQuotation() {
           buttonStyle={{ padding: 0, marginRight: 20 }}
           titleStyle={{ color: isNew ? '#262626' : colors.bannerText, fontSize: font.sizes.normal }}
         />
+
       </View>
+      <CustomTextInput
+        touched={touched}
+        errors={error}
+        fieldName="Price"
+        disabled={false}
+        label="Choose Price"
+        value={values.price}
+        placeholder="Price"
+        onBlur={() => { handleBlur('price', true) }}
+        onChangeText={(text: string) => handleChange(text, 'price')}
+        setTouched={setTouched}
+        required
+      />
       <View>
         {!!voiceNote && <VoicePlayer
           key={voiceNote.uri}
@@ -137,4 +185,14 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SendQuotation
+const mapStateToProps = (state: any) => ({
+  fetching: state.Manufacturers.fetching,
+  data: state.Manufacturers.data,
+  error: state.Manufacturers.error
+})
+
+const mapDispatchToProps = {
+  fetchManufacturers: actions.fetchAllManufacturers
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SendQuotation)

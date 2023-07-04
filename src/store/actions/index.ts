@@ -129,6 +129,13 @@ const fetchAllAvailableItemsOfUser = createAsyncThunk(
     return response.data;
   },
 );
+const fetchAllManufacturers = createAsyncThunk(
+  'Manufacturers/Get All',
+  async () => {
+    const response = await constants.apiInstance.get('manufacturer');
+    return response.data;
+  },
+);
 const checkAvailability = createAsyncThunk(
   'Availability/Check Availability',
   async (bidId: string | number) => {
@@ -290,6 +297,7 @@ const actions = {
   fetchOldParts,
   fetchAllParts,
   fetchAllAvailableItemsOfUser,
+  fetchAllManufacturers,
   searchParts,
   searchBrands,
   searchModelsOfBrand,

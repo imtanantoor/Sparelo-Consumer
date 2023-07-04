@@ -8,6 +8,7 @@ import cartSlice from './slices/cartSlice';
 import modelsSlice from './slices/modelSlice';
 import partsSlice from './slices/partsSlice';
 import availabilitySlice from './slices/availabilitySlice';
+import manufacturerSlice from './slices/manufacturerSlice';
 
 const rootReducer = combineReducers({
   Auth: authSlice.reducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   Cars: carSlice.reducer,
   Categories: categoriesSlice.reducer,
   Models: modelsSlice.reducer,
+  Manufacturers: manufacturerSlice.reducer,
   Requests: requestsSlice.reducer,
   Parts: partsSlice.reducer,
 });
