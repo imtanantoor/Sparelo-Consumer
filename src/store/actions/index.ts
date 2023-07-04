@@ -266,7 +266,6 @@ const updateUser = createAsyncThunk(
 const createShop = createAsyncThunk(
   'Auth/Create Shop',
   async (data: CreateShopModel) => {
-    console.log({formData: createFormData(data)});
     const response = await constants.apiInstance.post(
       'shop/create',
       createFormData(data),
