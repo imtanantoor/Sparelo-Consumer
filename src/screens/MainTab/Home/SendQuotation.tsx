@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import CustomTextInput from "../../../components/global/CustomTextInput";
 import CreateQuotationModel from "../../../models/createQuotationModel";
 import partsSlice from "../../../store/slices/partsSlice";
-
+import ManufacturerListModal from "../../../components/organism/ManufacturerListModal";
 interface SendQuotationProps {
   fetching: boolean;
   error: boolean;
@@ -33,6 +33,8 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
   const [isNew, setIsNew] = useState<boolean>(true)
   const [voiceNote, setVoiceNote] = useState<any>(null)
   const [values, setValues] = useState({ price: '' })
+  const [visible, setVisible] = useState<boolean>(false)
+  const [manufacturer, setManufacturer] = useState<any>(null)
   const [touched, setTouched] = useState({
     price: false
   })
@@ -91,6 +93,14 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
       setErrors({ ...errors, [fieldName]: '' })
   }
 
+  function showModal() {
+    setVisible(true)
+  }
+
+  function hideModal() {
+    setVisible(false)
+  }
+
   useEffect(() => {
     if (!fetching)
       fetchManufacturers()
@@ -99,7 +109,7 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
   useEffect(() => {
     if (creatingQuotationSuccess) {
       resetCreateQuotationState()
-      navigation.popToTop()
+      navigation.goBack()
     }
   }, [creatingQuotation])
 
@@ -174,6 +184,18 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
         required
       />
       <View>
+        <Text style={{ color: 'rgba(0,0,0,0.5)' }}>Company</Text>
+        <CustomButton
+          disabled={data.length == 0 || fetching}
+          type='transparent'
+          submitting={fetching}
+          title="Select Manufacturer"
+          buttonStyle={{ paddingHorizontal: 0, margin: 0, justifyContent: 'flex-start', borderBottomWidth: 1, borderBottomColor: '#03014C' }}
+          titleStyle={{ textAlign: 'left', fontSize: font.sizes.fourteen, fontFamily: font.fontFamilies({ type: 'Poppins' }).medium, color: 'rgba(54, 69, 90, 0.5)' }}
+          onPress={showModal}
+        />
+      </View>
+      <View>
         {!!voiceNote && <VoicePlayer
           key={voiceNote.uri}
           duration={voiceNote.timeInString}
@@ -197,6 +219,11 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
       onPress={handleCreateQuotation}
       buttonStyle={{ marginVertical: 20, marginHorizontal: 20 }}
       type="primary"
+    />
+    <ManufacturerListModal
+      visible={visible}
+      hideModal={hideModal}
+      setManufacturer={setManufacturer}
     />
   </SafeAreaView>
 }
