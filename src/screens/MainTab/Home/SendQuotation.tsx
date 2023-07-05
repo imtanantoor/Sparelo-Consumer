@@ -10,8 +10,25 @@ import AudioServices from "../../../Services/AudioServices";
 import actions from "../../../store/actions";
 import { connect } from "react-redux";
 import CustomTextInput from "../../../components/global/CustomTextInput";
+import CreateQuotationModel from "../../../models/createQuotationModel";
+import partsSlice from "../../../store/slices/partsSlice";
 
-function SendQuotation({ fetching, data, error, fetchManufacturers }: { fetching: boolean, error: boolean, data: { id: string, name: string }[], fetchManufacturers: () => void }) {
+interface SendQuotationProps {
+  fetching: boolean;
+  error: boolean;
+  data: { id: string, name: string }[];
+  creatingQuotation: boolean;
+  creatingQuotationSuccess: boolean;
+  creatingQuotationFailure: boolean;
+  user: any;
+  fetchManufacturers: () => void;
+  createQuotation: (data: CreateQuotationModel) => void
+  resetCreateQuotationState: () => void;
+  route: any
+  navigation: any
+}
+
+function SendQuotation({ fetching, data, error, user, creatingQuotation, creatingQuotationFailure, creatingQuotationSuccess, route, navigation, fetchManufacturers, createQuotation, resetCreateQuotationState }: SendQuotationProps) {
   const [assets, setAssets] = useState<any>([])
   const [isNew, setIsNew] = useState<boolean>(true)
   const [voiceNote, setVoiceNote] = useState<any>(null)
@@ -78,6 +95,25 @@ function SendQuotation({ fetching, data, error, fetchManufacturers }: { fetching
     if (!fetching)
       fetchManufacturers()
   }, [])
+
+  useEffect(() => {
+    if (creatingQuotationSuccess) {
+      resetCreateQuotationState()
+      navigation.popToTop()
+    }
+  }, [creatingQuotation])
+
+  function handleCreateQuotation() {
+    const data: CreateQuotationModel = {
+      price: values.price,
+      isNew: isNew,
+      request: route.params.requestId,
+      user: user._id,
+      voiceNote: voiceNote?.uri ? voiceNote.uri : '',
+      images: assets
+    }
+    createQuotation(data)
+  }
 
   return <SafeAreaView style={styles.container}>
     <ScrollView style={styles.contentContainer}>
@@ -156,9 +192,9 @@ function SendQuotation({ fetching, data, error, fetchManufacturers }: { fetching
     </ScrollView>
     <CustomButton
       title="Submit"
-      disabled={false}
-      submitting={false}
-      onPress={() => { }}
+      disabled={creatingQuotation}
+      submitting={creatingQuotation}
+      onPress={handleCreateQuotation}
       buttonStyle={{ marginVertical: 20, marginHorizontal: 20 }}
       type="primary"
     />
@@ -188,11 +224,17 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state: any) => ({
   fetching: state.Manufacturers.fetching,
   data: state.Manufacturers.data,
-  error: state.Manufacturers.error
+  error: state.Manufacturers.error,
+  creatingQuotation: state.Requests.creatingQuotation,
+  creatingQuotationSuccess: state.Requests.creatingQuotationSuccess,
+  creatingQuotationFailure: state.Requests.creatingQuotationFailure,
+  user: state.Auth.user
 })
 
 const mapDispatchToProps = {
-  fetchManufacturers: actions.fetchAllManufacturers
+  fetchManufacturers: actions.fetchAllManufacturers,
+  createQuotation: actions.sendQuotation,
+  resetCreateQuotationState: partsSlice.actions.resetCreateQuotationState
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SendQuotation)

@@ -1,15 +1,12 @@
 import { ActivityIndicator, Dimensions, FlatList, RefreshControl, Text, View } from "react-native";
 import { useEffect, useLayoutEffect } from "react";
 import colors from "../../../constants/colors";
-import font from "../../../constants/fonts";
 import RequestsCard from "../../../components/organism/RequestsCard";
 import { connect } from "react-redux";
 import actions from "../../../store/actions";
 import RequestsListProps from "../../../models/requestsList";
 import ListEmptyComponent from "../../../components/global/ListEmptyComponent";
-import constants from "../../../utils/constants";
 import RequestCardProps from "../../../models/requestCard";
-import ToastService from "../../../Services/ToastService";
 
 function RequestsList({ navigation, route, requests, fetching, error, mode, user, fetchRequests, fetchRequestsOfVendor }: RequestsListProps): JSX.Element {
 

@@ -6,6 +6,7 @@ import SearchPartsBody from '../../models/searchPartsBody';
 import CreateRequestPayload from '../../models/createRequestPayload';
 import FormData from 'form-data';
 import CreateShopModel from '../../models/CreateShopModel';
+import CreateQuotationModel from '../../models/createQuotationModel';
 
 const fetchCategories = createAsyncThunk('Categories/fetchAll', async () => {
   const response = await constants.apiInstance.get('categories');
@@ -284,6 +285,20 @@ const createShop = createAsyncThunk(
   },
 );
 
+const sendQuotation = createAsyncThunk(
+  'Requests/Send Quotation',
+  async (data: CreateQuotationModel) => {
+    const response = await constants.apiInstance.post(
+      'bids/create',
+      createFormData(data),
+      {
+        headers: {'Content-Type': 'multipart/form-data'},
+      },
+    );
+    return response.data;
+  },
+);
+
 const actions = {
   fetchCars,
   fetchCarsOfUser,
@@ -309,6 +324,7 @@ const actions = {
   loginUser,
   updateUser,
   createShop,
+  sendQuotation,
 };
 
 export default actions;

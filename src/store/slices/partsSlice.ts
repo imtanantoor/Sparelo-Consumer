@@ -12,6 +12,9 @@ interface PartsState {
   fetchingOldPartsError: boolean;
   searchingParts: boolean;
   searchingPartsFailed: boolean;
+  creatingQuotation: boolean;
+  creatingQuotationSuccess: boolean;
+  creatingQuotationFailure: boolean;
   newParts: PartsCardModel[];
   oldParts: PartsCardModel[];
   allParts: PartsCardModel[];
@@ -30,6 +33,9 @@ const initialState: PartsState = {
   fetchingOldPartsError: false,
   searchingParts: true,
   searchingPartsFailed: false,
+  creatingQuotation: false,
+  creatingQuotationSuccess: false,
+  creatingQuotationFailure: false,
   newParts: [],
   oldParts: [],
   allParts: [],
@@ -83,7 +89,13 @@ function handlePartsResponse(bids: any, isSearch: boolean): PartsCardModel[] {
 const partsSlice = createSlice({
   name: 'Parts',
   initialState,
-  reducers: {},
+  reducers: {
+    resetCreateQuotationState: (state, action) => {
+      state.creatingQuotation = false;
+      state.creatingQuotationSuccess = false;
+      state.creatingQuotationFailure = false;
+    },
+  },
   extraReducers: builder => {
     // New Parts
     builder
@@ -150,6 +162,24 @@ const partsSlice = createSlice({
       .addCase(actions.searchParts.rejected, (state, action) => {
         state.searchingParts = false;
         state.searchingPartsFailed = true;
+      });
+
+    // Send Quotation
+    builder
+      .addCase(actions.sendQuotation.pending, (state, action) => {
+        state.creatingQuotation = true;
+        state.creatingQuotationSuccess = false;
+        state.creatingQuotationFailure = false;
+      })
+      .addCase(actions.sendQuotation.fulfilled, (state, action) => {
+        state.creatingQuotation = false;
+        state.creatingQuotationSuccess = true;
+        state.creatingQuotationFailure = false;
+      })
+      .addCase(actions.sendQuotation.rejected, (state, action) => {
+        state.creatingQuotation = false;
+        state.creatingQuotationSuccess = false;
+        state.creatingQuotationFailure = true;
       });
   },
 });
