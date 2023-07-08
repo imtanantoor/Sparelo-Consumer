@@ -3,16 +3,17 @@ import colors from "../../constants/colors";
 import { Dimensions, FlatList, Text, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
 
-type ManufacturerItem = { id: string, name: string }
+type ManufacturerItem = { _id: string, name: string }
 
 interface ManufacturerListModalProps {
   visible: boolean
+  manufacturer: ManufacturerItem
   hideModal: () => void
   setManufacturer: (item: ManufacturerItem) => void
   data: ManufacturerItem[];
 }
 
-function ManufacturerListModal({ visible, data, setManufacturer, hideModal }: ManufacturerListModalProps) {
+function ManufacturerListModal({ visible, manufacturer, data, setManufacturer, hideModal }: ManufacturerListModalProps) {
 
   return <Modal
     isVisible={visible}
@@ -29,8 +30,9 @@ function ManufacturerListModal({ visible, data, setManufacturer, hideModal }: Ma
         renderItem={({ item, index }) => <TouchableOpacity onPress={() => {
           setManufacturer(item)
           hideModal()
-        }} style={{ padding: 10, borderBottomColor: colors.lightGray, borderBottomWidth: index + 1 !== data.length ? 1 : 0 }}>
+        }} style={{ padding: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomColor: colors.lightGray, borderBottomWidth: index + 1 !== data.length ? 1 : 0 }}>
           <Text>{item.name}</Text>
+          {manufacturer?._id === item._id ? <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: colors.primary }} /> : null}
         </TouchableOpacity>}
       />
     </View>

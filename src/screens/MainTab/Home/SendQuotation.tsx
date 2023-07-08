@@ -119,9 +119,11 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
       isNew: isNew,
       request: route.params.requestId,
       user: user._id,
+      manufacturer: manufacturer?._id,
       voiceNote: voiceNote?.uri ? voiceNote.uri : '',
       images: assets
     }
+    console.log({ data })
     createQuotation(data)
   }
 
@@ -189,9 +191,9 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
           disabled={data.length == 0 || fetching}
           type='transparent'
           submitting={fetching}
-          title="Select Manufacturer"
+          title={manufacturer ? manufacturer.name : "Select Manufacturer"}
           buttonStyle={{ paddingHorizontal: 0, margin: 0, justifyContent: 'flex-start', borderBottomWidth: 1, borderBottomColor: '#03014C' }}
-          titleStyle={{ textAlign: 'left', fontSize: font.sizes.fourteen, fontFamily: font.fontFamilies({ type: 'Poppins' }).medium, color: 'rgba(54, 69, 90, 0.5)' }}
+          titleStyle={{ textAlign: 'left', fontSize: font.sizes.fourteen, fontFamily: font.fontFamilies({ type: 'Poppins' }).medium, color: manufacturer ? colors.textPrimary : 'rgba(54, 69, 90, 0.5)' }}
           onPress={showModal}
         />
       </View>
@@ -214,7 +216,7 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
     </ScrollView>
     <CustomButton
       title="Submit"
-      disabled={creatingQuotation}
+      disabled={creatingQuotation || assets.length == 0 || values.price == '' || manufacturer == null}
       submitting={creatingQuotation}
       onPress={handleCreateQuotation}
       buttonStyle={{ marginVertical: 20, marginHorizontal: 20 }}
@@ -222,6 +224,7 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
     />
     <ManufacturerListModal
       visible={visible}
+      manufacturer={manufacturer}
       hideModal={hideModal}
       setManufacturer={setManufacturer}
     />
@@ -252,9 +255,9 @@ const mapStateToProps = (state: any) => ({
   fetching: state.Manufacturers.fetching,
   data: state.Manufacturers.data,
   error: state.Manufacturers.error,
-  creatingQuotation: state.Requests.creatingQuotation,
-  creatingQuotationSuccess: state.Requests.creatingQuotationSuccess,
-  creatingQuotationFailure: state.Requests.creatingQuotationFailure,
+  creatingQuotation: state.Parts.creatingQuotation,
+  creatingQuotationSuccess: state.Parts.creatingQuotationSuccess,
+  creatingQuotationFailure: state.Parts.creatingQuotationFailure,
   user: state.Auth.user
 })
 

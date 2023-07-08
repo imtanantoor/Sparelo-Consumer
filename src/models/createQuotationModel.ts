@@ -5,6 +5,7 @@ interface CreateQuotationModel {
   user: string;
   voiceNote: any;
   images: any;
+  manufacturer: string;
 }
 
 export default CreateQuotationModel;

@@ -18,6 +18,7 @@ import CartStack from "./MainTabs/CartStack";
 import MyCartBottomTab from "../components/molecular/MyCartBottomTab";
 import AvailabilityStack from "./MainTabs/Availability/AvailabilityStack";
 import { useSelector } from "react-redux";
+import MyOffersTopTabs from "./MyOffersTopTabs/MyOffersTopTabs";
 
 const Tab = createBottomTabNavigator()
 
@@ -57,7 +58,7 @@ function MainTabs(): JSX.Element {
         return <MyCartBottomTab focused={focused} color={color} />
       },
     }} /> : <Tab.Screen name="My Offers"
-      component={DummyScreen}
+      component={MyOffersTopTabs}
       options={{
         tabBarLabelStyle: { marginBottom: 5 },
         tabBarIcon({ focused, color }) {
