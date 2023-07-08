@@ -8,6 +8,7 @@ interface RequestCardProps {
   images: string[];
   buttonDisabled: boolean;
   buttonTitle: string;
+  audioNote: string;
   onButtonPress: (props?: any) => any;
 }
 

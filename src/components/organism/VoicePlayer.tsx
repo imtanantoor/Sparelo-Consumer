@@ -11,9 +11,10 @@ interface VoicePlayerProps {
   showActions: boolean
   uri: string
   deleteNote?: () => void
+  actionContainerStyle?: any
 }
 
-function VoicePlayer({ duration, uri, showActions, deleteNote = () => { } }: VoicePlayerProps): JSX.Element {
+function VoicePlayer({ duration, uri, showActions, actionContainerStyle, deleteNote = () => { } }: VoicePlayerProps): JSX.Element {
   const [playing, setPlaying] = useState<boolean>(false)
 
   useEffect(() => {
@@ -38,7 +39,7 @@ function VoicePlayer({ duration, uri, showActions, deleteNote = () => { } }: Voi
 
   return <View style={{ marginTop: 20, }}>
     <View style={styles.container}>
-      <View style={styles.actionsContainer}>
+      <View style={[styles.actionsContainer, actionContainerStyle]}>
         <TouchableOpacity style={{ marginRight: playing ? 7 : 10 }} onPress={HandlePlay}>
           <Text>{playing ? 'Stop' : 'Play'}</Text>
         </TouchableOpacity>

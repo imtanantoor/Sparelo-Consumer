@@ -14,11 +14,14 @@ import availabilitySlice from "../../store/slices/availabilitySlice";
 import actions from "../../store/actions";
 import CustomModal from "./CustomModal";
 import RequestCreationSuccess from "../../assets/RequestCreationSuccess";
+import VoicePlayerPopup from "./VoicePlayerPopup";
+import { useState } from "react";
 
 
 function PartsCard({ id, make, model, year, images, price, bid, audioNote, rating, checkAvailability }: PartsCardModel): JSX.Element {
   const dispatch: any = useDispatch()
   const navigation: any = useNavigation()
+  const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
   const { checkingAvailability, checkingAvailabilitySuccess, checkingAvailabilityError } = useSelector((state: any) => state.Availability)
 
   function determineAvailability() {
@@ -29,6 +32,10 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
     dispatch(availabilitySlice.actions.resetCheckingState())
     navigation.popToTop()
     navigation.navigate('Home', { screen: 'Home', initial: false })
+  }
+
+  function hideVoiceModal() {
+    setShowVoicePlayer(false)
   }
 
 
@@ -69,9 +76,9 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
       <Text style={styles.description}>{make} | {year} | {model}</Text>
       <Text style={styles.price}>Rs {price}</Text>
       <View style={styles.voiceAndBidsContainer}>
-        <View style={styles.voiceCard}>
+        {audioNote && <TouchableOpacity onPress={() => setShowVoicePlayer(true)} style={styles.voiceCard}>
           <VoiceSVG />
-        </View>
+        </TouchableOpacity>}
         {!!checkAvailability == false ? <CustomButton
           title="Add to Cart"
           onPress={AddToCart}
@@ -113,6 +120,11 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
         onButtonPress={() => hideModal()}
       />
     </View>
+    <VoicePlayerPopup
+      visible={showVoicePlayer}
+      hideModal={hideVoiceModal}
+      audioNote={audioNote}
+    />
   </TouchableOpacity>
 }
 

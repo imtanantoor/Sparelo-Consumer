@@ -49,6 +49,7 @@ function RequestsList({ navigation, route, requests, fetching, error, mode, user
       make={item.make}
       images={item.images}
       model={item.model}
+      audioNote={item.audioNote}
       year={item.year}
       buttonTitle={item.buttonTitle}
       buttonDisabled={item.buttonDisabled}

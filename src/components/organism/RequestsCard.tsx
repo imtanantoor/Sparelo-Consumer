@@ -3,8 +3,16 @@ import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import CustomButton from "../global/CustomButton";
 import RequestCardProps from "../../models/requestCard";
+import VoiceSVG from "../../assets/VoiceSVG";
+import { useState } from "react";
+import VoicePlayerPopup from "./VoicePlayerPopup";
 
-function RequestsCard({ imageBackground, make, model, year, category, buttonDisabled, buttonTitle, onButtonPress }: RequestCardProps): JSX.Element {
+function RequestsCard({ imageBackground, make, model, year, category, buttonDisabled, buttonTitle, audioNote, onButtonPress }: RequestCardProps): JSX.Element {
+  const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
+  function hideVoiceModal() {
+    setShowVoicePlayer(false)
+  }
+
   return <TouchableOpacity style={styles.container} activeOpacity={0.9}>
     <ImageBackground
       source={{ uri: imageBackground }}
@@ -27,13 +35,23 @@ function RequestsCard({ imageBackground, make, model, year, category, buttonDisa
         </View>
       </View>
     </ImageBackground>
-    <CustomButton
-      submitting={false}
-      disabled={buttonDisabled}
-      title={buttonTitle}
-      onPress={onButtonPress}
-      type='primary'
-      buttonStyle={{ padding: 10, alignSelf: 'flex-end', marginBottom: 0, borderRadius: 6 }}
+    <View style={{ flexDirection: 'row', justifyContent: audioNote ? 'space-between' : 'flex-end', alignItems: 'center' }}>
+      {audioNote && <TouchableOpacity onPress={() => setShowVoicePlayer(true)} style={styles.voiceCard}>
+        <VoiceSVG />
+      </TouchableOpacity>}
+      <CustomButton
+        submitting={false}
+        disabled={buttonDisabled}
+        title={buttonTitle}
+        onPress={onButtonPress}
+        type='primary'
+        buttonStyle={{ padding: 10, alignSelf: 'flex-end', marginBottom: 0, borderRadius: 6 }}
+      />
+    </View>
+    <VoicePlayerPopup
+      visible={showVoicePlayer}
+      hideModal={hideVoiceModal}
+      audioNote={audioNote}
     />
   </TouchableOpacity>
 }
@@ -75,6 +93,23 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: font.sizes.fourteen,
     marginBottom: 5
+  },
+  voiceCard: {
+    padding: 10,
+    marginTop: 10,
+    width: '50%',
+    shadowColor: "#000",
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
   },
   descriptionContainer: {
     flexDirection: 'row',
