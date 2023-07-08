@@ -39,7 +39,7 @@ function VoicePlayer({ duration, uri, showActions, deleteNote = () => { } }: Voi
   return <View style={{ marginTop: 20, }}>
     <View style={styles.container}>
       <View style={styles.actionsContainer}>
-        <TouchableOpacity onPress={HandlePlay}>
+        <TouchableOpacity style={{ marginRight: playing ? 7 : 10 }} onPress={HandlePlay}>
           <Text>{playing ? 'Stop' : 'Play'}</Text>
         </TouchableOpacity>
         <RandomBars
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 2,
     padding: 13,
-    borderRadius: 13
+    borderRadius: 13,
   },
   duration: {
     color: '#BFBFBF',
@@ -92,6 +92,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 10
+    marginTop: 10,
   }
 })
