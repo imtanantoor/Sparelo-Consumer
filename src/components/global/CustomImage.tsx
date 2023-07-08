@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ActivityIndicator, Image, ImageProps, StyleSheet, View } from "react-native";
 import colors from "../../constants/colors";
 
@@ -20,6 +20,10 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
   function onError() {
     setError(true)
   }
+
+  useEffect(() => {
+    setError(false)
+  }, [imageUrl])
 
   return <View style={{ justifyContent: 'center' }}>
     {loading && <View style={[styles.loadingIndicatorStyle, { height: myProps?.style?.height ? myProps?.style?.height : styles.loadingIndicatorStyle.height }]}>
