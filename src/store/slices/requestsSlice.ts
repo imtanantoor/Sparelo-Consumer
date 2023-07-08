@@ -23,7 +23,6 @@ function handleRequestsData(
   requests: any,
   isVendor: boolean,
 ): RequestCardProps[] {
-  console.log({requests});
   return requests.map((request: any) => ({
     id: request._id,
     category: request?.category?.name,
