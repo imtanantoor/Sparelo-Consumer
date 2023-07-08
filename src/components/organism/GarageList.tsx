@@ -58,7 +58,8 @@ function GarageList({ title, cars, categories, fetchingCars, fetchingCarsError, 
       else
         setSelectedCar(null)
 
-      item.onPress()
+      if (item?.onPress)
+        item?.onPress()
     }
   }
 

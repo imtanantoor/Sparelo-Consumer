@@ -188,19 +188,21 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
           />
         </View>
       </View>
-      {!!voiceNote && <VoicePlayer
-        key={voiceNote.uri}
-        duration={voiceNote.timeInString}
-        uri={voiceNote.uri}
-        showActions
-        deleteNote={() => setVoiceNote(null)}
-      />}
+      <View style={{ paddingHorizontal: 20 }}>
+        {!!voiceNote && <VoicePlayer
+          key={voiceNote.uri}
+          duration={voiceNote.timeInString}
+          uri={voiceNote.uri}
+          showActions
+          deleteNote={() => setVoiceNote(null)}
+        />}
 
-      <VoiceRecorder
-        disabled={!!voiceNote}
-        setVoiceNote={(note: string) => {
-          setVoiceNote({ uri: note, ...AudioServices.getDuration() })
-        }} />
+        <VoiceRecorder
+          disabled={!!voiceNote}
+          setVoiceNote={(note: string) => {
+            setVoiceNote({ uri: note, ...AudioServices.getDuration() })
+          }} />
+      </View>
       <View style={{ marginHorizontal: 20 }}>
         <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginBottom: 10, }}>
           Add Notes for retailer (<Text style={{ color: colors.red }}>optional</Text>)
