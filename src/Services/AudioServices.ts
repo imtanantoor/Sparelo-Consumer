@@ -57,6 +57,10 @@ class AudioServices {
     this.audioRecorderPlayer.addPlayBackListener(callback);
   }
 
+  getInstance() {
+    return this.audioRecorderPlayer;
+  }
+
   getDuration() {
     return {
       timeInString: this.recordingDuration,

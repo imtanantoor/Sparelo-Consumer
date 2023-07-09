@@ -15,9 +15,10 @@ interface VoicePlayerProps {
   deleteNote?: () => void
   actionContainerStyle?: any
   isPopup?: boolean
+  callBack?: (value: boolean) => void
 }
 
-function VoicePlayer({ duration, uri, showActions, actionContainerStyle, isPopup, deleteNote = () => { } }: VoicePlayerProps): JSX.Element {
+function VoicePlayer({ duration, uri, showActions, actionContainerStyle, isPopup, callBack, deleteNote = () => { } }: VoicePlayerProps): JSX.Element {
   const [playing, setPlaying] = useState<boolean>(false)
 
   useEffect(() => {
@@ -25,6 +26,9 @@ function VoicePlayer({ duration, uri, showActions, actionContainerStyle, isPopup
       if (currentPosition === duration) {
         setPlaying(false)
         AudioServices.StopAudio()
+        if (callBack) {
+          callBack(false)
+        }
       }
     })
   }, [])

@@ -2,7 +2,7 @@ import Modal from "react-native-modal";
 import colors from "../../constants/colors";
 import VoicePlayer from "./VoicePlayer";
 import constants from "../../utils/constants";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import PlayIcon from "../../assets/icons/PlayIcon";
 import PauseIcon from "../../assets/icons/PauseIcon";
 import StopIcon from "../../assets/icons/StopIcon";
@@ -16,16 +16,6 @@ interface VoicePlayerPopup {
 
 function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
   const [playing, setPlaying] = useState<boolean>(false)
-
-  useEffect(() => {
-    AudioServices.handlePlayBack(({ currentPosition, duration }) => {
-      if (currentPosition === duration) {
-        setPlaying(false)
-        AudioServices.StopAudio()
-      }
-    })
-
-  }, [])
 
   function HandlePlay() {
     if (playing) {
@@ -60,6 +50,7 @@ function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
     <VoicePlayer
       uri={constants.baseURL + audioNote}
       duration="0"
+      callBack={setPlaying}
       isPopup={true}
       showActions={false}
       actionContainerStyle={{ flex: 0, marginVertical: 10 }}
