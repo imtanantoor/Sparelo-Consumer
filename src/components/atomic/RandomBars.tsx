@@ -10,7 +10,7 @@ interface Bar {
 
 
 
-function RandomBars({ barColor, mode, onSeek }: { barColor: string, mode: 'player' | 'recorder', onSeek?: (position: number) => void }): JSX.Element {
+function RandomBars({ barColor, mode, isPopup = false, onSeek }: { barColor: string, mode: 'player' | 'recorder', isPopup?: boolean, onSeek?: (position: number) => void }): JSX.Element {
   const [bars, setBars] = useState<Bar[]>([])
   const flatListRef: any = useRef(null)
 
@@ -19,6 +19,13 @@ function RandomBars({ barColor, mode, onSeek }: { barColor: string, mode: 'playe
     let interval: any = null
 
     if (mode === 'recorder') {
+
+      let item: Bar = {
+        height: helpers.randomHeightGenerator(8, 100),
+        id: temp.length + 1
+      }
+      temp.push(item);
+
       interval = setInterval(() => {
         let item: Bar = {
           height: helpers.randomHeightGenerator(8, 100),
@@ -29,11 +36,14 @@ function RandomBars({ barColor, mode, onSeek }: { barColor: string, mode: 'playe
         setBars([...bars, ...temp])
         flatListRef?.current?.scrollToEnd({ animated: false })
 
-      }, 1000)
+      }, 500)
     }
 
     if (mode === 'player') {
-      setBars(Array.from({ length: (Dimensions.get('screen').width / 12) * 0.8 }).map((item: any, index: number) => ({ id: index + 1, height: helpers.randomHeightGenerator(8, 100) })))
+      if (isPopup)
+        setBars(Array.from({ length: ((Dimensions.get('screen').width / 12)) * 1 }).map((item: any, index: number) => ({ id: index + 1, height: helpers.randomHeightGenerator(8, 100) })))
+      else
+        setBars(Array.from({ length: (Dimensions.get('screen').width / 12) * 0.8 }).map((item: any, index: number) => ({ id: index + 1, height: helpers.randomHeightGenerator(8, 100) })))
     }
 
     return () => {

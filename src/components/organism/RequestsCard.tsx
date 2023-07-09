@@ -45,7 +45,8 @@ function RequestsCard({ imageBackground, make, model, year, category, buttonDisa
         title={buttonTitle}
         onPress={onButtonPress}
         type='primary'
-        buttonStyle={{ padding: 10, alignSelf: 'flex-end', marginBottom: 0, borderRadius: 6 }}
+        buttonStyle={{ padding: 10, alignSelf: 'flex-end', width: '50%', marginBottom: 0, borderRadius: 6 }}
+        titleStyle={{ fontSize: font.sizes.fourteen }}
       />
     </View>
     <VoicePlayerPopup
@@ -95,9 +96,9 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   voiceCard: {
-    padding: 10,
+    padding: 8,
     marginTop: 10,
-    width: '50%',
+    width: '45%',
     shadowColor: "#000",
     borderRadius: 5,
     justifyContent: 'center',

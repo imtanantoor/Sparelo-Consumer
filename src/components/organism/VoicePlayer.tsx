@@ -5,6 +5,8 @@ import font from "../../constants/fonts";
 import CustomButton from "../global/CustomButton";
 import AudioServices from "../../Services/AudioServices";
 import { useEffect, useState } from "react";
+import PlayIcon from "../../assets/icons/PlayIcon";
+import PauseIcon from "../../assets/icons/PauseIcon";
 
 interface VoicePlayerProps {
   duration: string
@@ -12,9 +14,10 @@ interface VoicePlayerProps {
   uri: string
   deleteNote?: () => void
   actionContainerStyle?: any
+  isPopup?: boolean
 }
 
-function VoicePlayer({ duration, uri, showActions, actionContainerStyle, deleteNote = () => { } }: VoicePlayerProps): JSX.Element {
+function VoicePlayer({ duration, uri, showActions, actionContainerStyle, isPopup, deleteNote = () => { } }: VoicePlayerProps): JSX.Element {
   const [playing, setPlaying] = useState<boolean>(false)
 
   useEffect(() => {
@@ -28,7 +31,7 @@ function VoicePlayer({ duration, uri, showActions, actionContainerStyle, deleteN
 
   function HandlePlay() {
     if (playing) {
-      AudioServices.StopAudio()
+      AudioServices.PauseAudio()
       setPlaying(false)
       return
     }
@@ -40,14 +43,21 @@ function VoicePlayer({ duration, uri, showActions, actionContainerStyle, deleteN
   return <View style={{ marginTop: 20, }}>
     <View style={styles.container}>
       <View style={[styles.actionsContainer, actionContainerStyle]}>
-        <TouchableOpacity style={{ marginRight: playing ? 7 : 10 }} onPress={HandlePlay}>
-          <Text>{playing ? 'Stop' : 'Play'}</Text>
-        </TouchableOpacity>
+        {isPopup ? null : <TouchableOpacity style={{ marginRight: playing ? 14 : 10 }} onPress={HandlePlay}>
+          {playing ? <PauseIcon
+            fill={colors.primary} /> :
+            <PlayIcon
+              fill={colors.primary}
+            />}
+        </TouchableOpacity>}
         <RandomBars
           onSeek={(position) => {
             console.log({ position })
           }}
-          barColor={colors.primary} mode='player' />
+          isPopup={isPopup}
+          barColor={colors.primary}
+          mode='player'
+        />
       </View>
       {showActions && <View style={styles.actionsContainer}>
         <Text style={styles.duration}>{duration}</Text>

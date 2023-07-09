@@ -41,6 +41,10 @@ class AudioServices {
     return await this.audioRecorderPlayer.startPlayer(uri);
   }
 
+  async PauseAudio() {
+    return await this.audioRecorderPlayer.pausePlayer();
+  }
+
   async StopAudio() {
     return await this.audioRecorderPlayer.stopPlayer();
   }

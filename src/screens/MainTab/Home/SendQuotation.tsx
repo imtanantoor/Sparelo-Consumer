@@ -192,7 +192,7 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
           type='transparent'
           submitting={fetching}
           title={manufacturer ? manufacturer.name : "Select Manufacturer"}
-          buttonStyle={{ paddingHorizontal: 0, margin: 0, justifyContent: 'flex-start', borderBottomWidth: 1, borderBottomColor: '#03014C' }}
+          buttonStyle={{ paddingHorizontal: 0, borderRadius: 0, margin: 0, justifyContent: 'flex-start', borderBottomWidth: 1, borderBottomColor: '#03014C' }}
           titleStyle={{ textAlign: 'left', fontSize: font.sizes.fourteen, fontFamily: font.fontFamilies({ type: 'Poppins' }).medium, color: manufacturer ? colors.textPrimary : 'rgba(54, 69, 90, 0.5)' }}
           onPress={showModal}
         />
