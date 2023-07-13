@@ -125,7 +125,7 @@ const fetchAllAvailableItemsOfUser = createAsyncThunk(
   'Availability/fetchAll',
   async (userId: string) => {
     const response = await constants.apiInstance.get(
-      `bids/getAllAvailibilityRequests/${userId}`,
+      `availability/getAllAvailibilityRequests/${userId}`,
     );
     return response.data;
   },

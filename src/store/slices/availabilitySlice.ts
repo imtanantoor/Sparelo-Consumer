@@ -23,21 +23,21 @@ const initialState: {
 
 function handleAvailabilityResponse(response: any): AvailabilityCardModel[] {
   return response.map((item: any) => ({
-    id: item.request,
-    bid: item._id,
+    id: item.bid.request,
+    bid: item.bid._id,
     images:
-      item?.request?.images && item.request.images.length > 0
-        ? item?.request.images?.map(
+      item?.bid?.request?.images && item.request.images.length > 0
+        ? item?.bid?.request.images?.map(
             (image: string) => constants.baseURL + image,
           )
         : [],
-    make: item?.request?.brand?.name,
-    model: item?.request?.model?.name,
+    make: item?.bid?.request?.brand?.name,
+    model: item?.bid?.request?.model?.name,
     year: item?.request?.manufacturingYear,
-    isNew: item?.isNew,
-    price: item?.price,
+    isNew: item?.bid?.isNew,
+    price: item?.bid?.price,
     available: item?.isAvaiable,
-    quantity: item?.request?.quantity,
+    quantity: item?.bid?.request?.quantity,
     rating: item?.user?.rating,
   }));
 }
@@ -66,7 +66,9 @@ const availabilitySlice = createSlice({
         (state, action: any) => {
           state.fetching = false;
           state.error = false;
-          state.data = handleAvailabilityResponse(action.payload.bids);
+          state.data = handleAvailabilityResponse(
+            action.payload.availabilityRequests,
+          );
         },
       )
       .addCase(
