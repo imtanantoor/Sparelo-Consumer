@@ -286,9 +286,13 @@ const signUpUser = createAsyncThunk(
 
 const loginUser = createAsyncThunk(
   'Auth/Login',
-  async (data: LoginPayloadModel) => {
-    const response = await constants.apiInstance.post('/users/login', data);
-    return response.data;
+  async (data: LoginPayloadModel, {rejectWithValue}) => {
+    try {
+      const response = await constants.apiInstance.post('/users/login', data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
   },
 );
 

@@ -131,14 +131,15 @@ const authSlice = createSlice({
         state.accessToken = payload?.accessToken;
         state.user = {...payload?.user};
       })
-      .addCase(actions.loginUser.rejected, (state, action) => {
+      .addCase(actions.loginUser.rejected, (state, action: any) => {
         state.loggingIn = false;
         state.loginError = true;
         state.loginSuccess = false;
+
         ToastService.error(
           'Login',
-          action?.error?.message
-            ? action.error.message
+          action?.payload?.message
+            ? action.payload.message
             : 'Something went wrong',
         );
       });
