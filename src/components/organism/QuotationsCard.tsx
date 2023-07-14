@@ -19,7 +19,7 @@ import { useState } from "react";
 import QuotationsCardModel from "../../models/QuotationsCardModel";
 
 
-function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, rating }: QuotationsCardModel): JSX.Element {
+function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, rating, showDeleteButton, deletingQuotation, onDeletePress }: QuotationsCardModel): JSX.Element {
   const dispatch: any = useDispatch()
   const navigation: any = useNavigation()
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
@@ -37,21 +37,6 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
 
   function hideVoiceModal() {
     setShowVoicePlayer(false)
-  }
-
-
-  function AddToCart() {
-    dispatch(cartSlice.actions.addToCart({
-      id,
-      bid,
-      make,
-      model,
-      year,
-      title: `${make} | ${model} | ${year}`,
-      price: price,
-      offeredBy: '',
-      images
-    }))
   }
 
   return <TouchableOpacity activeOpacity={0.9} style={styles.container}>
@@ -72,6 +57,14 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
         sliderBoxHeight={140}
         images={images}
       />
+      {showDeleteButton && <CustomButton
+        disabled={deletingQuotation ? deletingQuotation : false}
+        submitting={deletingQuotation ? deletingQuotation : false}
+        onPress={onDeletePress ? onDeletePress : () => { }}
+        title="Delete"
+        buttonStyle={{ padding: 5, backgroundColor: colors.red, alignSelf: 'flex-end', position: 'absolute', right: 10 }}
+        type="primary"
+      />}
     </View>
     <View style={styles.detailContainer}>
       <Text style={styles.description}>{make} | {year} | {model}</Text>

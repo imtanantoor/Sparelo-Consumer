@@ -9,16 +9,18 @@ interface ApprovedQuotationsTabProps {
   fetching: boolean
   error: boolean
   success: boolean
+  deleteSuccess: boolean
   fetchApprovedQuotations: (userId: string) => void
   user: any
 }
 
-function ApprovedQuotationsTab({ data, user, fetching, error, success, fetchApprovedQuotations }: ApprovedQuotationsTabProps) {
+function ApprovedQuotationsTab({ data, user, fetching, error, deleteSuccess, success, fetchApprovedQuotations }: ApprovedQuotationsTabProps) {
 
   useEffect(() => {
     // fetchCancelledQuotations(user._id)
     fetchApprovedQuotations('64656e68bec729d8efdbb90a')
-  }, [])
+  }, [deleteSuccess])
+
   return <QuotationsList
     data={data}
     fetching={fetching}
@@ -32,6 +34,7 @@ const mapStateToProps = (state: any) => ({
   error: state.Quotations.fetchingApprovedQuotationsFailure,
   success: state.Quotations.fetchingApprovedQuotationsSuccess,
   data: state.Quotations.approvedQuotations,
+  deleteSuccess: state.Quotations.deleteSuccess,
   user: state.Auth.user,
 })
 

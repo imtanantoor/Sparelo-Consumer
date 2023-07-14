@@ -9,16 +9,18 @@ interface CancelledQuotationsTabProps {
   fetching: boolean
   error: boolean
   success: boolean
+  deleteSuccess: boolean
   fetchCancelledQuotations: (userId: string) => void
   user: any
 }
 
-function CancelledQuotationsTab({ data, user, fetching, error, success, fetchCancelledQuotations }: CancelledQuotationsTabProps) {
+function CancelledQuotationsTab({ data, user, fetching, error, deleteSuccess, success, fetchCancelledQuotations }: CancelledQuotationsTabProps) {
 
   useEffect(() => {
     // fetchCancelledQuotations(user._id)
     fetchCancelledQuotations('64656e68bec729d8efdbb90a')
-  }, [])
+  }, [deleteSuccess])
+
   return <QuotationsList
     data={data}
     fetching={fetching}
@@ -32,6 +34,7 @@ const mapStateToProps = (state: any) => ({
   error: state.Quotations.fetchingCancelledQuotationsFailure,
   success: state.Quotations.fetchingCancelledQuotationsSuccess,
   data: state.Quotations.cancelledQuotations,
+  deleteSuccess: state.Quotations.deleteSuccess,
   user: state.Auth.user,
 })
 

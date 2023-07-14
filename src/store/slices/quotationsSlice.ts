@@ -13,6 +13,9 @@ interface QuotationsState {
   fetchingApprovedQuotationsFailure: boolean;
   fetchingPendingQuotationsSuccess: boolean;
   fetchingPendingQuotationsFailure: boolean;
+  deletingQuotation: boolean;
+  deleteSuccess: boolean;
+  deleteError: boolean;
   cancelledQuotations: QuotationsCardModel[];
   approvedQuotations: QuotationsCardModel[];
   pendingQuotations: QuotationsCardModel[];
@@ -28,6 +31,9 @@ const initialState: QuotationsState = {
   fetchingApprovedQuotationsFailure: false,
   fetchingPendingQuotationsSuccess: false,
   fetchingPendingQuotationsFailure: false,
+  deletingQuotation: false,
+  deleteSuccess: false,
+  deleteError: false,
   cancelledQuotations: [],
   approvedQuotations: [],
   pendingQuotations: [],
@@ -52,7 +58,13 @@ function handleQuotationsResponse(bids: any): QuotationsCardModel[] {
 
 const QuotationsSlice = createSlice({
   name: 'Quotations',
-  reducers: {},
+  reducers: {
+    resetDeleteState: state => {
+      state.deletingQuotation = false;
+      state.deleteError = false;
+      state.deleteSuccess = false;
+    },
+  },
   initialState: initialState,
   extraReducers: builder => {
     // Cancelled Quotations
@@ -114,6 +126,24 @@ const QuotationsSlice = createSlice({
         state.approvedQuotations = handleQuotationsResponse(
           action.payload.bids,
         );
+      });
+
+    // Delete Quotation
+    builder
+      .addCase(actions.deleteQuotation.pending, (state, action) => {
+        state.deletingQuotation = true;
+        state.deleteError = false;
+        state.deleteSuccess = false;
+      })
+      .addCase(actions.deleteQuotation.rejected, (state, action) => {
+        state.deletingQuotation = false;
+        state.deleteError = true;
+        state.deleteSuccess = false;
+      })
+      .addCase(actions.deleteQuotation.fulfilled, (state, action) => {
+        state.deletingQuotation = false;
+        state.deleteError = false;
+        state.deleteSuccess = true;
       });
   },
 });

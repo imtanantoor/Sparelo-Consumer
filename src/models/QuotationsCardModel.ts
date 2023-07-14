@@ -9,6 +9,9 @@ interface QuotationsCardModel {
   quantity: number;
   audioNote?: any;
   rating: number;
+  showDeleteButton?: boolean;
+  deletingQuotation?: boolean;
+  onDeletePress?: (id: string) => void;
 }
 
 export default QuotationsCardModel;

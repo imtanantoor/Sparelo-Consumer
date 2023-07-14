@@ -8,10 +8,13 @@ interface QuotationsListProps {
   data: QuotationsCardModel[]
   fetching: boolean
   error: boolean
+  showDeleteButton?: boolean
+  deletingQuotation?: boolean
   handleApiCall: (props?: any) => void
+  onDeletePress?: (id: string) => void
 }
 
-function QuotationsList({ data, fetching, error, handleApiCall }: QuotationsListProps) {
+function QuotationsList({ data, fetching, error, showDeleteButton, deletingQuotation, onDeletePress, handleApiCall }: QuotationsListProps) {
   return <FlatList
     data={data}
     style={{ backgroundColor: colors.white, flex: 1 }}
@@ -22,6 +25,9 @@ function QuotationsList({ data, fetching, error, handleApiCall }: QuotationsList
       error={error} />}
     renderItem={({ item }) => (<QuotationsCard
       {...item}
+      showDeleteButton={showDeleteButton}
+      deletingQuotation={deletingQuotation}
+      onDeletePress={onDeletePress ? () => onDeletePress(item.bid.toString()) : () => { }}
     />)}
   />
 }

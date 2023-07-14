@@ -326,6 +326,15 @@ const sendQuotation = createAsyncThunk(
   },
 );
 
+// DELETE REQUESTS
+const deleteQuotation = createAsyncThunk(
+  'Quotation/Delete Quotation',
+  async (id: string) => {
+    const response = await constants.apiInstance.delete(`bids/${id}`);
+    return response.data;
+  },
+);
+
 const actions = {
   fetchCars,
   fetchCarsOfUser,
@@ -355,6 +364,7 @@ const actions = {
   updateUser,
   createShop,
   sendQuotation,
+  deleteQuotation,
 };
 
 export default actions;
