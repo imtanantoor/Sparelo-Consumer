@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { ActivityIndicator, FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import CustomTextInput from "../../components/global/CustomTextInput";
@@ -16,6 +16,8 @@ import { connect } from "react-redux";
 import actions from "../../store/actions";
 import CreateShopModel from "../../models/CreateShopModel";
 import authSlice from "../../store/slices/authSlice";
+import { constant } from "lodash";
+import constants from "../../utils/constants";
 
 const fields = {
   storeName: '',
@@ -44,7 +46,7 @@ function SelectionButton({ onPress, label, value }: { onPress: (props?: any) => 
   </TouchableOpacity>
 }
 
-function ShopDetails({ navigation, route, user, creatingShopSuccess, creatingShop, creatingShopFailure, createShop, resetCreateShopState }: any): JSX.Element {
+function ShopDetails({ navigation, route, user, creatingShopSuccess, creatingShop, creatingShopFailure, createShop, resetCreateShopState, fetchShop, fetching, fetchError, resetFetchShopState, shopDetails }: any): JSX.Element {
   const isProfileStack = route?.params?.isProfileStack
   const [assets, setAssets] = useState<any>([])
   const [values, setValues] = useState<any>(fields)
@@ -157,13 +159,67 @@ function ShopDetails({ navigation, route, user, creatingShopSuccess, creatingSho
   }
 
   useEffect(() => {
+    if (isProfileStack) {
+      fetchShop(user._id)
+    }
+  }, [])
+
+  useEffect(() => {
     if (creatingShopSuccess) {
       resetCreateShopState()
       navigation.navigate('Sign In')
     }
   }, [creatingShopSuccess])
 
+  useEffect(() => {
+    if (fetchError) {
+      navigation.goBack()
+      resetFetchShopState()
+    }
+
+    if (shopDetails) {
+      setValues({
+        storeName: shopDetails?.name,
+        location: '',
+        address: shopDetails?.address,
+        brand: {
+          id: shopDetails?.brand?._id,
+          name: shopDetails?.brand?.name
+        },
+        model: {
+          id: shopDetails?.model?._id,
+          name: shopDetails?.model?.name
+        },
+        category: {
+          id: shopDetails?.category?._id,
+          name: shopDetails?.category?.name
+        },
+      })
+      setInitialRegion({
+        latitude: shopDetails?.coordinates?.[0] ? shopDetails.coordinates[0] : 34.0151,
+        longitude: shopDetails?.coordinates?.[1] ? shopDetails.coordinates[2] : 71.5249,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      })
+      setAssets(shopDetails?.images?.map((image: string) => ({
+        fileName: image?.split('/')?.[0] ? image.split('/')[0] : image,
+        type: "image/jpg",
+        uri: constants.baseURL + image,
+      })))
+    }
+  }, [fetchError, fetching])
+
   return <SafeAreaView style={styles.container}>
+    {isProfileStack && fetching && <View style={{
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.2)',
+      position: 'absolute', height: '100%', width: '100%',
+      zIndex: 99,
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
+      <ActivityIndicator size={'large'} color={colors.primary} />
+    </View>}
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
@@ -241,12 +297,17 @@ const mapStateToProps = (state: any) => ({
   creatingShop: state.Auth.creatingShop,
   creatingShopSuccess: state.Auth.creatingShopSuccess,
   creatingShopFailure: state.Auth.creatingShopFailure,
-  user: state.Auth.user
+  fetching: state.Auth.fetchingShop,
+  fetchError: state.Auth.fetchShopError,
+  shopDetails: state.Auth.shopDetails,
+  user: state.Auth.user,
 })
 
 const mapDispatchToProps = {
   createShop: actions.createShop,
-  resetCreateShopState: authSlice.actions.resetCreateShopState
+  resetCreateShopState: authSlice.actions.resetCreateShopState,
+  fetchShop: actions.fetchShop,
+  resetFetchShopState: authSlice.actions.resetFetchShopState
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopDetails)

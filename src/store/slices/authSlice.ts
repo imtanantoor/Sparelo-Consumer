@@ -21,6 +21,10 @@ const initialState: {
   creatingShop: boolean;
   creatingShopSuccess: boolean;
   creatingShopFailure: boolean;
+  fetchingShop: boolean;
+  fetchShopSuccess: boolean;
+  fetchShopError: boolean;
+  shopDetails: any;
 } = {
   authenticated: false,
   showOnBoarding: true,
@@ -39,6 +43,10 @@ const initialState: {
   creatingShop: false,
   creatingShopSuccess: false,
   creatingShopFailure: false,
+  fetchingShop: false,
+  fetchShopError: false,
+  fetchShopSuccess: false,
+  shopDetails: null,
 };
 
 const authSlice = createSlice({
@@ -65,6 +73,11 @@ const authSlice = createSlice({
       state.creatingShop = false;
       state.creatingShopSuccess = false;
       state.creatingShopFailure = false;
+    },
+    resetFetchShopState: state => {
+      state.fetchingShop = false;
+      state.fetchShopError = false;
+      state.fetchShopSuccess = false;
     },
     logout: state => initialState,
   },
@@ -160,6 +173,31 @@ const authSlice = createSlice({
         state.creatingShop = false;
         state.creatingShopFailure = true;
         state.creatingShopSuccess = false;
+      });
+
+    // Fetch Shop
+    builder
+      .addCase(actions.fetchShop.pending, (state, action) => {
+        state.fetchingShop = true;
+        state.fetchShopError = false;
+        state.fetchShopSuccess = false;
+      })
+      .addCase(actions.fetchShop.fulfilled, (state, action) => {
+        state.fetchingShop = false;
+        state.fetchShopError = false;
+        state.fetchShopSuccess = true;
+        state.shopDetails = action.payload ? {...action.payload.shop} : null;
+      })
+      .addCase(actions.fetchShop.rejected, (state, action) => {
+        state.fetchingShop = false;
+        state.fetchShopError = true;
+        state.fetchShopSuccess = false;
+        ToastService.error(
+          'Shop Details',
+          action?.error?.message
+            ? action.error.message
+            : 'Something went wrong',
+        );
       });
   },
 });

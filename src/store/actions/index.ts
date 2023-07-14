@@ -174,6 +174,15 @@ const fetchApprovedQuotations = createAsyncThunk(
     return response.data;
   },
 );
+const fetchShop = createAsyncThunk(
+  'Auth/Fetch Shop Details',
+  async (userId: string) => {
+    const response = await constants.apiInstance.get(
+      `shop/getByUser/${userId}`,
+    );
+    return response.data;
+  },
+);
 
 const createFormData = (data: any) => {
   const formData = new FormData();
@@ -352,6 +361,7 @@ const actions = {
   fetchCancelledQuotations,
   fetchPendingQuotations,
   fetchApprovedQuotations,
+  fetchShop,
   searchParts,
   searchBrands,
   searchModelsOfBrand,
