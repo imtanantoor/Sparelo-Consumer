@@ -25,6 +25,9 @@ const initialState: {
   fetchShopSuccess: boolean;
   fetchShopError: boolean;
   shopDetails: any;
+  updatingShop: boolean;
+  updateShopSuccess: boolean;
+  updateShopError: boolean;
 } = {
   authenticated: false,
   showOnBoarding: true,
@@ -47,6 +50,9 @@ const initialState: {
   fetchShopError: false,
   fetchShopSuccess: false,
   shopDetails: null,
+  updatingShop: false,
+  updateShopError: false,
+  updateShopSuccess: false,
 };
 
 const authSlice = createSlice({
@@ -78,6 +84,11 @@ const authSlice = createSlice({
       state.fetchingShop = false;
       state.fetchShopError = false;
       state.fetchShopSuccess = false;
+    },
+    resetUpdateShopState: state => {
+      state.updatingShop = false;
+      state.updateShopError = false;
+      state.updateShopSuccess = false;
     },
     logout: state => initialState,
   },
@@ -158,6 +169,7 @@ const authSlice = createSlice({
         );
       });
 
+    // Create Shop
     builder
       .addCase(actions.createShop.pending, (state, action) => {
         state.creatingShop = true;
@@ -194,6 +206,31 @@ const authSlice = createSlice({
         state.fetchShopSuccess = false;
         ToastService.error(
           'Shop Details',
+          action?.error?.message
+            ? action.error.message
+            : 'Something went wrong',
+        );
+      });
+
+    // Update Shop
+    builder
+      .addCase(actions.updateShop.pending, (state, action) => {
+        state.updatingShop = true;
+        state.updateShopError = false;
+        state.updateShopSuccess = false;
+      })
+      .addCase(actions.updateShop.fulfilled, (state, action) => {
+        state.updatingShop = false;
+        state.updateShopError = false;
+        state.updateShopSuccess = true;
+        // state.shopDetails = action.payload ? {...action.payload.shop} : null;
+      })
+      .addCase(actions.updateShop.rejected, (state, action) => {
+        state.updatingShop = false;
+        state.updateShopError = true;
+        state.updateShopSuccess = false;
+        ToastService.error(
+          'Update Shop Details',
           action?.error?.message
             ? action.error.message
             : 'Something went wrong',

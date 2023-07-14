@@ -10,6 +10,7 @@ interface AvailabilityCardModel {
   available: boolean;
   quantity: number;
   rating: number;
+  availibilityStatus: string;
 }
 
 export default AvailabilityCardModel;

@@ -23,13 +23,11 @@ const initialState: {
 
 function handleAvailabilityResponse(response: any): AvailabilityCardModel[] {
   return response.map((item: any) => ({
-    id: item.bid.request,
+    id: item?._id,
     bid: item.bid._id,
     images:
-      item?.bid?.request?.images && item.request.images.length > 0
-        ? item?.bid?.request.images?.map(
-            (image: string) => constants.baseURL + image,
-          )
+      item?.bid?.images && item?.bid?.images.length > 0
+        ? item?.bid?.images?.map((image: string) => constants.baseURL + image)
         : [],
     make: item?.bid?.request?.brand?.name,
     model: item?.bid?.request?.model?.name,
@@ -39,6 +37,7 @@ function handleAvailabilityResponse(response: any): AvailabilityCardModel[] {
     available: item?.isAvaiable,
     quantity: item?.bid?.request?.quantity,
     rating: item?.user?.rating,
+    availibilityStatus: item?.bid?.availibilityStatus,
   }));
 }
 

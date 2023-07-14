@@ -23,9 +23,10 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
   const navigation: any = useNavigation()
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
   const { checkingAvailability, checkingAvailabilitySuccess, checkingAvailabilityError } = useSelector((state: any) => state.Availability)
+  const { user } = useSelector((state: any) => state.Auth)
 
   function determineAvailability() {
-    dispatch(actions.checkAvailability(id))
+    dispatch(actions.checkAvailability({ bid: bid.toString(), user: user._id }))
   }
 
   function hideModal() {

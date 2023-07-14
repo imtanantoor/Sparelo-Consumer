@@ -18,6 +18,7 @@ import CreateShopModel from "../../models/CreateShopModel";
 import authSlice from "../../store/slices/authSlice";
 import { constant } from "lodash";
 import constants from "../../utils/constants";
+import UpdateShopModel from "../../models/UpdateShopModel";
 
 const fields = {
   storeName: '',
@@ -46,7 +47,47 @@ function SelectionButton({ onPress, label, value }: { onPress: (props?: any) => 
   </TouchableOpacity>
 }
 
-function ShopDetails({ navigation, route, user, creatingShopSuccess, creatingShop, creatingShopFailure, createShop, resetCreateShopState, fetchShop, fetching, fetchError, resetFetchShopState, shopDetails }: any): JSX.Element {
+interface ShopDetailsProps {
+  navigation: any
+  route: any
+  user: any
+  creatingShopSuccess: boolean
+  creatingShop: boolean
+  creatingShopFailure: boolean
+  fetching: boolean
+  fetchError: boolean
+  shopDetails: any
+  updatingShop: boolean;
+  updateShopSuccess: boolean;
+  updateShopError: boolean;
+  createShop: (data: CreateShopModel) => void
+  resetCreateShopState: () => void
+  fetchShop: (userId: string) => void
+  resetFetchShopState: () => void
+  resetUpdateShopState: () => void
+  updateShop: (data: UpdateShopModel) => void
+}
+
+function ShopDetails({
+  navigation,
+  route,
+  user,
+  creatingShopSuccess,
+  creatingShop,
+  creatingShopFailure,
+  fetching,
+  fetchError,
+  shopDetails,
+  updateShopError,
+  updateShopSuccess,
+  updatingShop,
+  createShop,
+  resetCreateShopState,
+  fetchShop,
+  resetFetchShopState,
+  updateShop,
+  resetUpdateShopState
+}: ShopDetailsProps): JSX.Element {
   const isProfileStack = route?.params?.isProfileStack
   const [assets, setAssets] = useState<any>([])
   const [values, setValues] = useState<any>(fields)
@@ -158,11 +199,36 @@ function ShopDetails({ navigation, route, user, creatingShopSuccess, creatingSho
     createShop(data)
   }
 
+  function handleUpdate() {
+
+    const data: UpdateShopModel = {
+      name: values.storeName,
+      coordinates: [initialRegion.latitude.toString(), initialRegion.longitude.toString()],
+      address: values.address,
+      category: values.category.id,
+      brand: values.brand.id,
+      model: values.model.id,
+      user: user._id,
+      id: shopDetails._id,
+      images: assets
+    }
+
+    console.log({ data })
+    updateShop(data)
+  }
+
   useEffect(() => {
     if (isProfileStack) {
       fetchShop(user._id)
     }
   }, [])
+
+  useEffect(() => {
+    if (updateShopSuccess) {
+      resetUpdateShopState()
+      navigation.goBack()
+    }
+  }, [updateShopSuccess])
 
   useEffect(() => {
     if (creatingShopSuccess) {
@@ -282,10 +348,10 @@ function ShopDetails({ navigation, route, user, creatingShopSuccess, creatingSho
         contentContainerStyle={{ paddingHorizontal: 0 }}
       />
       <CustomButton
-        title="Sign Up"
+        title={isProfileStack ? 'Update' : "Sign Up"}
         disabled={values.storeName == '' || values.address == '' || values.brand.id === '' || values.model.id === '' || values.category.id === '' || creatingShop}
-        submitting={creatingShop}
-        onPress={handleSignUp}
+        submitting={creatingShop || updatingShop}
+        onPress={isProfileStack ? handleUpdate : handleSignUp}
         type="primary"
       />
 
@@ -297,6 +363,9 @@ const mapStateToProps = (state: any) => ({
   creatingShop: state.Auth.creatingShop,
   creatingShopSuccess: state.Auth.creatingShopSuccess,
   creatingShopFailure: state.Auth.creatingShopFailure,
+  updatingShop: state.Auth.updatingShop,
+  updateShopSuccess: state.Auth.updateShopSuccess,
+  updateShopError: state.Auth.updateShopError,
   fetching: state.Auth.fetchingShop,
   fetchError: state.Auth.fetchShopError,
   shopDetails: state.Auth.shopDetails,
@@ -307,7 +376,9 @@ const mapDispatchToProps = {
   createShop: actions.createShop,
   resetCreateShopState: authSlice.actions.resetCreateShopState,
   fetchShop: actions.fetchShop,
-  resetFetchShopState: authSlice.actions.resetFetchShopState
+  resetFetchShopState: authSlice.actions.resetFetchShopState,
+  resetUpdateShopState: authSlice.actions.resetUpdateShopState,
+  updateShop: actions.updateShop
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopDetails)

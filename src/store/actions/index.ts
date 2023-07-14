@@ -7,6 +7,7 @@ import CreateRequestPayload from '../../models/createRequestPayload';
 import FormData from 'form-data';
 import CreateShopModel from '../../models/CreateShopModel';
 import CreateQuotationModel from '../../models/createQuotationModel';
+import UpdateShopModel from '../../models/UpdateShopModel';
 
 const fetchCategories = createAsyncThunk('Categories/fetchAll', async () => {
   const response = await constants.apiInstance.get('categories');
@@ -139,9 +140,10 @@ const fetchAllManufacturers = createAsyncThunk(
 );
 const checkAvailability = createAsyncThunk(
   'Availability/Check Availability',
-  async (bidId: string | number) => {
-    const response = await constants.apiInstance.get(
-      `bids/checkAvailibility/${bidId}`,
+  async (data: CheckAvailability) => {
+    const response = await constants.apiInstance.post(
+      `availability/checkAvailibility`,
+      data,
     );
 
     return response.data;
@@ -335,6 +337,21 @@ const sendQuotation = createAsyncThunk(
   },
 );
 
+// UPDATE REQUESTS
+const updateShop = createAsyncThunk(
+  'Auth/ Update Shop',
+  async (data: UpdateShopModel) => {
+    const response = await constants.apiInstance.patch(
+      'shop/update',
+      createFormData(data),
+      {
+        headers: {'Content-Type': 'multipart/form-data'},
+      },
+    );
+    return response.data;
+  },
+);
+
 // DELETE REQUESTS
 const deleteQuotation = createAsyncThunk(
   'Quotation/Delete Quotation',
@@ -373,6 +390,7 @@ const actions = {
   loginUser,
   updateUser,
   createShop,
+  updateShop,
   sendQuotation,
   deleteQuotation,
 };

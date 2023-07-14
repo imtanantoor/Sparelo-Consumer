@@ -17,7 +17,7 @@ interface AvailabilityCardProps extends AvailabilityCardModel {
   onButtonPress: (props?: any) => void
 }
 
-function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, onButtonPress }: AvailabilityCardProps): JSX.Element {
+function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, availibilityStatus, onButtonPress }: AvailabilityCardProps): JSX.Element {
   const dispatch = useDispatch()
 
   function AddToCart({ item }: { item: CartDataModel }) {
@@ -63,7 +63,10 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
             fontFamily: font.fontFamilies({ type: 'Poppins' }).semiBold,
             textTransform: 'uppercase',
             color: available ? '#414141' : colors.red
-          }}>{available ? 'Available' : 'Not Available'}</Text>
+          }}>
+            {/* {available ? 'Available' : 'Not Available'} */}
+            {availibilityStatus}
+          </Text>
           {available && <CustomButton
             title="Add to Cart"
             onPress={AddToCart({
