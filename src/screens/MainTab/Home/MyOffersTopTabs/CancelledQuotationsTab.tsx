@@ -17,8 +17,7 @@ interface CancelledQuotationsTabProps {
 function CancelledQuotationsTab({ data, user, fetching, error, deleteSuccess, success, fetchCancelledQuotations }: CancelledQuotationsTabProps) {
 
   useEffect(() => {
-    // fetchCancelledQuotations(user._id)
-    fetchCancelledQuotations('64656e68bec729d8efdbb90a')
+    fetchCancelledQuotations(user._id)
   }, [deleteSuccess])
 
   return <QuotationsList

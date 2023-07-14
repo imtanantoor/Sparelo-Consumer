@@ -56,7 +56,7 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
           </View>
         </TouchableOpacity>}
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      {rating !== 0 && <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Rating
           ratingCount={rating}
           ratingColor="#EDD011"
@@ -68,7 +68,7 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
           onFinishRating={() => { }}
         />
         <Text style={styles.ratingText}> {rating} </Text>
-      </View>
+      </View>}
     </View>
     <VoicePlayerPopup
       visible={showVoicePlayer}

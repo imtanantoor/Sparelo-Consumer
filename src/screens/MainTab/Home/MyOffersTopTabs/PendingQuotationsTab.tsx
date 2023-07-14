@@ -21,8 +21,7 @@ interface PendingQuotationsTabProps {
 function PendingQuotationsTab({ data, user, fetching, error, deleteSuccess, deletingQuotation, success, fetchPendingQuotations, deleteQuotation, resetDeleteState }: PendingQuotationsTabProps) {
 
   useEffect(() => {
-    // fetchCancelledQuotations(user._id)
-    fetchPendingQuotations('64656e68bec729d8efdbb90a')
+    fetchPendingQuotations(user._id)
     if (deleteSuccess) {
       resetDeleteState()
     }

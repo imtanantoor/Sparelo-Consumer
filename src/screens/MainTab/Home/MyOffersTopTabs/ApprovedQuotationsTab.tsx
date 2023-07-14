@@ -17,8 +17,7 @@ interface ApprovedQuotationsTabProps {
 function ApprovedQuotationsTab({ data, user, fetching, error, deleteSuccess, success, fetchApprovedQuotations }: ApprovedQuotationsTabProps) {
 
   useEffect(() => {
-    // fetchCancelledQuotations(user._id)
-    fetchApprovedQuotations('64656e68bec729d8efdbb90a')
+    fetchApprovedQuotations(user._id)
   }, [deleteSuccess])
 
   return <QuotationsList
