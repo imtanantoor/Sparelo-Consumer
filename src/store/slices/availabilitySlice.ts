@@ -11,6 +11,9 @@ const initialState: {
   checkingAvailability: boolean;
   checkingAvailabilitySuccess: boolean;
   checkingAvailabilityError: boolean;
+  changingStatus: boolean;
+  changeStatusSuccess: boolean;
+  changeStatusError: boolean;
   data: AvailabilityCardModel[];
 } = {
   fetching: true,
@@ -18,6 +21,9 @@ const initialState: {
   checkingAvailability: false,
   checkingAvailabilitySuccess: false,
   checkingAvailabilityError: false,
+  changeStatusError: false,
+  changeStatusSuccess: false,
+  changingStatus: false,
   data: [],
 };
 
@@ -50,6 +56,11 @@ const availabilitySlice = createSlice({
       state.checkingAvailabilitySuccess = false;
       state.checkingAvailabilityError = false;
     },
+    resetChangingState: state => {
+      state.changingStatus = false;
+      state.changeStatusError = false;
+      state.changeStatusSuccess = false;
+    },
   },
   extraReducers: builder => {
     builder
@@ -78,6 +89,7 @@ const availabilitySlice = createSlice({
         },
       );
 
+    // Check Availability
     builder
       .addCase(actions.checkAvailability.pending, (state, action) => {
         state.checkingAvailability = true;
@@ -94,6 +106,30 @@ const availabilitySlice = createSlice({
         state.checkingAvailabilitySuccess = false;
         ToastService.error(
           'Availability',
+          action?.error?.message
+            ? action.error.message
+            : 'Something went wrong, please try again',
+        );
+        state.checkingAvailabilityError = true;
+      });
+    // Change status
+    builder
+      .addCase(actions.changeAvailability.pending, (state, action) => {
+        state.changingStatus = true;
+        state.changeStatusError = false;
+        state.changeStatusSuccess = false;
+      })
+      .addCase(actions.changeAvailability.fulfilled, (state, action) => {
+        state.changingStatus = false;
+        state.changeStatusError = false;
+        state.changeStatusSuccess = true;
+      })
+      .addCase(actions.changeAvailability.rejected, (state, action) => {
+        state.changingStatus = false;
+        state.changeStatusError = true;
+        state.changeStatusSuccess = false;
+        ToastService.error(
+          'Change Availability',
           action?.error?.message
             ? action.error.message
             : 'Something went wrong, please try again',

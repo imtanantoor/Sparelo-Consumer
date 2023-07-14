@@ -14,10 +14,62 @@ import VoiceSVG from "../../assets/VoiceSVG";
 interface AvailabilityCardProps extends AvailabilityCardModel {
   type: 'results' | 'availability'
   buttonTitle: string
+  mode: 'buyer' | 'vendor';
   onButtonPress: (props?: any) => void
+  handleAvailabilityStatus?: ({ id, isAvailable }: { id: string, isAvailable: boolean }) => void
+  submitting?: boolean
 }
 
-function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, availibilityStatus, onButtonPress }: AvailabilityCardProps): JSX.Element {
+interface StatusAndButtonProps {
+  isVendor: boolean,
+  available: boolean
+  availibilityStatus: string
+  onAddToCart: (props?: any) => void
+  handleAvailabilityStatus: (isAvailable: boolean) => void
+  submitting: boolean
+}
+
+function StatusAndButtons({ isVendor, available, availibilityStatus, submitting, onAddToCart, handleAvailabilityStatus }: StatusAndButtonProps) {
+  if (isVendor) return <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    <CustomButton
+      title="Not Available"
+      onPress={() => handleAvailabilityStatus(false)}
+      type='primary'
+      buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '48%', backgroundColor: colors.white, borderColor: colors.red, borderWidth: 1 }}
+      titleStyle={{ fontSize: 12, color: colors.red }}
+      disabled={submitting}
+      submitting={submitting} />
+    <CustomButton
+      title="Available"
+      onPress={() => handleAvailabilityStatus(true)}
+      type='primary'
+      buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '48%' }}
+      titleStyle={{ fontSize: 12 }}
+      disabled={submitting}
+      submitting={submitting} />
+  </View>
+  return <View style={styles.voiceAndBidsContainer}>
+    <Text style={{
+      fontFamily: font.fontFamilies({ type: 'Poppins' }).semiBold,
+      textTransform: 'uppercase',
+      color: available ? '#414141' : colors.red
+    }}>
+      {/* {available ? 'Available' : 'Not Available'} */}
+      {availibilityStatus}
+    </Text>
+    {available && <CustomButton
+      title="Add to Cart"
+      onPress={onAddToCart}
+      type='primary'
+      buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '45%' }}
+      titleStyle={{ fontSize: 12 }}
+      disabled={false}
+      submitting={false} />
+    }
+  </View>
+}
+
+function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, availibilityStatus, mode, submitting = false, handleAvailabilityStatus, onButtonPress }: AvailabilityCardProps): JSX.Element {
   const dispatch = useDispatch()
 
   function AddToCart({ item }: { item: CartDataModel }) {
@@ -58,36 +110,30 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
           />
           <Text style={styles.ratingText}> {rating} </Text>
         </View>
-        <View style={styles.voiceAndBidsContainer}>
-          <Text style={{
-            fontFamily: font.fontFamilies({ type: 'Poppins' }).semiBold,
-            textTransform: 'uppercase',
-            color: available ? '#414141' : colors.red
-          }}>
-            {/* {available ? 'Available' : 'Not Available'} */}
-            {availibilityStatus}
-          </Text>
-          {available && <CustomButton
-            title="Add to Cart"
-            onPress={AddToCart({
-              item: {
-                id,
-                bid,
-                make,
-                model,
-                year,
-                title: `${make} | ${model} | ${year}`,
-                price: price,
-                offeredBy: '',
-                images
-              }
-            })}
-            type='primary'
-            buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '45%' }}
-            titleStyle={{ fontSize: 12 }}
-            disabled={false}
-            submitting={false} />}
-        </View>
+        <StatusAndButtons
+          isVendor={mode == 'vendor'}
+          available={available}
+          availibilityStatus={availibilityStatus}
+          onAddToCart={AddToCart({
+            item: {
+              id,
+              bid,
+              make,
+              model,
+              year,
+              title: `${make} | ${model} | ${year}`,
+              price: price,
+              offeredBy: '',
+              images
+            }
+          })}
+          submitting={submitting}
+          handleAvailabilityStatus={(isAvailable) => {
+            if (handleAvailabilityStatus) {
+              handleAvailabilityStatus({ id: id.toString(), isAvailable })
+            }
+          }}
+        />
       </Fragment> : <View style={styles.voiceAndBidsContainer}>
         <View style={styles.voiceCard}>
           <VoiceSVG />

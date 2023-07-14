@@ -8,6 +8,7 @@ import FormData from 'form-data';
 import CreateShopModel from '../../models/CreateShopModel';
 import CreateQuotationModel from '../../models/createQuotationModel';
 import UpdateShopModel from '../../models/UpdateShopModel';
+import ChangeAvailabilityStatusModel from '../../models/ChangeAvailabilityStatusModel';
 
 const fetchCategories = createAsyncThunk('Categories/fetchAll', async () => {
   const response = await constants.apiInstance.get('categories');
@@ -337,6 +338,17 @@ const sendQuotation = createAsyncThunk(
   },
 );
 
+const changeAvailability = createAsyncThunk(
+  'Availability/ Change Availability Status',
+  async (data: ChangeAvailabilityStatusModel) => {
+    const resposne = await constants.apiInstance.post(
+      'availability/changeAvailibilityStatus',
+      data,
+    );
+    return resposne;
+  },
+);
+
 // UPDATE REQUESTS
 const updateShop = createAsyncThunk(
   'Auth/ Update Shop',
@@ -386,6 +398,7 @@ const actions = {
   addCar,
   createRequest,
   checkAvailability,
+  changeAvailability,
   signUpUser,
   loginUser,
   updateUser,
