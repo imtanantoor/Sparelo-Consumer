@@ -9,6 +9,7 @@ import modelsSlice from './slices/modelSlice';
 import partsSlice from './slices/partsSlice';
 import availabilitySlice from './slices/availabilitySlice';
 import manufacturerSlice from './slices/manufacturerSlice';
+import QuotationsSlice from './slices/quotationsSlice';
 
 const rootReducer = combineReducers({
   Auth: authSlice.reducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   Manufacturers: manufacturerSlice.reducer,
   Requests: requestsSlice.reducer,
   Parts: partsSlice.reducer,
+  Quotations: QuotationsSlice.reducer,
 });
 
 const store = configureStore({

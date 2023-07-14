@@ -147,6 +147,33 @@ const checkAvailability = createAsyncThunk(
     return response.data;
   },
 );
+const fetchPendingQuotations = createAsyncThunk(
+  'Quotations/fetchPending',
+  async (userId: string) => {
+    const response = await constants.apiInstance.get(
+      `bids/getPendingBids/${userId}`,
+    );
+    return response.data;
+  },
+);
+const fetchCancelledQuotations = createAsyncThunk(
+  'Quotations/fetchCancelled',
+  async (userId: string) => {
+    const response = await constants.apiInstance.get(
+      `bids/getCancelledBids/${userId}`,
+    );
+    return response.data;
+  },
+);
+const fetchApprovedQuotations = createAsyncThunk(
+  'Quotations/fetchApproved',
+  async (userId: string) => {
+    const response = await constants.apiInstance.get(
+      `bids/getApprovedBids/${userId}`,
+    );
+    return response.data;
+  },
+);
 
 const createFormData = (data: any) => {
   const formData = new FormData();
@@ -313,6 +340,9 @@ const actions = {
   fetchAllParts,
   fetchAllAvailableItemsOfUser,
   fetchAllManufacturers,
+  fetchCancelledQuotations,
+  fetchPendingQuotations,
+  fetchApprovedQuotations,
   searchParts,
   searchBrands,
   searchModelsOfBrand,

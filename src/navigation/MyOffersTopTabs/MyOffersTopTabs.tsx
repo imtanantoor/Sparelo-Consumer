@@ -2,6 +2,9 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import font from '../../constants/fonts';
 import colors from '../../constants/colors';
 import DummyScreen from '../../screens/DummyScreen';
+import CancelledQuotationsTab from '../../screens/MainTab/Home/MyOffersTopTabs/CancelledQuotationsTab';
+import ApprovedQuotationsTab from '../../screens/MainTab/Home/MyOffersTopTabs/ApprovedQuotationsTab';
+import PendingQuotationsTab from '../../screens/MainTab/Home/MyOffersTopTabs/PendingQuotationsTab';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -11,6 +14,7 @@ function MyOffersTopTabs({ navigation, route }: any) {
       tabBarContentContainerStyle: {
         paddingTop: 20,
         justifyContent: 'center',
+        backgroundColor: colors.white,
         alignItems: 'center'
       },
       tabBarActiveTintColor: colors.bannerText,
@@ -24,8 +28,9 @@ function MyOffersTopTabs({ navigation, route }: any) {
         fontSize: 12
       }
     }}>
-      <Tab.Screen name="Approved Orders" component={DummyScreen} />
-      <Tab.Screen name="Pending Quotations" component={DummyScreen} />
+      <Tab.Screen name="Cancelled Quotations" component={CancelledQuotationsTab} />
+      <Tab.Screen name="Approved Quotations" component={ApprovedQuotationsTab} />
+      <Tab.Screen name="Pending Quotations" component={PendingQuotationsTab} />
     </Tab.Navigator>
   );
 }
