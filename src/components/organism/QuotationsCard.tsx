@@ -5,35 +5,13 @@ import font from "../../constants/fonts";
 import VoiceSVG from "../../assets/VoiceSVG";
 import { Rating } from 'react-native-ratings'
 import CustomButton from "../global/CustomButton";
-import { useNavigation } from "@react-navigation/native";
-import PartsCardModel from "../../models/partsCard";
-import { useDispatch, useSelector } from "react-redux";
-import { CartDataModel } from "../../models/cartModel";
-import cartSlice from "../../store/slices/cartSlice";
-import availabilitySlice from "../../store/slices/availabilitySlice";
-import actions from "../../store/actions";
-import CustomModal from "./CustomModal";
-import RequestCreationSuccess from "../../assets/RequestCreationSuccess";
 import VoicePlayerPopup from "./VoicePlayerPopup";
 import { useState } from "react";
 import QuotationsCardModel from "../../models/QuotationsCardModel";
 
 
 function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, rating, showDeleteButton, deletingQuotation, onDeletePress }: QuotationsCardModel): JSX.Element {
-  const dispatch: any = useDispatch()
-  const navigation: any = useNavigation()
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
-  const { checkingAvailability, checkingAvailabilitySuccess, checkingAvailabilityError } = useSelector((state: any) => state.Availability)
-
-  function determineAvailability() {
-    dispatch(actions.checkAvailability(id))
-  }
-
-  function hideModal() {
-    dispatch(availabilitySlice.actions.resetCheckingState())
-    navigation.popToTop()
-    navigation.navigate('Home', { screen: 'Home', initial: false })
-  }
 
   function hideVoiceModal() {
     setShowVoicePlayer(false)
@@ -91,17 +69,6 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
         />
         <Text style={styles.ratingText}> {rating} </Text>
       </View>
-      <CustomModal
-        visible={checkingAvailabilitySuccess}
-        title="Request Sent Successful"
-        description="We sent a request to retailer to check the Availability of that part and you will get the response soon in the availability section of app"
-        hideModal={() => hideModal()}
-        Component={() => <RequestCreationSuccess />}
-        showButton
-        buttonTitle="Done"
-        buttonStyle={{ padding: 10, alignSelf: 'flex-end', width: '100%' }}
-        onButtonPress={() => hideModal()}
-      />
     </View>
     <VoicePlayerPopup
       visible={showVoicePlayer}
