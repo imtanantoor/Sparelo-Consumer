@@ -15,7 +15,7 @@ import ToastService from "../../Services/ToastService";
 function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   const [values, setValues] = useState<any>({
     name: '',
-    contact: '+92',
+    contact: '',
     password: ''
   })
   const [touched, setTouched] = useState({
@@ -51,7 +51,9 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
 
   function handleBlur(fieldName: string, required: boolean) {
     return () => {
-      let phoneNumberRegex = /([+(\d]{1})(([\d+() -.]){5,13})([+(\d]{1})/gm;
+      // let phoneNumberRegex = /([+(\d]{1})(([\d+() -.]){5,13})([+(\d]{1})/gm;
+      let phoneNumberRegex = /^(?:\+92|92|0)\d{10}$/;
+
 
       if (fieldName === 'contact' && !phoneNumberRegex.test(values.contact)) {
         return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
@@ -73,7 +75,9 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
 
   function handleChange(value: string, fieldName: string) {
     setValues({ ...values, [fieldName]: value })
-    let phoneNumberRegex = /([+(\d]{1})(([\d+() -.]){5,13})([+(\d]{1})/gm;
+    // let phoneNumberRegex = /([+(\d]{1})(([\d+() -.]){5,13})([+(\d]{1})/gm;
+    let phoneNumberRegex = /^(?:\+92|92|0)\d{10}$/;
+
     if (fieldName === 'contact' && !phoneNumberRegex.test(value)) {
       return setErrors({ ...errors, contact: `${fieldName} is invalid!` })
     }
