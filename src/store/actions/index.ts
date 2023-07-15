@@ -194,6 +194,14 @@ const fetchOrdersHistory = createAsyncThunk(
   },
 );
 
+const fetchVendorsOrderHistory = createAsyncThunk(
+  'Orders/fetch Vendor Order History',
+  async (userId: string) => {
+    const response = constants.apiInstance.get(`orders/getByVendor/${userId}`);
+    return (await response).data;
+  },
+);
+
 const createFormData = (data: any) => {
   const formData = new FormData();
 
@@ -406,6 +414,7 @@ const actions = {
   fetchPendingQuotations,
   fetchApprovedQuotations,
   fetchOrdersHistory,
+  fetchVendorsOrderHistory,
   fetchShop,
   searchParts,
   searchBrands,

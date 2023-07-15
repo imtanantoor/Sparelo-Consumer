@@ -49,6 +49,7 @@ const ordersSlice = createSlice({
   reducers: {},
   initialState,
   extraReducers: builder => {
+    // fetch buyer orders history
     builder
       .addCase(actions.fetchOrdersHistory.pending, (state, action) => {
         state.fetchingOrdersHistory = true;
@@ -64,6 +65,27 @@ const ordersSlice = createSlice({
         );
       })
       .addCase(actions.fetchOrdersHistory.rejected, (state, action) => {
+        state.fetchingOrdersHistory = false;
+        state.fetchingOrdersHistoryError = true;
+        state.fetchingOrdersHistorySuccess = false;
+      });
+
+    // fetch vendor orders history
+    builder
+      .addCase(actions.fetchVendorsOrderHistory.pending, (state, action) => {
+        state.fetchingOrdersHistory = true;
+        state.fetchingOrdersHistoryError = false;
+        state.fetchingOrdersHistorySuccess = false;
+      })
+      .addCase(actions.fetchVendorsOrderHistory.fulfilled, (state, action) => {
+        state.fetchingOrdersHistory = false;
+        state.fetchingOrdersHistoryError = false;
+        state.fetchingOrdersHistorySuccess = true;
+        state.ordersHistory = handleOrdersHistoryResponse(
+          action.payload.orders,
+        );
+      })
+      .addCase(actions.fetchVendorsOrderHistory.rejected, (state, action) => {
         state.fetchingOrdersHistory = false;
         state.fetchingOrdersHistoryError = true;
         state.fetchingOrdersHistorySuccess = false;

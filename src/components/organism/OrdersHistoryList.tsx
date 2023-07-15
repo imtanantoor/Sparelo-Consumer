@@ -11,22 +11,29 @@ interface OrdersHistoryListProps {
   fetching: boolean
   error: boolean
   user: UserModel
+  mode: 'buyer' | 'vendor'
   fetchOrdersHistory: (userId: string) => void
+  fetchVendorsOrderHistory: (userId: string) => void
 }
 
-function OrdersHistoryList({ data, fetching, user, error, fetchOrdersHistory }: OrdersHistoryListProps) {
+function OrdersHistoryList({ data, fetching, user, error, mode, fetchOrdersHistory, fetchVendorsOrderHistory }: OrdersHistoryListProps) {
 
   useEffect(() => {
-    fetchOrdersHistory(user._id)
+    if (mode === 'vendor')
+      fetchVendorsOrderHistory(user._id)
+    else
+      fetchOrdersHistory(user._id)
   }, [])
 
   function handleApiCall() {
-    if (!fetching)
-      fetchOrdersHistory(user._id)
+    if (!fetching) {
+      mode === 'vendor' ? fetchVendorsOrderHistory(user._id) : fetchOrdersHistory(user._id)
+    }
   }
 
   return <FlatList
     data={data}
+    style={{ flex: 1 }}
     refreshControl={<RefreshControl refreshing={fetching} onRefresh={handleApiCall} />}
     ListEmptyComponent={<ListEmptyComponent
       fetching={fetching}
@@ -40,11 +47,13 @@ const mapStateToProps = (state: any) => ({
   data: state.Orders.ordersHistory,
   fetching: state.Orders.fetchingOrdersHistory,
   error: state.Orders.fetchingOrdersHistoryError,
+  mode: state.Auth.mode,
   user: state.Auth.user
 })
 
 const mapDispatchToProps = {
-  fetchOrdersHistory: actions.fetchOrdersHistory
+  fetchOrdersHistory: actions.fetchOrdersHistory,
+  fetchVendorsOrderHistory: actions.fetchVendorsOrderHistory
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersHistoryList)
