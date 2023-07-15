@@ -5,6 +5,7 @@ import CustomButton from "../../components/global/CustomButton";
 import CustomForm from "../../components/organism/CustomForm";
 import colors from "../../constants/colors";
 
+
 function ResetPassword({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   const [values, setValues] = useState<any>({
     password: '',
@@ -19,13 +20,15 @@ function ResetPassword({ navigation }: NativeStackScreenProps<any>): JSX.Element
     resetPassword: ''
   })
   const [submitting, setSubmitting] = useState<boolean>(false)
+
   function handleSubmit() {
-    setSubmitting(true)
-    setTimeout(() => {
-      setSubmitting(false)
-      navigation.navigate('Reset Success')
-    }, 1000)
+    // setSubmitting(true)
+    // setTimeout(() => {
+    //   setSubmitting(false)
+    //   navigation.navigate('Reset Success')
+    // }, 1000)
   }
+
   function handleBlur(fieldName: string, required: boolean) {
     return () => {
       if (values[fieldName] === '' && required) {
@@ -33,11 +36,26 @@ function ResetPassword({ navigation }: NativeStackScreenProps<any>): JSX.Element
       }
     }
   }
+
   function handleChange(value: string, fieldName: string) {
     setValues({ ...values, [fieldName]: value })
+
+    if (value === '') {
+      return setErrors({ ...errors, [fieldName]: `${fieldName} is required!` })
+    }
+
+    if (value.length < 8) {
+      return setErrors({ ...errors, [fieldName]: `${fieldName} must be at least 8 characters long` })
+    }
+
+    if (fieldName === 'resetPassword') {
+      return values.password !== value ? setErrors({ ...errors, [fieldName]: 'Passwords do not match' }) : setErrors({ ...errors, [fieldName]: '' })
+    }
+
     if (value !== '')
-      setErrors({ ...errors, [fieldName]: '' })
+      return setErrors({ ...errors, [fieldName]: '' })
   }
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -64,13 +82,23 @@ function ResetPassword({ navigation }: NativeStackScreenProps<any>): JSX.Element
       handleChange={(text, fieldName) => handleChange(text, fieldName)}
       fields={[
         {
-          label: 'Password', placeholder: 'Enter your password', required: true, disabled: false, fieldName: 'password',
+          label: 'Password',
+          placeholder: 'Enter your password',
+          required: true,
+          disabled: false,
+          fieldName: 'password',
+          value: values.password,
           props: {
             secureTextEntry: true
           }
         },
         {
-          label: 'Verify password', placeholder: 'Re-enter your password', required: true, disabled: false, fieldName: 'resetPassword',
+          label: 'Verify password',
+          value: values.resetPassword,
+          placeholder: 'Re-enter your password',
+          required: true,
+          disabled: false,
+          fieldName: 'resetPassword',
           props: {
             secureTextEntry: true
           }

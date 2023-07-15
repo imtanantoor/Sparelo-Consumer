@@ -28,7 +28,9 @@ function Profile({ navigation }: NativeStackScreenProps<any>): JSX.Element {
       <CustomButton
         type="menu"
         title="Change password"
-        onPress={() => { }}
+        onPress={() => {
+          navigation.navigate('Change Password')
+        }}
         disabled={false}
         submitting={false}
       />
