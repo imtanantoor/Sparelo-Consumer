@@ -186,6 +186,13 @@ const fetchShop = createAsyncThunk(
     return response.data;
   },
 );
+const fetchOrdersHistory = createAsyncThunk(
+  'Orders/fetch History',
+  async (userId: string) => {
+    const response = constants.apiInstance.get(`orders/getByUser/${userId}`);
+    return (await response).data;
+  },
+);
 
 const createFormData = (data: any) => {
   const formData = new FormData();
@@ -398,6 +405,7 @@ const actions = {
   fetchCancelledQuotations,
   fetchPendingQuotations,
   fetchApprovedQuotations,
+  fetchOrdersHistory,
   fetchShop,
   searchParts,
   searchBrands,

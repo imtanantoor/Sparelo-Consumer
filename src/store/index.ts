@@ -10,6 +10,7 @@ import partsSlice from './slices/partsSlice';
 import availabilitySlice from './slices/availabilitySlice';
 import manufacturerSlice from './slices/manufacturerSlice';
 import QuotationsSlice from './slices/quotationsSlice';
+import ordersSlice from './slices/ordersSlice';
 
 const rootReducer = combineReducers({
   Auth: authSlice.reducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   Categories: categoriesSlice.reducer,
   Models: modelsSlice.reducer,
   Manufacturers: manufacturerSlice.reducer,
+  Orders: ordersSlice.reducer,
   Requests: requestsSlice.reducer,
   Parts: partsSlice.reducer,
   Quotations: QuotationsSlice.reducer,

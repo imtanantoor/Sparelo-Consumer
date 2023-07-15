@@ -44,7 +44,9 @@ function Profile({ navigation }: NativeStackScreenProps<any>): JSX.Element {
       <CustomButton
         type="menu"
         title="Order History"
-        onPress={() => { }}
+        onPress={() => {
+          navigation.navigate('Order History')
+        }}
         disabled={false}
         submitting={false}
       />

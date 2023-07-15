@@ -5,6 +5,8 @@ import EditProfile from "../../screens/MainTab/Profile/EditProfile";
 import Profile from "../../screens/MainTab/Profile/Profile";
 import ShopDetails from "../../screens/Auth/ShopDetails";
 import Search from "../../screens/MainTab/Home/FindYourParts/Search";
+import DummyScreen from "../../screens/DummyScreen";
+import OrderHistory from "../../screens/MainTab/Profile/OrderHistory";
 
 const Stack = createNativeStackNavigator()
 
@@ -20,6 +22,7 @@ function ProfileStack(): JSX.Element {
     headerTitleAlign: 'center',
   }}>
     <Stack.Screen name="My Profile" component={Profile} />
+    <Stack.Screen name="Order History" component={OrderHistory} />
     <Stack.Screen name="Edit Profile" component={EditProfile} />
     <Stack.Screen name="Shop Details" component={ShopDetails} />
     <Stack.Screen name="Search" options={{ contentStyle: { backgroundColor: colors.white } }} component={Search} />
