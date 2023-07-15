@@ -10,6 +10,7 @@ import font from "../../constants/fonts";
 import auth from '@react-native-firebase/auth';
 import constants from "../../utils/constants";
 import ToastService from "../../Services/ToastService";
+import helpers from "../../utils/helpers";
 
 
 function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
@@ -34,11 +35,11 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   async function handleSignUp() {
     setSubmitting(true)
     try {
-      const confirmation = await auth().signInWithPhoneNumber(values.contact, true);
+      const confirmation = await auth().signInWithPhoneNumber(helpers.handleOTPNumber(values.contact), true);
       setConfirm(confirm)
       navigation.navigate("Verification", {
         confirmation,
-        contact: values.contact,
+        contact: helpers.handleOTPNumber(values.contact),
         signUpValues: { ...values }
       })
 

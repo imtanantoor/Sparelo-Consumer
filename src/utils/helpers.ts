@@ -37,10 +37,42 @@ const randomHeightGenerator = (min: number, max: number): number => {
   return min + Math.random() * (max - min);
 };
 
+function handleOTPNumber(mobileNo: string) {
+  let first3 = mobileNo.slice(0, 3);
+  let finalNumber = '';
+
+  if (first3.includes('+92')) {
+    finalNumber = mobileNo;
+  } else if (first3.includes('92')) {
+    finalNumber = '+' + mobileNo;
+  } else {
+    finalNumber = '+92' + mobileNo.replace('0', '');
+  }
+
+  return finalNumber;
+}
+
+function handleSignInNumber(mobileNo: string) {
+  let first3 = mobileNo.slice(0, 3);
+  let finalNumber = '';
+
+  if (first3.includes('+92')) {
+    finalNumber = mobileNo.replace('+92', '0');
+  } else if (first3.includes('92')) {
+    finalNumber = mobileNo.replace('+92', '0');
+  } else {
+    finalNumber = mobileNo;
+  }
+
+  return finalNumber;
+}
+
 const helpers = {
   checkPermissions,
   requestPermissions,
   randomHeightGenerator,
+  handleOTPNumber,
+  handleSignInNumber,
 };
 
 export default helpers;

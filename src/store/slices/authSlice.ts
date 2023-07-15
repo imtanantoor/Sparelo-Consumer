@@ -104,14 +104,14 @@ const authSlice = createSlice({
         state.registerError = false;
         state.registerSuccess = true;
       })
-      .addCase(actions.signUpUser.rejected, (state, action) => {
+      .addCase(actions.signUpUser.rejected, (state, action: any) => {
         state.registering = false;
         state.registerError = true;
         state.registerSuccess = false;
         ToastService.error(
           'Sign up',
-          action?.error?.message
-            ? action.error.message
+          action?.payload?.error
+            ? action.payload.error
             : 'Something went wrong',
         );
       });
@@ -138,8 +138,8 @@ const authSlice = createSlice({
 
         ToastService.error(
           'Login',
-          action?.payload?.message
-            ? action.payload.message
+          action?.payload?.error
+            ? action.payload.error
             : 'Something went wrong',
         );
       });

@@ -278,9 +278,13 @@ const addCar = createAsyncThunk('Cars/Add Car', async (data: AddCarModel) => {
 
 const signUpUser = createAsyncThunk(
   'Auth/SignUp',
-  async (data: SignUpUserModel) => {
-    const response = await constants.apiInstance.post('users/signup', data);
-    return response.data;
+  async (data: SignUpUserModel, {rejectWithValue}) => {
+    try {
+      const response = await constants.apiInstance.post('users/signup', data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
   },
 );
 

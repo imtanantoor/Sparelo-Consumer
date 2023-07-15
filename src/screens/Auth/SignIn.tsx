@@ -12,6 +12,7 @@ import ToastService from "../../Services/ToastService";
 import constants from "../../utils/constants";
 import actions from "../../store/actions";
 import { connect } from "react-redux";
+import helpers from "../../utils/helpers";
 
 interface SignInProps {
   navigation: any
@@ -36,7 +37,7 @@ function SignIn({ navigation, submitting, loginSuccess, loginError, login }: Sig
   })
 
   function handleSignIn() {
-    login(values)
+    login({ ...values, contact: helpers.handleSignInNumber(values.contact) })
   }
 
   function handleBlur(fieldName: string, required: boolean) {
