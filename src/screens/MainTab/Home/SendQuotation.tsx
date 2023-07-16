@@ -179,6 +179,7 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
         disabled={false}
         label="Choose Price"
         value={values.price}
+        keyboardType='number-pad'
         placeholder="Price"
         onBlur={() => { handleBlur('price', true) }}
         onChangeText={(text: string) => handleChange(text, 'price')}

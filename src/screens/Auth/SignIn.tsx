@@ -113,7 +113,8 @@ function SignIn({ navigation, submitting, loginSuccess, loginError, login }: Sig
           fieldName: 'contact',
           value: values.contact,
           props: {
-            keyboardType: 'number-pad'
+            // keyboardType: 'number-pad'
+            keyboardType: 'decimal-pad'
           }
         },
         {
