@@ -11,6 +11,7 @@ interface AvailabilityCardModel {
   quantity: number;
   rating: number;
   availibilityStatus: string;
+  audioNote?: string;
 }
 
 export default AvailabilityCardModel;

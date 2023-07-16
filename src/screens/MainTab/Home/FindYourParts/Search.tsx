@@ -98,8 +98,7 @@ function SearchList({ type, categories, brands, models, values, setValues }: Sea
   return <FlatList
     data={categories}
     numColumns={3}
-    contentContainerStyle={{ height: '70%', }}
-    style={{ maxHeight: '70%' }}
+    style={{ maxHeight: '70%', minHeight: '50%' }}
     ListEmptyComponent={() => <ListEmptyComponent
       height={Dimensions.get('window').height * 0.5}
       fetching={fetchingCategories} error={fetchingCategoriesError} hideButton onPress={() => { }} />}

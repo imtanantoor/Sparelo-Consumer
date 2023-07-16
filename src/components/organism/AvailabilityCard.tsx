@@ -8,8 +8,9 @@ import { useDispatch } from "react-redux";
 import { CartDataModel } from "../../models/cartModel";
 import cartSlice from "../../store/slices/cartSlice";
 import AvailabilityCardModel from "../../models/AvailabilityCardsModel";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import VoiceSVG from "../../assets/VoiceSVG";
+import VoicePlayerPopup from "./VoicePlayerPopup";
 
 interface AvailabilityCardProps extends AvailabilityCardModel {
   type: 'results' | 'availability'
@@ -54,7 +55,6 @@ function StatusAndButtons({ isVendor, available, availibilityStatus, submitting,
       textTransform: 'uppercase',
       color: available ? '#414141' : colors.red
     }}>
-      {/* {available ? 'Available' : 'Not Available'} */}
       {availibilityStatus}
     </Text>
     {available && <CustomButton
@@ -69,8 +69,12 @@ function StatusAndButtons({ isVendor, available, availibilityStatus, submitting,
   </View>
 }
 
-function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, availibilityStatus, mode, submitting = false, handleAvailabilityStatus, onButtonPress }: AvailabilityCardProps): JSX.Element {
+function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, audioNote, availibilityStatus, mode, submitting = false, handleAvailabilityStatus, onButtonPress }: AvailabilityCardProps): JSX.Element {
   const dispatch = useDispatch()
+  const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
+  function hideVoiceModal() {
+    setShowVoicePlayer(false)
+  }
 
   function AddToCart({ item }: { item: CartDataModel }) {
     return () => dispatch(cartSlice.actions.addToCart(item))
@@ -135,9 +139,9 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
           }}
         />
       </Fragment> : <View style={styles.voiceAndBidsContainer}>
-        <View style={styles.voiceCard}>
+        {audioNote && <TouchableOpacity onPress={() => setShowVoicePlayer(true)} style={styles.voiceCard}>
           <VoiceSVG />
-        </View>
+        </TouchableOpacity>}
         <CustomButton
           title={buttonTitle}
           disabled={false}
@@ -150,6 +154,11 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
       </View>}
 
     </View>
+    {audioNote && <VoicePlayerPopup
+      visible={showVoicePlayer}
+      hideModal={hideVoiceModal}
+      audioNote={audioNote}
+    />}
   </TouchableOpacity>
 }
 
