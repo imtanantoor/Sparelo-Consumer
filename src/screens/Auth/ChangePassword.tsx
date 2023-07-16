@@ -1,11 +1,24 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Platform, SafeAreaView, StyleSheet } from "react-native";
 import CustomForm from "../../components/organism/CustomForm";
 import colors from "../../constants/colors";
+import { connect } from "react-redux";
+import actions from "../../store/actions";
+import authSlice from "../../store/slices/authSlice";
 
+interface ChangePasswordProps {
+  navigation: NativeStackScreenProps<any>
+  changingPassword: boolean;
+  changingPasswordError: boolean;
+  changingPasswordSuccess: boolean;
+  user: UserModel;
+  changePassword: (data: ChangePasswordModel) => void
+  resetChangingPasswordState: () => void
+  logout: () => void
+}
 
-function ChangePassword({ navigation }: NativeStackScreenProps<any>): JSX.Element {
+function ChangePassword({ navigation, user, changingPassword, changingPasswordError, changingPasswordSuccess, changePassword, resetChangingPasswordState, logout }: ChangePasswordProps): JSX.Element {
   const [values, setValues] = useState<any>({
     password: '',
     resetPassword: ''
@@ -24,11 +37,13 @@ function ChangePassword({ navigation }: NativeStackScreenProps<any>): JSX.Elemen
     if (values.password !== values.resetPassword) {
       return setErrors({ ...errors, resetPassword: 'Passwords do not match' })
     }
-    // setSubmitting(true)
-    // setTimeout(() => {
-    //   setSubmitting(false)
-    //   navigation.navigate('Reset Success')
-    // }, 1000)
+
+    const data: ChangePasswordModel = {
+      contact: user.contact,
+      newPassword: values.password
+    }
+    changePassword(data)
+
   }
 
   function handleBlur(fieldName: string, required: boolean) {
@@ -57,6 +72,11 @@ function ChangePassword({ navigation }: NativeStackScreenProps<any>): JSX.Elemen
     if (value !== '')
       return setErrors({ ...errors, [fieldName]: '' })
   }
+
+  useEffect(() => {
+    if (changingPasswordSuccess)
+      logout()
+  }, [changingPasswordSuccess])
 
   return <SafeAreaView style={styles.container}>
     <CustomForm
@@ -93,9 +113,9 @@ function ChangePassword({ navigation }: NativeStackScreenProps<any>): JSX.Elemen
       setTouched={setTouched}
       submitAction={{
         title: 'Send Password',
-        submitting: submitting,
+        submitting: changingPassword,
         type: 'primary',
-        disabled: submitting || Object.values(errors).some((value) => value !== '') || Object.values(values).some((value) => value == ''),
+        disabled: changingPassword || Object.values(errors).some((value) => value !== '') || Object.values(values).some((value) => value == ''),
         onPress: handleSubmit
       }}
       fieldsContainerStyle={{ marginTop: 20, marginBottom: 0 }}
@@ -104,7 +124,20 @@ function ChangePassword({ navigation }: NativeStackScreenProps<any>): JSX.Elemen
   </SafeAreaView>
 }
 
-export default ChangePassword
+const mapStateTopProps = (state: any) => ({
+  changingPassword: state.Auth.changingPassword,
+  changingPasswordSuccess: state.Auth.changingPasswordSuccess,
+  changingPasswordError: state.Auth.changingPasswordError,
+  user: state.Auth.user
+})
+
+const mapDispatchToProps = {
+  changePassword: actions.changePassword,
+  resetChangingPasswordState: authSlice.actions.resetChangingPasswordState,
+  logout: authSlice.actions.logout,
+}
+
+export default connect(mapStateTopProps, mapDispatchToProps)(ChangePassword)
 
 const styles = StyleSheet.create({
   container: {

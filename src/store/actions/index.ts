@@ -372,6 +372,21 @@ const changeAvailability = createAsyncThunk(
   },
 );
 
+const changePassword = createAsyncThunk(
+  'Auth / Change Password',
+  async (data: ChangePasswordModel, {rejectWithValue}) => {
+    try {
+      const response = await constants.apiInstance.post(
+        'users/changePassword',
+        data,
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.error);
+    }
+  },
+);
+
 // UPDATE REQUESTS
 const updateShop = createAsyncThunk(
   'Auth/ Update Shop',
@@ -424,6 +439,7 @@ const actions = {
   createRequest,
   checkAvailability,
   changeAvailability,
+  changePassword,
   signUpUser,
   loginUser,
   updateUser,

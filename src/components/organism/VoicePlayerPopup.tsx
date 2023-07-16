@@ -2,12 +2,13 @@ import Modal from "react-native-modal";
 import colors from "../../constants/colors";
 import VoicePlayer from "./VoicePlayer";
 import constants from "../../utils/constants";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import PlayIcon from "../../assets/icons/PlayIcon";
 import PauseIcon from "../../assets/icons/PauseIcon";
 import StopIcon from "../../assets/icons/StopIcon";
 import { useEffect, useState } from "react";
 import AudioServices from "../../Services/AudioServices";
+import ToastService from "../../Services/ToastService";
 interface VoicePlayerPopup {
   audioNote: string
   visible: boolean
@@ -16,16 +17,25 @@ interface VoicePlayerPopup {
 
 function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
   const [playing, setPlaying] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   function HandlePlay() {
+    setLoading(true)
     if (playing) {
       AudioServices.PauseAudio()
       setPlaying(false)
       return
     }
-    AudioServices.PlayAudio(constants.baseURL + audioNote).then((data) => {
-      setPlaying(true)
-    })
+    AudioServices.PlayAudio(constants.baseURL + audioNote, { 'Accept': 'application/json', })
+      .then((data) => {
+        setPlaying(true)
+        setLoading(false)
+      }).catch(error => {
+        console.log(error)
+        setLoading(false)
+        hideModal()
+        ToastService.error('Voice player', JSON.stringify(error))
+      })
   }
 
   function handleHide() {
@@ -57,7 +67,7 @@ function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
     />
     <View style={styles.playerButtonsContainer}>
       <TouchableOpacity onPress={HandlePlay} style={styles.actionButton}>
-        {playing ? <PauseIcon fill={colors.primary} /> : <PlayIcon fill={colors.primary} />}
+        {loading ? <ActivityIndicator color={colors.primary} size={'small'} /> : playing ? <PauseIcon fill={colors.primary} /> : <PlayIcon fill={colors.primary} />}
       </TouchableOpacity>
       <TouchableOpacity onPress={StopAudio} style={styles.actionButton}>
         <StopIcon fill={colors.primary} />

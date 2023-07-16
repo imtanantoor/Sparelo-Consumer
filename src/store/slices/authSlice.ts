@@ -28,6 +28,9 @@ const initialState: {
   updatingShop: boolean;
   updateShopSuccess: boolean;
   updateShopError: boolean;
+  changingPassword: boolean;
+  changingPasswordError: boolean;
+  changingPasswordSuccess: boolean;
 } = {
   authenticated: false,
   showOnBoarding: true,
@@ -53,6 +56,9 @@ const initialState: {
   updatingShop: false,
   updateShopError: false,
   updateShopSuccess: false,
+  changingPassword: false,
+  changingPasswordError: false,
+  changingPasswordSuccess: false,
 };
 
 const authSlice = createSlice({
@@ -89,6 +95,11 @@ const authSlice = createSlice({
       state.updatingShop = false;
       state.updateShopError = false;
       state.updateShopSuccess = false;
+    },
+    resetChangingPasswordState: state => {
+      state.changingPassword = false;
+      state.changingPasswordError = false;
+      state.changingPasswordSuccess = false;
     },
     logout: state => initialState,
   },
@@ -234,6 +245,30 @@ const authSlice = createSlice({
           'Update Shop Details',
           action?.error?.message
             ? action.error.message
+            : 'Something went wrong',
+        );
+      });
+
+    // Change password
+    builder
+      .addCase(actions.changePassword.pending, (state, action) => {
+        state.changingPassword = true;
+        state.changingPasswordError = false;
+        state.changingPasswordSuccess = false;
+      })
+      .addCase(actions.changePassword.fulfilled, (state, action) => {
+        state.changingPassword = false;
+        state.changingPasswordError = false;
+        state.changingPasswordSuccess = true;
+      })
+      .addCase(actions.changePassword.rejected, (state, action: any) => {
+        state.changingPassword = false;
+        state.changingPasswordError = true;
+        state.changingPasswordSuccess = false;
+        ToastService.error(
+          'Login',
+          action?.payload?.error
+            ? action.payload.error
             : 'Something went wrong',
         );
       });
