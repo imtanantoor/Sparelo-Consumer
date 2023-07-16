@@ -127,7 +127,7 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
           placeholder: 'Enter contact',
           required: true, disabled: false, fieldName: 'contact',
           props: {
-            keyboardType: 'number-pad'
+            keyboardType: 'phone-pad'
           },
           value: values.contact
         },
