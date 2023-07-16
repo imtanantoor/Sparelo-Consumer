@@ -5,6 +5,7 @@ interface OrderHistoryCardProps {
   year: string;
   requestedBy: string;
   category: string;
+  orderStatus: string;
 }
 
 export default OrderHistoryCardProps;

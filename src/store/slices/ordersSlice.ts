@@ -31,6 +31,7 @@ function handleOrdersHistoryResponse(data: any): OrderHistoryCardProps[] {
         year: requestData?.manufacturingYear,
         requestedBy: order?.orderBy?.name,
         category: requestData?.category?.name,
+        orderStatus: order?.status,
       };
 
     return {

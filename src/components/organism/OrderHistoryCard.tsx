@@ -3,8 +3,10 @@ import colors from "../../constants/colors";
 import CustomImage from "../global/CustomImage";
 import OrderHistoryCardProps from "../../models/orderHistoryCardProps";
 import font from "../../constants/fonts";
+import dataConstants from "../../constants/dataConstants";
 
-function OrderHistoryCard({ images, make, model, year, category, requestedBy }: OrderHistoryCardProps) {
+function OrderHistoryCard({ images, make, model, year, category, requestedBy, orderStatus }: OrderHistoryCardProps) {
+
   return <View style={styles.container}>
     <CustomImage
       imageUrl={images?.[0] ? images[0] : ''}
@@ -16,6 +18,12 @@ function OrderHistoryCard({ images, make, model, year, category, requestedBy }: 
       <View>
         <Text style={styles.description}>{make ? `${make} |` : ''} {model ? `${model} |` : ''} {year ? `${year} |` : ''}</Text>
       </View>
+      <Text style={{
+        fontFamily: font.fontFamilies({ type: 'Poppins' }).semiBold,
+        marginVertical: 10,
+        textTransform: 'uppercase',
+        color: dataConstants.orderStatusTextColor[orderStatus.toLowerCase()],
+      }}>{orderStatus}</Text>
     </View>
   </View>
 }
@@ -36,7 +44,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
   },
   rightSection: {
     paddingHorizontal: 20,

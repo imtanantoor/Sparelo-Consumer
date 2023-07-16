@@ -66,6 +66,7 @@ interface ShopDetailsProps {
   resetFetchShopState: () => void
   resetUpdateShopState: () => void
   updateShop: (data: UpdateShopModel) => void
+  logout: () => void
 }
 
 function ShopDetails({
@@ -86,7 +87,8 @@ function ShopDetails({
   fetchShop,
   resetFetchShopState,
   updateShop,
-  resetUpdateShopState
+  resetUpdateShopState,
+  logout
 }: ShopDetailsProps): JSX.Element {
   const isProfileStack = route?.params?.isProfileStack
   const [assets, setAssets] = useState<any>([])
@@ -213,7 +215,6 @@ function ShopDetails({
       images: assets
     }
 
-    console.log({ data })
     updateShop(data)
   }
 
@@ -226,7 +227,7 @@ function ShopDetails({
   useEffect(() => {
     if (updateShopSuccess) {
       resetUpdateShopState()
-      navigation.goBack()
+      logout()
     }
   }, [updateShopSuccess])
 
@@ -378,7 +379,8 @@ const mapDispatchToProps = {
   fetchShop: actions.fetchShop,
   resetFetchShopState: authSlice.actions.resetFetchShopState,
   resetUpdateShopState: authSlice.actions.resetUpdateShopState,
-  updateShop: actions.updateShop
+  updateShop: actions.updateShop,
+  logout: authSlice.actions.logout
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopDetails)

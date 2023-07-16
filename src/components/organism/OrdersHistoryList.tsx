@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import ListEmptyComponent from "../global/ListEmptyComponent";
 import OrderHistoryCardProps from "../../models/orderHistoryCardProps";
 import OrderHistoryCard from "./OrderHistoryCard";
+import colors from "../../constants/colors";
 
 interface OrdersHistoryListProps {
   data: OrderHistoryCardProps[]
@@ -14,9 +15,10 @@ interface OrdersHistoryListProps {
   mode: 'buyer' | 'vendor'
   fetchOrdersHistory: (userId: string) => void
   fetchVendorsOrderHistory: (userId: string) => void
+  filterStatus?: string
 }
 
-function OrdersHistoryList({ data, fetching, user, error, mode, fetchOrdersHistory, fetchVendorsOrderHistory }: OrdersHistoryListProps) {
+function OrdersHistoryList({ data, fetching, user, error, mode, filterStatus, fetchOrdersHistory, fetchVendorsOrderHistory }: OrdersHistoryListProps) {
 
   useEffect(() => {
     if (mode === 'vendor')
@@ -32,8 +34,13 @@ function OrdersHistoryList({ data, fetching, user, error, mode, fetchOrdersHisto
   }
 
   return <FlatList
-    data={data}
-    style={{ flex: 1 }}
+    data={data.filter((item) => {
+      if (!!filterStatus) {
+        return filterStatus?.toLowerCase() === item?.orderStatus.toLowerCase()
+      }
+      return true
+    })}
+    style={{ flex: 1, backgroundColor: colors.white }}
     refreshControl={<RefreshControl refreshing={fetching} onRefresh={handleApiCall} />}
     ListEmptyComponent={<ListEmptyComponent
       fetching={fetching}

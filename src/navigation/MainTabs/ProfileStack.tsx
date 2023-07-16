@@ -9,6 +9,7 @@ import DummyScreen from "../../screens/DummyScreen";
 import OrderHistory from "../../screens/MainTab/Profile/OrderHistory";
 import ResetPassword from "../../screens/Auth/ResetPassword";
 import ChangePassword from "../../screens/Auth/ChangePassword";
+import OrdersHistoryTopTabs from "../OrderHistoryTopTabs/OrderHistoryTopTabs";
 
 const Stack = createNativeStackNavigator()
 
@@ -24,7 +25,7 @@ function ProfileStack(): JSX.Element {
     headerTitleAlign: 'center',
   }}>
     <Stack.Screen name="My Profile" component={Profile} />
-    <Stack.Screen name="Order History" component={OrderHistory} />
+    <Stack.Screen name="Order History" options={{ headerShown: false }} component={OrdersHistoryTopTabs} />
     <Stack.Screen name="Change Password" options={{ headerShown: false }} component={ChangePassword} />
     <Stack.Screen name="Edit Profile" component={EditProfile} />
     <Stack.Screen name="Shop Details" component={ShopDetails} />

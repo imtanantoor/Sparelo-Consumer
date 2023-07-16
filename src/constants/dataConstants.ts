@@ -1,4 +1,5 @@
 import PartsCardModel from '../models/partsCard';
+import colors from './colors';
 
 const dummyImages = [
   'https://source.unsplash.com/1024x768/?nature',
@@ -6,22 +7,24 @@ const dummyImages = [
   'https://source.unsplash.com/1024x768/?girl',
 ];
 
-const dummyPartsData: PartsCardModel[] = [
-  {
-    id: 1,
-    make: 'Toyota',
-    model: 'Corolla',
-    year: '1999',
-    images: dummyImages,
-    quantity: 10,
-    price: 2500,
-    rating: 3,
-  },
-];
+enum orderStatus {
+  CANCELLED = 'Cancelled',
+  PENDING = 'Pending',
+  APPROVED = 'Approved',
+  CONFIRMED = 'confirmed',
+}
 
-const dataConstants = {
+enum orderStatusTextColor {
+  cancelled = '#D00606',
+  pending = '#262626',
+  approved = '#04b347',
+  confirmed = '#04b347',
+}
+
+const dataConstants: any = {
   dummyImages,
-  dummyPartsData,
+  orderStatus,
+  orderStatusTextColor,
 };
 
 export default dataConstants;
