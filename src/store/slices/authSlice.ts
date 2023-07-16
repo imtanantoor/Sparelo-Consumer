@@ -1,7 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import actions from '../actions';
 import ToastService from '../../Services/ToastService';
-import {useNavigation} from '@react-navigation/native';
 
 const initialState: {
   authenticated: boolean;
