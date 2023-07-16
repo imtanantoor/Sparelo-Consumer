@@ -26,16 +26,17 @@ function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
       setPlaying(false)
       return
     }
-    AudioServices.PlayAudio(constants.baseURL + audioNote, { 'Accept': 'application/json', })
-      .then((data) => {
-        setPlaying(true)
-        setLoading(false)
-      }).catch(error => {
-        console.log(error)
-        setLoading(false)
-        hideModal()
-        ToastService.error('Voice player', JSON.stringify(error))
-      })
+    setTimeout(() => {
+      AudioServices.PlayAudio(constants.baseURL + audioNote, { 'Accept': 'application/json', })
+        .then((data) => {
+          setPlaying(true)
+          setLoading(false)
+        }).catch(error => {
+          setLoading(false)
+          hideModal()
+          ToastService.error('Voice player', JSON.stringify(error))
+        })
+    }, 500)
   }
 
   function handleHide() {

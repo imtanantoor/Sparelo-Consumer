@@ -147,9 +147,11 @@ const authSlice = createSlice({
         state.loginSuccess = false;
 
         ToastService.error(
-          'Login',
+          'Sign up',
           action?.payload?.error
             ? action.payload.error
+            : action?.payload?.message
+            ? action.payload.message
             : 'Something went wrong',
         );
       });
@@ -236,14 +238,16 @@ const authSlice = createSlice({
         state.updateShopSuccess = true;
         // state.shopDetails = action.payload ? {...action.payload.shop} : null;
       })
-      .addCase(actions.updateShop.rejected, (state, action) => {
+      .addCase(actions.updateShop.rejected, (state, action: any) => {
         state.updatingShop = false;
         state.updateShopError = true;
         state.updateShopSuccess = false;
         ToastService.error(
-          'Update Shop Details',
-          action?.error?.message
-            ? action.error.message
+          'Sign up',
+          action?.payload?.error
+            ? action.payload.error
+            : action?.payload?.message
+            ? action.payload.message
             : 'Something went wrong',
         );
       });

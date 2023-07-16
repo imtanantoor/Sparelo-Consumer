@@ -390,15 +390,21 @@ const changePassword = createAsyncThunk(
 // UPDATE REQUESTS
 const updateShop = createAsyncThunk(
   'Auth/ Update Shop',
-  async (data: UpdateShopModel) => {
-    const response = await constants.apiInstance.patch(
-      'shop/update',
-      createFormData(data),
-      {
-        headers: {'Content-Type': 'multipart/form-data'},
-      },
-    );
-    return response.data;
+  async (data: UpdateShopModel, {rejectWithValue}) => {
+    try {
+      const response = await constants.apiInstance.patch(
+        'shop/update',
+        createFormData(data),
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data);
+    }
   },
 );
 

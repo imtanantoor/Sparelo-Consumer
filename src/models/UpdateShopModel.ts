@@ -7,7 +7,7 @@ interface UpdateShopModel {
   brand: string;
   model: string;
   user: string;
-  images: any;
+  images?: any;
 }
 
 export default UpdateShopModel;
