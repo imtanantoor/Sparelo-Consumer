@@ -4,6 +4,7 @@ interface SearchPartsBody {
   model: string | number;
   manufacturingYear: number;
   itemInPair: boolean;
+  user: string;
 }
 
 export default SearchPartsBody;

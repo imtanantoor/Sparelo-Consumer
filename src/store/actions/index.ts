@@ -113,16 +113,6 @@ const fetchAllParts = createAsyncThunk(
     return response.data;
   },
 );
-const searchParts = createAsyncThunk(
-  'Parts/SearchParts',
-  async (payload: SearchPartsBody) => {
-    const response = await constants.apiInstance.post(
-      'requests/searchForRequests',
-      payload,
-    );
-    return response.data;
-  },
-);
 const fetchAllAvailableItemsOfUser = createAsyncThunk(
   'Availability/fetchAll',
   async (userId: string) => {
@@ -299,6 +289,21 @@ const signUpUser = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+const searchParts = createAsyncThunk(
+  'Parts/SearchParts',
+  async (payload: SearchPartsBody, {rejectWithValue}) => {
+    try {
+      const response = await constants.apiInstance.post(
+        'requests/searchForRequests',
+        payload,
+      );
+      return response.data;
+    } catch (error: any) {
+      rejectWithValue(error?.response?.data);
     }
   },
 );

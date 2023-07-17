@@ -16,9 +16,10 @@ interface SearchPartsProps {
   oldParts: PartsCardModel[]
   searchParts: (data: SearchPartsBody) => void
   route: any
+  user: UserModel
 }
 
-function SearchPartsTab({ fetching, error, newParts, oldParts, searchParts, route }: SearchPartsProps): JSX.Element {
+function SearchPartsTab({ fetching, error, newParts, user, oldParts, searchParts, route }: SearchPartsProps): JSX.Element {
   const { category, brand, model, manufacturingYear, itemInPair, type } = route.params
   const navigation: any = useNavigation()
 
@@ -27,7 +28,8 @@ function SearchPartsTab({ fetching, error, newParts, oldParts, searchParts, rout
     "brand": brand.id ? brand.id : "646517a3bec729d8efdbb903",
     "model": model.id ? model.id : "64656de2bec729d8efdbb907",
     "manufacturingYear": manufacturingYear ? Number(manufacturingYear) : 2013,
-    "itemInPair": true
+    "itemInPair": true,
+    user: user._id
   }
 
   useEffect(() => {
@@ -56,7 +58,8 @@ const mapStateToProps = (state: any) => ({
   newParts: state.Parts.searchedParts.newParts,
   oldParts: state.Parts.searchedParts.oldParts,
   fetching: state.Parts.searchingParts,
-  error: state.Parts.searchingPartsFailed
+  error: state.Parts.searchingPartsFailed,
+  user: state.Auth.user
 })
 
 const mapDispatchToProps = {

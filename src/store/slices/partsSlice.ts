@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import PartsCardModel from '../../models/partsCard';
 import actions from '../actions';
 import constants from '../../utils/constants';
+import ToastService from '../../Services/ToastService';
 
 interface PartsState {
   fetching: boolean;
@@ -159,9 +160,15 @@ const partsSlice = createSlice({
           action.payload.oldParts,
         );
       })
-      .addCase(actions.searchParts.rejected, (state, action) => {
+      .addCase(actions.searchParts.rejected, (state, action: any) => {
         state.searchingParts = false;
         state.searchingPartsFailed = true;
+        ToastService.error(
+          'Sign up',
+          action?.payload?.error
+            ? action.payload.error
+            : 'Something went wrong',
+        );
       });
 
     // Send Quotation
