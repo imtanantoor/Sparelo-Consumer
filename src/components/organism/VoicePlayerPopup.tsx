@@ -27,7 +27,7 @@ function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
       if (error) {
         setLoading(false)
         hideModal()
-        ToastService.error('Voice player', JSON.stringify(error))
+        ToastService.error('Voice player', 'Audio file is invalid!')
       } else {
         setLoading(false)
         setPlayer(player)
