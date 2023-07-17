@@ -59,7 +59,7 @@ function handleSignInNumber(mobileNo: string) {
   if (first3.includes('+92')) {
     finalNumber = mobileNo.replace('+92', '0');
   } else if (first3.includes('92')) {
-    finalNumber = mobileNo.replace('+92', '0');
+    finalNumber = mobileNo.replace('92', '0');
   } else {
     finalNumber = mobileNo;
   }

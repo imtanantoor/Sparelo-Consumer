@@ -77,8 +77,13 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
     const myKey = fieldName as ObjectKey
 
     return () => {
+      let priceRegex = /^[+-]?((\d+(\.\d*)?)|(\.\d+))$/
 
-      if (values[myKey] === '' && required) {
+      if (priceRegex.test(values[myKey]) === false) {
+        return setErrors({ ...errors, [fieldName]: 'Price must only be numbers' })
+      } else if (Number(values[myKey]) <= 0) {
+        setErrors({ ...errors, [fieldName]: 'Price cannot be less than or equal to 0' })
+      } else if (values[myKey] === '' && required) {
         setErrors({ ...errors, [fieldName]: `${fieldName} is required!` })
       } else {
         setErrors({ ...errors, [fieldName]: '' })
@@ -88,6 +93,15 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
 
   function handleChange(value: string, fieldName: string) {
     setValues({ ...values, [fieldName]: value })
+    let priceRegex = /^[+-]?((\d+(\.\d*)?)|(\.\d+))$/
+
+    if (priceRegex.test(value) === false) {
+      return setErrors({ ...errors, [fieldName]: 'Price must only be numbers' })
+    }
+
+    if (Number(value) <= 0) {
+      return setErrors({ ...errors, [fieldName]: 'Price cannot be less than or equal to 0' })
+    }
 
     if (value !== '')
       setErrors({ ...errors, [fieldName]: '' })
@@ -174,8 +188,8 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
       </View>
       <CustomTextInput
         touched={touched}
-        errors={error}
-        fieldName="Price"
+        errors={errors}
+        fieldName="price"
         disabled={false}
         label="Choose Price"
         value={values.price}
@@ -217,7 +231,7 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
     </ScrollView>
     <CustomButton
       title="Submit"
-      disabled={creatingQuotation || assets.length == 0 || values.price == '' || manufacturer == null}
+      disabled={creatingQuotation || assets.length == 0 || values.price == '' || manufacturer == null || Object.keys(errors).length > 0}
       submitting={creatingQuotation}
       onPress={handleCreateQuotation}
       buttonStyle={{ marginVertical: 20, marginHorizontal: 20 }}
