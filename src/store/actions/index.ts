@@ -303,7 +303,7 @@ const searchParts = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
-      rejectWithValue(error?.response?.data);
+      return rejectWithValue(error?.response?.data);
     }
   },
 );

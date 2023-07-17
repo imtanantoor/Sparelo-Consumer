@@ -24,11 +24,11 @@ function SearchPartsTab({ fetching, error, newParts, user, oldParts, searchParts
   const navigation: any = useNavigation()
 
   const payload: SearchPartsBody = {
-    "category": category.id ? category.id : "646d623a7fe12f003ac34ebb",
-    "brand": brand.id ? brand.id : "646517a3bec729d8efdbb903",
-    "model": model.id ? model.id : "64656de2bec729d8efdbb907",
-    "manufacturingYear": manufacturingYear ? Number(manufacturingYear) : 2013,
-    "itemInPair": true,
+    category: category.id ? category.id : "646d623a7fe12f003ac34ebb",
+    brand: brand.id ? brand.id : "646517a3bec729d8efdbb903",
+    model: model.id ? model.id : "64656de2bec729d8efdbb907",
+    manufacturingYear: manufacturingYear ? Number(manufacturingYear) : 2013,
+    itemInPair: true,
     user: user._id
   }
 
