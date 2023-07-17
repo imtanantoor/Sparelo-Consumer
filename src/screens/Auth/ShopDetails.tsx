@@ -262,12 +262,23 @@ function ShopDetails({
           name: shopDetails?.category?.name
         },
       })
+
       setInitialRegion({
-        latitude: shopDetails?.coordinates?.[0] ? shopDetails.coordinates[0] : 34.0151,
-        longitude: shopDetails?.coordinates?.[1] ? shopDetails.coordinates[2] : 71.5249,
+        ...initialRegion,
+        latitude: shopDetails?.coordinates?.[1] ? Number(shopDetails.coordinates[1]) : 34.0151,
+        longitude: shopDetails?.coordinates?.[2] ? Number(shopDetails.coordinates[2]) : 71.5249,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       })
+      setTimeout(() => {
+        mapRef?.current?.animateToRegion({
+          latitude: shopDetails?.coordinates?.[1] ? Number(shopDetails.coordinates[1]) : 34.0151,
+          longitude: shopDetails?.coordinates?.[2] ? Number(shopDetails.coordinates[2]) : 71.5249,
+          latitudeDelta: 0.002,
+          longitudeDelta: 0.002,
+        });
+      }, 200)
+
       setAssets(shopDetails?.images?.map((image: string) => ({
         fileName: image?.split('/')?.[0] ? image.split('/')[0] : image,
         type: "image/jpg",

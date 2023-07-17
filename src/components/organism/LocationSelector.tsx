@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import CurrentLocation from "../../assets/icons/CurrentLocation";
@@ -22,6 +22,7 @@ interface LocationSelectorProps {
 }
 
 function LocationSelector({ mapRef, initialRegion, handleRegionChange, address, setAddress, disableAddressFetching, handleLocationPress, handleCurrentLocation, label, required, placeholder, showCurrentLocationBtn }: LocationSelectorProps): JSX.Element {
+
   return <Fragment>
     <MapView
       ref={mapRef}
