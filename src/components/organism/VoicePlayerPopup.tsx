@@ -9,6 +9,7 @@ import StopIcon from "../../assets/icons/StopIcon";
 import { useEffect, useState } from "react";
 import AudioServices from "../../Services/AudioServices";
 import ToastService from "../../Services/ToastService";
+import Sound from "react-native-sound";
 interface VoicePlayerPopup {
   audioNote: string
   visible: boolean
@@ -18,25 +19,42 @@ interface VoicePlayerPopup {
 function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
   const [playing, setPlaying] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
+  const [player, setPlayer] = useState<any>(null)
 
   function HandlePlay() {
     setLoading(true)
-    if (playing) {
-      AudioServices.PauseAudio()
-      setPlaying(false)
-      return
-    }
-    setTimeout(() => {
-      AudioServices.PlayAudio(constants.baseURL + audioNote, { 'Accept': 'application/json', })
-        .then((data) => {
+    const player = new Sound(constants.baseURL + audioNote, undefined, (error) => {
+      if (error) {
+        setLoading(false)
+        hideModal()
+        ToastService.error('Voice player', JSON.stringify(error))
+      } else {
+        setLoading(false)
+        setPlayer(player)
+        if (playing) {
+          player.pause()
+        } else {
           setPlaying(true)
-          setLoading(false)
-        }).catch(error => {
-          setLoading(false)
-          hideModal()
-          ToastService.error('Voice player', JSON.stringify(error))
-        })
-    }, 500)
+          player.play(() => {
+            player.release()
+            setPlaying(false)
+          })
+        }
+      }
+    })
+
+
+    // setTimeout(() => {
+    //   AudioServices.PlayAudio(constants.baseURL + audioNote, { 'Accept': 'application/json', })
+    //     .then((data) => {
+    //       setPlaying(true)
+    //       setLoading(false)
+    //     }).catch(error => {
+    //       setLoading(false)
+    //       hideModal()
+    //       ToastService.error('Voice player', JSON.stringify(error))
+    //     })
+    // }, 500)
   }
 
   function handleHide() {
@@ -46,6 +64,7 @@ function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
   }
 
   function StopAudio() {
+    player?.stop()
     AudioServices.StopAudio()
     setPlaying(false)
   }
