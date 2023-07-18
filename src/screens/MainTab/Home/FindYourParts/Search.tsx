@@ -41,10 +41,11 @@ interface SearchListProps {
   models: any[]
   values: any,
   setValues: (props?: any) => void
+  multiSelect?: boolean
 }
 
-function SearchList({ type, categories, brands, models, values, setValues }: SearchListProps): JSX.Element {
-  const navigation = useNavigation()
+function SearchList({ type, categories, brands, models, values, multiSelect = false, setValues }: SearchListProps): JSX.Element {
+  const navigation: any = useNavigation()
   const { fetchingBrands, fetchingBrandsError, fetchingCategories, fetchingCategoriesError, fetchingModels, fetchingModelsError } = useSelector((state: any) => ({
     fetchingCategoriesError: state.Categories.error,
     fetchingCategories: state.Categories.fetching,
@@ -54,14 +55,37 @@ function SearchList({ type, categories, brands, models, values, setValues }: Sea
     fetchingModelsError: state.Models.error
   }))
 
+
   function handleOnPress(name: string, value: any) {
     return () => {
-      setValues({
-        ...values, [name]: {
-          id: value.id, name: value.title
+      if (multiSelect) {
+        let temp = values[name] ? [...values[name]] : []
+        let found = temp.findIndex((item: { id: string, name: string }) => item.id == value.id)
+        if (found !== -1) {
+          navigation.setParams({ values: { ...values, [name]: temp.filter((item: { id: string, name: string }) => item.id == value.id) } })
+
+          // navigation.setParams({ [name]: temp.filter((item: { id: string, name: string }) => item.id == value.id) })
+          setValues({
+            ...values,
+            [name]: temp.filter((item: { id: string, name: string }) => item.id == value.id)
+          })
         }
-      })
-      navigation.goBack()
+        else {
+          temp.push({ ...value })
+          navigation.setParams({ values: { ...values, [name]: temp } })
+          setValues({
+            ...values,
+            [name]: temp
+          })
+        }
+      } else {
+        setValues({
+          ...values, [name]: {
+            id: value.id, name: value.title
+          }
+        })
+        navigation.goBack()
+      }
     }
   }
 
@@ -75,7 +99,12 @@ function SearchList({ type, categories, brands, models, values, setValues }: Sea
         title={item.title}
         imageUrl={item.imageUrl}
         onPress={handleOnPress('brand', item)}
-        style={{ width: '30.333%', marginRight: 5, marginLeft: 3 }}
+        selected={multiSelect ? values?.brand?.filter((value: { id: string, title: string }) => value.title == item.title).length > 0 : values?.brand?.name == item.title}
+        style={{
+          width: '30.333%',
+          marginRight: 5,
+          marginLeft: 3,
+        }}
       />}
     />
 
@@ -92,6 +121,7 @@ function SearchList({ type, categories, brands, models, values, setValues }: Sea
         image={item.image}
         id={item.id}
         onPress={handleOnPress('model', item)}
+        selected={multiSelect ? values?.model?.findIndex((value: { id: string, title: string }) => value.title == item.title) !== -1 ? true : false : values?.model?.name == item.title}
         style={{ width: '30.333%', marginRight: 5, marginLeft: 3 }}
       />}
     />
@@ -105,6 +135,7 @@ function SearchList({ type, categories, brands, models, values, setValues }: Sea
     renderItem={({ item }) => <CategoryCard
       title={item.title}
       image={item.image}
+      selected={multiSelect ? values?.category?.findIndex((value: { id: string, title: string }) => value.title == item.title) !== -1 ? true : false : values?.category?.name == item.title}
       id={item.id}
       onPress={handleOnPress('category', item)}
       style={{ width: '30.333%', marginRight: 5, marginLeft: 3 }}
@@ -138,7 +169,7 @@ function Search({ route, navigation, categories, brands,
     if (params.title === 'Category')
       fetchCategories()
     if (params.title === 'Model')
-      searchModels({ search: '', brand: params.values.brand.id })
+      searchModels({ search: '', brand: params.multiSelect ? params.values.brand : [{ id: params.values.brand.id }] })
     // fetchModels()
     if (params.title === 'Brand')
       fetchBrands()
@@ -186,14 +217,15 @@ function Search({ route, navigation, categories, brands,
         categories={categories}
         brands={brands}
         models={models}
-        values={params.values}
-        setValues={params.setValues}
+        values={route.params.values}
+        setValues={route.params.setValues}
+        multiSelect={route.params.multiSelect}
       />
     </View>
     <CustomButton
       title="Done"
       type="primary"
-      onPress={() => { }}
+      onPress={() => { navigation.goBack() }}
       buttonStyle={{ marginHorizontal: 20 }}
       disabled={false}
       submitting={false}

@@ -3,9 +3,9 @@ import { Image, StyleSheet, Text, Touchable, TouchableOpacity } from "react-nati
 import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 
-function BrandCard({ style, onPress, title, imageUrl }: any): JSX.Element {
+function BrandCard({ style, onPress, title, imageUrl, selected }: any): JSX.Element {
   return <TouchableOpacity activeOpacity={0.8} style={style} onPress={onPress}>
-    <View style={styles.container}>
+    <View style={[styles.container, { borderColor: selected ? colors.primary : styles.container.borderColor }]}>
       <Image
         source={{ uri: imageUrl }}
         style={styles.imageStyle}

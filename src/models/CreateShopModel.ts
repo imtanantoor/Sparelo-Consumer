@@ -2,9 +2,9 @@ interface CreateShopModel {
   name: string;
   coordinates: [string, string];
   address: string;
-  category: string;
-  brand: string;
-  model: string;
+  categories: string[];
+  brands: string[];
+  models: string[];
   user: string;
   images: any;
 }

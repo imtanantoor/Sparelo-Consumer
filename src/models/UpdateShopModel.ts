@@ -3,10 +3,10 @@ interface UpdateShopModel {
   name: string;
   coordinates: [string, string];
   address: string;
-  category: string;
-  brand: string;
-  model: string;
-  user: string;
+  categories: string[];
+  brands: string[];
+  models: string[];
+  user: string[];
   images?: any;
 }
 

@@ -5,6 +5,7 @@ interface CategoryCardProps {
   // Icon: JSX.Element;
   image: string;
   style?: any;
+  selected?: boolean;
 }
 
 export default CategoryCardProps;

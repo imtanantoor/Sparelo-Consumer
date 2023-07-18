@@ -20,29 +20,36 @@ import { constant } from "lodash";
 import constants from "../../utils/constants";
 import UpdateShopModel from "../../models/UpdateShopModel";
 
-const fields = {
+type itemType = {
+  id: string
+  name: string
+}
+type fieldsType = {
+  storeName: string
+  location: string
+  address: string
+  brand: itemType[],
+  model: itemType[],
+  category: itemType[]
+}
+
+const fields: fieldsType = {
   storeName: '',
   location: '',
   address: '',
-  brand: {
-    id: '',
-    name: ''
-  },
-  model: {
-    id: '',
-    name: ''
-  },
-  category: {
-    id: '',
-    name: ''
-  },
+  brand: [],
+  model: [],
+  category: []
 }
 
-function SelectionButton({ onPress, label, value }: { onPress: (props?: any) => void, label: string, value: string }): JSX.Element {
+function SelectionButton({ onPress, label, values }: { onPress: (props?: any) => void, label: string, values: itemType[] }): JSX.Element {
+
   return <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={{ marginVertical: 15, paddingBottom: 5, borderBottomColor: colors.disabledBorderColor, borderBottomWidth: 1 }}>
     <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
       <Text style={styles.label}>{label}<Text style={styles.requiredText}> *</Text></Text>
-      <Text style={styles.value}>{value}</Text>
+      <Text numberOfLines={1} style={styles.value}>
+        {values?.map((value: any, index: number) => `${value.title}${index + 1 === values.length ? '' : ', '}`)}
+      </Text>
     </View>
   </TouchableOpacity>
 }
@@ -175,7 +182,7 @@ function ShopDetails({
         }
         return item
       }))
-
+      return
     }
 
     if (asset && asset[0]?.uri) {
@@ -192,9 +199,9 @@ function ShopDetails({
       name: values.storeName,
       coordinates: [initialRegion.latitude.toString(), initialRegion.longitude.toString()],
       address: values.address,
-      category: values.category.id,
-      brand: values.brand.id,
-      model: values.model.id,
+      categories: values.category.map((cat: any) => cat.id),
+      brands: values.brand.map((brand: any) => brand.id),
+      models: values.model.map((model: any) => model.id),
       user: user._id,
       images: assets
     }
@@ -207,9 +214,9 @@ function ShopDetails({
       name: values.storeName,
       coordinates: [initialRegion.latitude.toString(), initialRegion.longitude.toString()],
       address: values.address,
-      category: values.category.id,
-      brand: values.brand.id,
-      model: values.model.id,
+      categories: values.category.map((cat: any) => cat.id),
+      brands: values.brand.map((brand: any) => brand.id),
+      models: values.model.map((model: any) => model.id),
       user: user._id,
       id: shopDetails._id,
       images: assets
@@ -226,6 +233,7 @@ function ShopDetails({
 
   useEffect(() => {
     if (updateShopSuccess) {
+      ToastService.success('Shop Details', 'Shop updated successfully!')
       resetUpdateShopState()
       logout()
     }
@@ -246,21 +254,13 @@ function ShopDetails({
 
     if (shopDetails) {
       setValues({
+        ...fields,
         storeName: shopDetails?.name,
         location: '',
         address: shopDetails?.address,
-        brand: {
-          id: shopDetails?.brand?._id,
-          name: shopDetails?.brand?.name
-        },
-        model: {
-          id: shopDetails?.model?._id,
-          name: shopDetails?.model?.name
-        },
-        category: {
-          id: shopDetails?.category?._id,
-          name: shopDetails?.category?.name
-        },
+        brand: shopDetails?.brands?.length > 0 ? shopDetails?.brands?.map((brand: any) => ({ id: brand._id, title: brand.name })) : [],
+        model: shopDetails?.models?.length > 0 ? shopDetails?.models?.map((brand: any) => ({ id: brand._id, title: brand.name })) : [],
+        category: shopDetails?.categories?.length > 0 ? shopDetails?.categories?.map((brand: any) => ({ id: brand._id, title: brand.name })) : [],
       })
 
       setInitialRegion({
@@ -332,26 +332,26 @@ function ShopDetails({
       />
       <SelectionButton
         label="Brand"
-        value={values.brand.name}
+        values={values.brand}
         onPress={() => {
-          navigation.navigate('Search', { title: 'Brand', values, setValues })
+          navigation.navigate('Search', { title: 'Brand', values, setValues, multiSelect: true })
         }}
       />
       <SelectionButton
         label="Model"
-        value={values.model.name}
+        values={values.model}
         onPress={() => {
-          if (values?.brand?.id)
-            navigation.navigate('Search', { title: 'Model', values, setValues })
+          if (values?.brand?.length !== 0)
+            navigation.navigate('Search', { title: 'Model', values, setValues, multiSelect: true })
           else
             ToastService.warning('Search Model', 'Please select brand first')
         }}
       />
       <SelectionButton
         label="Category"
-        value={values.category.name}
+        values={values.category}
         onPress={() => {
-          navigation.navigate('Search', { title: 'Category', values, setValues })
+          navigation.navigate('Search', { title: 'Category', values, setValues, multiSelect: true })
         }}
       />
       <MultipleImageSelector
@@ -361,7 +361,7 @@ function ShopDetails({
       />
       <CustomButton
         title={isProfileStack ? 'Update' : "Sign Up"}
-        disabled={values.storeName == '' || values.address == '' || values.brand.id === '' || values.model.id === '' || values.category.id === '' || creatingShop}
+        disabled={values?.storeName == '' || values.address == '' || values?.brand?.length == 0 || values?.model?.length === 0 || values?.category?.length === 0 || creatingShop}
         submitting={creatingShop || updatingShop}
         onPress={isProfileStack ? handleUpdate : handleSignUp}
         type="primary"
@@ -416,6 +416,7 @@ const styles = StyleSheet.create({
   },
   value: {
     color: colors.textPrimary,
+    maxWidth: '50%',
     // fontSize: font.sizes.input,
   },
   requiredText: {

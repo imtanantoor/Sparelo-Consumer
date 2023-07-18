@@ -5,8 +5,8 @@ import font from "../../constants/fonts";
 import CategoryCardProps from "../../models/categoryCard";
 import CustomImage from "../global/CustomImage";
 
-function CategoryCard({ title, image, onPress, style }: CategoryCardProps): JSX.Element {
-  return <TouchableOpacity activeOpacity={0.8} style={[styles.container, { ...style }]} onPress={onPress}>
+function CategoryCard({ title, image, onPress, style, selected }: CategoryCardProps): JSX.Element {
+  return <TouchableOpacity activeOpacity={0.8} style={[styles.container, { ...style, borderColor: selected ? colors.primary : 'transparent', borderWidth: selected ? 1 : 0 }]} onPress={onPress}>
     <CustomImage
       source={{ uri: image }}
       imageUrl={image}

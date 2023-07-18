@@ -80,8 +80,17 @@ const searchModelsOfBrand = createAsyncThunk(
   'Models/searchModelsOfBrand',
   async (payload: any) => {
     const {brand, search} = payload;
+    let brandSearch = '';
+    brand.forEach((value: any, index: number) => {
+      if (brandSearch === '') {
+        brandSearch += value.id;
+      } else {
+        brandSearch = brandSearch + `&brand=${value.id}`;
+      }
+    });
+
     const response = await constants.apiInstance.get(
-      `models/search?brand=${brand}&name=${search}`,
+      `models/search?brand=${brandSearch}&name=${search}`,
     );
     return response.data;
   },
@@ -196,8 +205,17 @@ const createFormData = (data: any) => {
   const formData = new FormData();
 
   Object.keys(data).forEach(key => {
-    if (key !== 'images' && key !== 'profilePic' && key !== 'voiceNote') {
-      formData.append(key, data[key]);
+    if (
+      key !== 'images' &&
+      key !== 'profilePic' &&
+      key !== 'voiceNote' &&
+      key !== 'coordinates'
+    ) {
+      if (Array.isArray(data[key])) {
+        data[key].forEach((value: any) => {
+          formData.append(key, value);
+        });
+      } else formData.append(key, data[key]);
     }
   });
 
@@ -245,7 +263,7 @@ const createFormData = (data: any) => {
         filename: photo.fileName,
       });
     });
-  } else formData.append('images', '');
+  } /* else formData.append('images', '') */
 
   return formData;
 };
@@ -396,6 +414,7 @@ const changePassword = createAsyncThunk(
 const updateShop = createAsyncThunk(
   'Auth/ Update Shop',
   async (data: UpdateShopModel, {rejectWithValue}) => {
+    console.log({formData: createFormData(data)});
     try {
       const response = await constants.apiInstance.patch(
         'shop/update',
