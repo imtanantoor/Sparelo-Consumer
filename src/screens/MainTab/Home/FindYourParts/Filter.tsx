@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import CustomButton from "../../../../components/global/CustomButton";
 import HeaderBack from "../../../../components/molecular/HeaderBack";
@@ -49,6 +49,10 @@ function FilterScreen({ navigation, route }: NativeStackScreenProps<any>): JSX.E
     setSelectedDate(date)
     hideDatePicker()
   }
+
+  useEffect(() => {
+    setValues({ ...values, model: { id: '', name: '' } })
+  }, [values?.brand?.id])
 
   return <SafeAreaView style={{ flex: 1 }}>
     <ScrollView contentContainerStyle={styles.container}>

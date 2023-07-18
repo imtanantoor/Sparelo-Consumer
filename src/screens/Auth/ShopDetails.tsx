@@ -103,6 +103,7 @@ function ShopDetails({
   const [errors, setErrors] = useState(fields)
   const [touched, setTouched] = useState(fields)
   const [submitting, setSubmitting] = useState(false)
+  const [shouldReset, setShouldReset] = useState<boolean>(false)
   const mapRef = useRef<any>(null)
   const [initialRegion, setInitialRegion] = useState({
     latitude: 34.0151,
@@ -284,8 +285,14 @@ function ShopDetails({
         type: "image/jpg",
         uri: constants.baseURL + image,
       })))
+      setShouldReset(true)
     }
   }, [fetchError, fetching])
+
+  useEffect(() => {
+    if (shouldReset)
+      setValues({ ...values, model: [] })
+  }, [values?.brand?.length])
 
   return <SafeAreaView style={styles.container}>
     {isProfileStack && fetching && <View style={{

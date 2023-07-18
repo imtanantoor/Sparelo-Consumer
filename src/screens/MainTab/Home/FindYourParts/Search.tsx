@@ -140,7 +140,8 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
         )}
         renderSectionFooter={({ section }: any) => {
           if (section?.data?.length == 0) {
-            return <View style={{ marginBottom: 10 }}><Text style={[styles.headerText, { fontSize: font.sizes.normal }]}>No data found</Text></View>
+            return <View style={{ marginBottom: 10 }}>
+              <Text style={[styles.headerText, { fontSize: font.sizes.normal }]}>No data found</Text></View>
           }
           return null
         }}
@@ -148,18 +149,15 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
           height={Dimensions.get('window').height * 0.5}
           fetching={fetchingModels} error={fetchingModelsError} hideButton onPress={() => { }} />
         }
-        renderItem={({ section }: any) => <View style={{ flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between' }}>
-          {section.data.length > 0 && section?.data?.map((item: any) => (<CategoryCard
-            title={item.title}
-            image={item.image}
-            id={item.id}
-            onPress={handleOnPress('model', item)}
-            selected={multiSelect ? values?.model?.findIndex((value: { id: string, title: string }) => value.title == item.title) !== -1 ? true : false : values?.model?.name == item.title}
-            style={{ width: '45.333%', }}
-          />))}
-        </View>
-        }
-
+        renderItem={({ item }) => <CategoryCard
+          title={item.title}
+          key={item.id}
+          image={item.image}
+          id={item.id}
+          onPress={handleOnPress('model', item)}
+          selected={multiSelect ? values?.model?.findIndex((value: { id: string, title: string }) => value.title == item.title) !== -1 ? true : false : values?.model?.name == item.title}
+          style={{ width: '45.333%', }}
+        />}
       />
     }
 
