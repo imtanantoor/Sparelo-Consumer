@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { StyleSheet, SafeAreaView, Platform, Text, ScrollView, View, TouchableOpacity } from "react-native"
+import { Fragment, createRef, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { StyleSheet, SafeAreaView, Platform, Text, ScrollView, View, TouchableOpacity, TextInput } from "react-native"
 import CodeBox from "../../components/atomic/CodeBox"
 import CustomButton from "../../components/global/CustomButton"
 import colors from "../../constants/colors"
@@ -56,6 +56,7 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
   const { confirmation, contact, signUpValues }: any = route?.params;
   const [submitting, setSubmitting] = useState(false)
   const [confirm, setConfirm] = useState(confirmation)
+  const inputRef: any = createRef<any>()
   useLayoutEffect(() => {
 
     navigation.setOptions({
@@ -76,9 +77,14 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
   }, [])
 
   function handleCodeChange(text: string, index: number) {
+    let nexRefInputRef = inputRef?.current?.[`ref${index + 1}`]
+
     if (text === '') return setCode(code.replace(code[index], ''))
     if (text.length == 1) {
       setCode(code + text)
+    }
+    if (nexRefInputRef && index !== 5) {
+      nexRefInputRef?.focus()
     }
   }
 
@@ -121,7 +127,12 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
                   key={index + 1}
                   value={code[index]}
                   maxLength={1}
-                  onChangeText={(text) => handleCodeChange(text, index)}
+                  reference={(data: React.LegacyRef<TextInput>) => {
+                    inputRef.current = { ...inputRef.current, [`ref${index}`]: data }
+                  }}
+                  returnKeyType={index !== 5 ? 'next' : 'done'}
+                  blurOnSubmit={index == 5}
+                  onChangeText={(text: string) => handleCodeChange(text, index)}
                 />
               ))
           }

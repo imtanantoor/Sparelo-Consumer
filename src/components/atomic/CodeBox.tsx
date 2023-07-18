@@ -1,18 +1,22 @@
 import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
 import colors from "../../constants/colors";
 import font from "../../constants/fonts";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface codeBoxProps extends TextInputProps {
-  ref?: any
+  reference?: (data: React.LegacyRef<TextInput>) => void
 }
 
-function CodeBox({ ref, ...props }: codeBoxProps): JSX.Element {
+function CodeBox({ reference, ...props }: codeBoxProps): JSX.Element {
 
   return <View style={styles.container}>
     <TextInput
-      ref={ref}
       placeholder="-"
+      ref={(data: any) => {
+        if (data) {
+          reference?.(data)
+        }
+      }}
       placeholderTextColor={colors.codeBoxText}
       style={styles.textInput}
       {...props}
