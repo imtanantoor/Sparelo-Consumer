@@ -53,7 +53,7 @@ function CodeRefresh({ onResend, reset }: any): JSX.Element {
 function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.Element {
   const codeLength = 6
   const [code, setCode] = useState<string>('')
-  const { confirmation, contact, signUpValues }: any = route?.params;
+  const { confirmation, contact, signUpValues, isForget }: any = route?.params;
   const [submitting, setSubmitting] = useState(false)
   const [confirm, setConfirm] = useState(confirmation)
   const inputRef: any = createRef<any>()
@@ -93,7 +93,7 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
     try {
       const result = await confirm.confirm(code);
       setSubmitting(false)
-      navigation.navigate('Verified', { signUpValues })
+      navigation.navigate('Verified', { signUpValues, isForget })
     } catch (error: any) {
       ToastService.error('Verification Error', error?.message ? error.message : 'Verification failed')
       setSubmitting(false)

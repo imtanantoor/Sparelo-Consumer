@@ -20,9 +20,12 @@ interface VerifiedStateProps {
 }
 
 function Verified({ navigation, route, registering, registerError, registerSuccess, signUpUser, clearRegisteringState }: VerifiedStateProps): JSX.Element {
-  const { signUpValues } = route.params;
+  const { signUpValues, isForget } = route.params;
 
   function handleSignUp() {
+    if (isForget) {
+      return navigation.navigate('Reset Password', { signUpValues })
+    }
     const data: SignUpUserModel = {
       ...signUpValues,
       contact: signUpValues.contact.replace('+92', '0'),

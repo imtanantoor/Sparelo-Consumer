@@ -1,12 +1,29 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import CustomButton from "../../components/global/CustomButton";
 import CustomForm from "../../components/organism/CustomForm";
 import colors from "../../constants/colors";
+import { connect } from "react-redux";
+import actions from "../../store/actions";
+import authSlice from "../../store/slices/authSlice";
+import { useNavigation } from "@react-navigation/native";
+import ToastService from "../../Services/ToastService";
+
+interface ResetPasswordProps {
+  navigation: any
+  route: any
+  changingPassword: boolean;
+  changingPasswordError: boolean;
+  changingPasswordSuccess: boolean;
+  changePassword: (data: ChangePasswordModel) => void
+  resetChangingPasswordState: () => void
+  logout: () => void
+}
 
 
-function ResetPassword({ navigation }: NativeStackScreenProps<any>): JSX.Element {
+function ResetPassword({ navigation, route, changingPassword, changingPasswordError, changingPasswordSuccess, resetChangingPasswordState, logout, changePassword }: ResetPasswordProps): JSX.Element {
+  const { signUpValues } = route?.params;
   const [values, setValues] = useState<any>({
     password: '',
     resetPassword: ''
@@ -19,14 +36,18 @@ function ResetPassword({ navigation }: NativeStackScreenProps<any>): JSX.Element
     password: '',
     resetPassword: ''
   })
-  const [submitting, setSubmitting] = useState<boolean>(false)
 
   function handleSubmit() {
-    // setSubmitting(true)
-    // setTimeout(() => {
-    //   setSubmitting(false)
-    //   navigation.navigate('Reset Success')
-    // }, 1000)
+    if (values.password !== values.resetPassword) {
+      return setErrors({ ...errors, resetPassword: 'Passwords do not match' })
+    }
+
+    const data: ChangePasswordModel = {
+      contact: signUpValues.contact,
+      newPassword: values.password
+    }
+
+    changePassword(data)
   }
 
   function handleBlur(fieldName: string, required: boolean) {
@@ -67,12 +88,19 @@ function ResetPassword({ navigation }: NativeStackScreenProps<any>): JSX.Element
         type="transparent"
         title="Sign Up"
         onPress={() => { }}
-        disabled={true}
+        disabled={false}
         buttonStyle={{ marginVertical: 0 }}
         titleStyle={{ color: 'transparent' }}
         submitting={false} />
     })
   }, [])
+
+  useEffect(() => {
+    if (changingPasswordSuccess) {
+      navigation.popToTop()
+      ToastService.success('Reset Password', 'Password reset successfully')
+    }
+  }, [changingPasswordSuccess])
 
   return <SafeAreaView style={styles.container}>
     <CustomForm
@@ -109,9 +137,9 @@ function ResetPassword({ navigation }: NativeStackScreenProps<any>): JSX.Element
       setTouched={setTouched}
       submitAction={{
         title: 'Send Password',
-        submitting: submitting,
+        submitting: changingPassword,
         type: 'primary',
-        disabled: submitting || Object.values(errors).some((value) => value !== '') || Object.values(values).some((value) => value == ''),
+        disabled: changingPassword || Object.values(errors).some((value) => value !== '') || Object.values(values).some((value) => value == ''),
         onPress: handleSubmit
       }}
       fieldsContainerStyle={{ marginTop: 20, marginBottom: 0 }}
@@ -120,7 +148,20 @@ function ResetPassword({ navigation }: NativeStackScreenProps<any>): JSX.Element
   </SafeAreaView>
 }
 
-export default ResetPassword
+const mapStateTopProps = (state: any) => ({
+  changingPassword: state.Auth.changingPassword,
+  changingPasswordSuccess: state.Auth.changingPasswordSuccess,
+  changingPasswordError: state.Auth.changingPasswordError,
+  user: state.Auth.user
+})
+
+const mapDispatchToProps = {
+  changePassword: actions.changePassword,
+  resetChangingPasswordState: authSlice.actions.resetChangingPasswordState,
+  logout: authSlice.actions.logout,
+}
+
+export default connect(mapStateTopProps, mapDispatchToProps)(ResetPassword)
 
 const styles = StyleSheet.create({
   container: {
