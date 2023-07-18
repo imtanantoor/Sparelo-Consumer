@@ -63,12 +63,11 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
         let temp = values[name] ? [...values[name]] : []
         let found = temp.findIndex((item: { id: string, name: string }) => item.id == value.id)
         if (found !== -1) {
-          navigation.setParams({ values: { ...values, [name]: temp.filter((item: { id: string, name: string }) => item.id == value.id) } })
+          navigation.setParams({ values: { ...values, [name]: temp.filter((item: { id: string, name: string }) => item.id !== value.id) } })
 
-          // navigation.setParams({ [name]: temp.filter((item: { id: string, name: string }) => item.id == value.id) })
           setValues({
             ...values,
-            [name]: temp.filter((item: { id: string, name: string }) => item.id == value.id)
+            [name]: temp.filter((item: { id: string, name: string }) => item.id !== value.id)
           })
         }
         else {
@@ -91,17 +90,19 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
   }
 
   useEffect(() => {
-    let temp: any = []
-    values?.brand?.forEach((brand: any) => {
-      let obj: any = { title: brand?.title, data: [] }
-      models.forEach((model: any) => {
-        if (model.brand_id == brand.id) {
-          obj.data.push(model)
-        }
+    if (multiSelect) {
+      let temp: any = []
+      values?.brand?.forEach((brand: any) => {
+        let obj: any = { title: brand?.title, data: [] }
+        models.forEach((model: any) => {
+          if (model.brand_id == brand.id) {
+            obj.data.push(model)
+          }
+        })
+        temp.push(obj)
       })
-      temp.push(obj)
-    })
-    setModelsData(temp)
+      setModelsData(temp)
+    }
   }, [models.length])
 
   if (type === 'Brand')
@@ -123,59 +124,63 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
       />}
     />
 
-  if (type === 'Model')
-    return <SectionList
-      sections={modelsData}
-      style={{ maxHeight: '70%' }}
-      stickySectionHeadersEnabled={false}
-      renderSectionHeader={({ section: { title } }) => (
-        <View
-          style={{
-            marginVertical: 5,
-          }}>
-          <Text style={[styles.headerText, { color: colors.black }]}>{title}</Text>
-        </View>
-      )}
-      renderSectionFooter={({ section }: any) => {
-        if (section?.data?.length == 0) {
-          return <View style={{ marginBottom: 10 }}><Text style={[styles.headerText, { fontSize: font.sizes.normal }]}>No data found</Text></View>
+  if (type === 'Model') {
+    if (multiSelect) {
+      return <SectionList
+        sections={modelsData}
+        style={{ maxHeight: '70%' }}
+        stickySectionHeadersEnabled={false}
+        renderSectionHeader={({ section: { title } }) => (
+          <View
+            style={{
+              marginVertical: 5,
+            }}>
+            <Text style={[styles.headerText, { color: colors.black }]}>{title}</Text>
+          </View>
+        )}
+        renderSectionFooter={({ section }: any) => {
+          if (section?.data?.length == 0) {
+            return <View style={{ marginBottom: 10 }}><Text style={[styles.headerText, { fontSize: font.sizes.normal }]}>No data found</Text></View>
+          }
+          return null
+        }}
+        ListEmptyComponent={() => <ListEmptyComponent
+          height={Dimensions.get('window').height * 0.5}
+          fetching={fetchingModels} error={fetchingModelsError} hideButton onPress={() => { }} />
         }
-        return null
-      }}
+        renderItem={({ section }: any) => <View style={{ flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between' }}>
+          {section.data.length > 0 && section?.data?.map((item: any) => (<CategoryCard
+            title={item.title}
+            image={item.image}
+            id={item.id}
+            onPress={handleOnPress('model', item)}
+            selected={multiSelect ? values?.model?.findIndex((value: { id: string, title: string }) => value.title == item.title) !== -1 ? true : false : values?.model?.name == item.title}
+            style={{ width: '45.333%', }}
+          />))}
+        </View>
+        }
+
+      />
+    }
+
+    return <FlatList
+      data={models}
+      numColumns={3}
+      style={{ maxHeight: '70%' }}
       ListEmptyComponent={() => <ListEmptyComponent
         height={Dimensions.get('window').height * 0.5}
-        fetching={fetchingModels} error={fetchingModelsError} hideButton onPress={() => { }} />
+        fetching={fetchingModels} error={fetchingModelsError} hideButton onPress={() => { }} />}
+      renderItem={({ item }) => <CategoryCard
+        title={item.title}
+        image={item.image}
+        id={item.id}
+        onPress={handleOnPress('model', item)}
+        selected={multiSelect ? values?.model?.findIndex((value: { id: string, title: string }) => value.title == item.title) !== -1 ? true : false : values?.model?.name == item.title}
+        style={{ width: '30.333%', marginRight: 5, marginLeft: 3 }}
+      />
       }
-      renderItem={({ section }: any) => <View style={{ flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between' }}>
-        {section.data.length > 0 && section?.data?.map((item: any) => (<CategoryCard
-          title={item.title}
-          image={item.image}
-          id={item.id}
-          onPress={handleOnPress('model', item)}
-          selected={multiSelect ? values?.model?.findIndex((value: { id: string, title: string }) => value.title == item.title) !== -1 ? true : false : values?.model?.name == item.title}
-          style={{ width: '45.333%', }}
-        />))}
-      </View>
-      }
-
     />
-  // return <FlatList
-  //   data={models}
-  //   numColumns={3}
-  //   style={{ maxHeight: '70%' }}
-  //   ListEmptyComponent={() => <ListEmptyComponent
-  //     height={Dimensions.get('window').height * 0.5}
-  //     fetching={fetchingModels} error={fetchingModelsError} hideButton onPress={() => { }} />}
-  //   renderItem={({ item }) => <CategoryCard
-  //     title={item.title}
-  //     image={item.image}
-  //     id={item.id}
-  //     onPress={handleOnPress('model', item)}
-  //     selected={multiSelect ? values?.model?.findIndex((value: { id: string, title: string }) => value.title == item.title) !== -1 ? true : false : values?.model?.name == item.title}
-  //     style={{ width: '30.333%', marginRight: 5, marginLeft: 3 }}
-  //   />
-  //   }
-  // />
+  }
   return <FlatList
     data={categories}
     numColumns={3}
