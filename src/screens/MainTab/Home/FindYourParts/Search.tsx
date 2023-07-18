@@ -42,9 +42,10 @@ interface SearchListProps {
   values: any,
   setValues: (props?: any) => void
   multiSelect?: boolean
+  setModelReset?: (val: boolean) => void
 }
 
-function SearchList({ type, categories, brands, models, values, multiSelect = false, setValues }: SearchListProps): JSX.Element {
+function SearchList({ type, categories, brands, models, values, multiSelect = false, setValues, setModelReset }: SearchListProps): JSX.Element {
   const navigation: any = useNavigation()
   const [modelsData, setModelsData] = useState([])
   const { fetchingBrands, fetchingBrandsError, fetchingCategories, fetchingCategoriesError, fetchingModels, fetchingModelsError } = useSelector((state: any) => ({
@@ -79,6 +80,14 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
           })
         }
       } else {
+        if (name === 'brand') {
+          if (setModelReset) {
+            setModelReset(true)
+            setTimeout(() => {
+              setModelReset(false)
+            }, 200)
+          }
+        }
         setValues({
           ...values, [name]: {
             id: value.id, name: value.title
@@ -272,6 +281,7 @@ function Search({ route, navigation, categories, brands,
         brands={brands}
         models={models}
         values={route.params.values}
+        setModelReset={route.params.setModelReset}
         setValues={route.params.setValues}
         multiSelect={route.params.multiSelect}
       />

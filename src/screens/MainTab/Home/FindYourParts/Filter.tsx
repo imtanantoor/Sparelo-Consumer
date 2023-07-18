@@ -25,6 +25,7 @@ function FilterScreen({ navigation, route }: NativeStackScreenProps<any>): JSX.E
   })
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [dateTImePickerVisible, setDateTimePickerVisible] = useState(false)
+  const [modelReset, setModelReset] = useState<boolean>(false)
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -51,8 +52,9 @@ function FilterScreen({ navigation, route }: NativeStackScreenProps<any>): JSX.E
   }
 
   useEffect(() => {
-    setValues({ ...values, model: { id: '', name: '' } })
-  }, [values?.brand?.id])
+    if (modelReset)
+      setValues({ ...values, model: { id: '', name: '' } })
+  }, [modelReset])
 
   return <SafeAreaView style={{ flex: 1 }}>
     <ScrollView contentContainerStyle={styles.container}>
@@ -64,7 +66,7 @@ function FilterScreen({ navigation, route }: NativeStackScreenProps<any>): JSX.E
             value: values.brand.name,
             onPress: () => {
               // if (route?.params?.buttonsDisabled) return
-              navigation.navigate('Search', { title: 'Brand', values, setValues })
+              navigation.navigate('Search', { title: 'Brand', values, setValues, setModelReset })
             }
           },
           {
