@@ -12,6 +12,7 @@ function handleModelsResponse(models: any) {
   return models.map((model: any) => ({
     id: model._id,
     title: model.name,
+    brand_id: model?.brand?._id,
     image: model.image ? constants.baseURL + model.brand.image : '',
   }));
 }
