@@ -95,7 +95,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white
   },
   contentContainer: {
-    flex: 1,
+    // flex: 1,
+    // flexGrow: 1,
     backgroundColor: colors.white,
     marginHorizontal: 20
   },
