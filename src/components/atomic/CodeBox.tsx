@@ -19,6 +19,7 @@ function CodeBox({ reference, ...props }: codeBoxProps): JSX.Element {
       }}
       placeholderTextColor={colors.codeBoxText}
       style={styles.textInput}
+      keyboardType='number-pad'
       {...props}
     />
   </View>
