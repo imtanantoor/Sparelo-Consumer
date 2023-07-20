@@ -17,6 +17,14 @@ function RandomBars({ barColor, mode, isPopup = false, onSeek }: { barColor: str
   useEffect(() => {
     let temp: Bar[] = []
     let interval: any = null
+    const listener = () => {
+      if (mode === 'player') {
+        if (isPopup)
+          setBars(Array.from({ length: ((Dimensions.get('screen').width / 12)) * 1 }).map((item: any, index: number) => ({ id: index + 1, height: helpers.randomHeightGenerator(8, 100) })))
+        else
+          setBars(Array.from({ length: (Dimensions.get('screen').width / 12) * 0.8 }).map((item: any, index: number) => ({ id: index + 1, height: helpers.randomHeightGenerator(8, 100) })))
+      }
+    }
 
     if (mode === 'recorder') {
 
@@ -38,13 +46,8 @@ function RandomBars({ barColor, mode, isPopup = false, onSeek }: { barColor: str
 
       }, 500)
     }
-
-    if (mode === 'player') {
-      if (isPopup)
-        setBars(Array.from({ length: ((Dimensions.get('screen').width / 12)) * 1 }).map((item: any, index: number) => ({ id: index + 1, height: helpers.randomHeightGenerator(8, 100) })))
-      else
-        setBars(Array.from({ length: (Dimensions.get('screen').width / 12) * 0.8 }).map((item: any, index: number) => ({ id: index + 1, height: helpers.randomHeightGenerator(8, 100) })))
-    }
+    listener()
+    Dimensions.addEventListener('change', listener)
 
     return () => {
       clearInterval(interval)
