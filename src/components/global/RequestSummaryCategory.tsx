@@ -13,7 +13,7 @@ export interface RequestSummaryCategoryCardProps {
 }
 
 function RequestSummaryCategoryCard({ title, make, model, year, image, }: RequestSummaryCategoryCardProps): JSX.Element {
-  return <TouchableOpacity style={styles.container}>
+  return <View style={styles.container}>
     <View style={styles.contentContainer}>
       <View style={{ width: '20%' }}>
         <View style={styles.imageContainer}>
@@ -39,7 +39,7 @@ function RequestSummaryCategoryCard({ title, make, model, year, image, }: Reques
         </View>
       </View>
     </View>
-  </TouchableOpacity >
+  </View >
 }
 
 export default RequestSummaryCategoryCard
