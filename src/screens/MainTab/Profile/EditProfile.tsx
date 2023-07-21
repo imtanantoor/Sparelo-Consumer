@@ -1,6 +1,6 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native";
 import CustomButton from "../../../components/global/CustomButton";
 import CustomImage from "../../../components/global/CustomImage";
@@ -63,50 +63,52 @@ function EditProfile({ navigation, user, submitting, error, success, updateUser,
   }, [success])
 
   return <SafeAreaView style={styles.parentView}>
-    <View style={styles.container}>
-      <CustomImageSelector
-        assets={assets}
-        setAssets={setAssets}
-        showInitialImage
-        image={user?.profilePic && assets.length == 0 ? constants.baseURL + user?.profilePic : ''}
-        multiple={false}
-        style={{ alignSelf: 'center' }}
+    <ScrollView >
+      <View style={styles.container}>
+        <CustomImageSelector
+          assets={assets}
+          setAssets={setAssets}
+          showInitialImage
+          image={user?.profilePic && assets.length == 0 ? constants.baseURL + user?.profilePic : ''}
+          multiple={false}
+          style={{ alignSelf: 'center' }}
+        />
+        <CustomTextInput
+          placeholder="Enter your name"
+          label="Your name"
+          fieldName="name"
+          errors={errors}
+          touched={touched}
+          disabled={false}
+          required={false}
+          value={values.name}
+          setTouched={setTouched}
+          onChangeText={(text: string) => { setValues({ ...values, name: text }) }}
+          onBlur={() => { }}
+        />
+        <CustomTextInput
+          placeholder={values.contact}
+          label="Contact"
+          fieldName="contact"
+          errors={errors}
+          touched={touched}
+          disabled
+          required={false}
+          // value={values.contact}
+          setTouched={setTouched}
+          onChangeText={() => { }}
+          onBlur={() => { }}
+        />
+      </View>
+      <CustomButton
+        type="primary"
+        title="Update"
+        submitting={submitting}
+        disabled={submitting || values.name === ''}
+        buttonStyle={{ marginHorizontal: 20 }}
+        onPress={handleUpdateUser}
       />
-      <CustomTextInput
-        placeholder="Enter your name"
-        label="Your name"
-        fieldName="name"
-        errors={errors}
-        touched={touched}
-        disabled={false}
-        required={false}
-        value={values.name}
-        setTouched={setTouched}
-        onChangeText={(text: string) => { setValues({ ...values, name: text }) }}
-        onBlur={() => { }}
-      />
-      <CustomTextInput
-        placeholder={values.contact}
-        label="Contact"
-        fieldName="contact"
-        errors={errors}
-        touched={touched}
-        disabled
-        required={false}
-        // value={values.contact}
-        setTouched={setTouched}
-        onChangeText={() => { }}
-        onBlur={() => { }}
-      />
-    </View>
-    <CustomButton
-      type="primary"
-      title="Update"
-      submitting={submitting}
-      disabled={submitting || values.name === ''}
-      buttonStyle={{ marginHorizontal: 20 }}
-      onPress={handleUpdateUser}
-    />
+    </ScrollView>
 
   </SafeAreaView>
 }
