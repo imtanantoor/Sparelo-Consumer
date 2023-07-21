@@ -10,6 +10,7 @@ interface RequestsListProps {
   user: UserModel;
   fetchRequests: (userId: string) => void;
   fetchRequestsOfVendor: (userId: string) => void;
+  creatingQuotationSuccess: boolean;
 }
 
 export default RequestsListProps;

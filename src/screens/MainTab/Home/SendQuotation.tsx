@@ -231,7 +231,7 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
     </ScrollView>
     <CustomButton
       title="Submit"
-      disabled={creatingQuotation || assets.length == 0 || values.price == '' || manufacturer == null || Object.keys(errors).length > 0}
+      disabled={creatingQuotation || assets.length == 0 || values.price == '' || manufacturer == null || Object.values(errors).some((value) => value !== '')}
       submitting={creatingQuotation}
       onPress={handleCreateQuotation}
       buttonStyle={{ marginVertical: 20, marginHorizontal: 20 }}

@@ -8,14 +8,14 @@ import RequestsListProps from "../../../models/requestsList";
 import ListEmptyComponent from "../../../components/global/ListEmptyComponent";
 import RequestCardProps from "../../../models/requestCard";
 
-function RequestsList({ navigation, route, requests, fetching, error, mode, user, fetchRequests, fetchRequestsOfVendor }: RequestsListProps): JSX.Element {
+function RequestsList({ navigation, route, requests, fetching, error, mode, user, creatingQuotationSuccess, fetchRequests, fetchRequestsOfVendor }: RequestsListProps): JSX.Element {
 
   useEffect(() => {
     if (mode === 'buyer')
       return fetchRequests(user._id)
 
     fetchRequestsOfVendor(user._id)
-  }, [])
+  }, [creatingQuotationSuccess])
 
   function handleApiCall() {
     if (mode === 'buyer')
@@ -62,6 +62,7 @@ function RequestsList({ navigation, route, requests, fetching, error, mode, user
 const mapStateToProps = (state: any) => ({
   requests: state.Requests.data,
   fetching: state.Requests.fetching,
+  creatingQuotationSuccess: state.Parts.creatingQuotationSuccess,
   error: state.Requests.error,
   user: state.Auth.user,
   mode: state.Auth.mode
