@@ -18,6 +18,7 @@
     "postinstall": "react-native setup-ios-permissions && npx pod-install"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.19.1",
     "@react-native-community/datetimepicker": "^7.1.0",
     "@react-native-community/geolocation": "^3.0.6",
     "@react-native-firebase/app": "^17.5.0",
@@ -52,7 +53,8 @@
     "react-native-svg-transformer": "^1.0.0",
     "react-native-tab-view": "^3.5.1",
     "react-native-toast-message": "^2.1.6",
-    "react-redux": "^8.0.5"
+    "react-redux": "^8.0.5",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

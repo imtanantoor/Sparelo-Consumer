@@ -11,6 +11,8 @@ import availabilitySlice from './slices/availabilitySlice';
 import manufacturerSlice from './slices/manufacturerSlice';
 import QuotationsSlice from './slices/quotationsSlice';
 import ordersSlice from './slices/ordersSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {persistReducer, persistStore} from 'redux-persist';
 
 const rootReducer = combineReducers({
   Auth: authSlice.reducer,
@@ -27,8 +29,15 @@ const rootReducer = combineReducers({
   Quotations: QuotationsSlice.reducer,
 });
 
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
 });
+export const persistor = persistStore(store);
 
 export default store;
