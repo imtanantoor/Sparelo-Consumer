@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, View, Text, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, StyleSheet, Dimensions } from 'react-native';
 import colors from '../../constants/colors';
 import font from '../../constants/fonts';
 import CustomButton from '../global/CustomButton';
@@ -54,7 +54,7 @@ function PageButtons({ type, mainBtnTitle, mainButtonDisabled, mainButtonSubmitt
 
 function StaticPage({ SVG, title, showIndicators, subTitle, mainBtnTitle, step1Type, step2Type, type, mainButtonDisabled, mainButtonSubmitting, mainButtonPress, secondaryButtonPress }: StaticPageProps): JSX.Element {
   return <SafeAreaView style={styles.container}>
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={styles.scroll}>
       <SVG />
       <View style={styles.contentContainer}>
         <Text style={styles.title}>{title}</Text>
@@ -81,6 +81,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     backgroundColor: colors.white,
   },
+  scroll: {
+    flexGrow: 1,
+    justifyContent: 'space-around',
+    backgroundColor: colors.white
+  },
   title: {
     color: colors.textPrimary,
     fontSize: font.sizes.nineteen,
@@ -97,7 +102,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     marginHorizontal: 20,
-    marginVertical: 10
+    marginVertical: 10,
   },
   buttonsContainer: {
     flexDirection: 'row',
