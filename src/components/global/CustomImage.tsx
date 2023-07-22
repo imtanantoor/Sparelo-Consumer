@@ -27,7 +27,7 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
 
   return <View style={{ justifyContent: 'center' }}>
     <View {...props}>
-      {loading && <View style={[styles.loadingIndicatorStyle, { height: myProps?.style?.height ? myProps?.style?.height : styles.loadingIndicatorStyle.height, borderRadius: 15 }]}>
+      {loading && <View style={[styles.loadingIndicatorStyle, { height: myProps?.style?.height ? myProps?.style?.height : styles.loadingIndicatorStyle.height, borderRadius: myProps?.style?.borderRadius ? myProps.style.borderRadius : 15 }]}>
         <ActivityIndicator
           size={'small'}
           color={colors.white}
