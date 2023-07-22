@@ -8,6 +8,7 @@ import CustomButton from "../global/CustomButton";
 import VoicePlayerPopup from "./VoicePlayerPopup";
 import { useState } from "react";
 import QuotationsCardModel from "../../models/QuotationsCardModel";
+import CustomImage from "../global/CustomImage";
 
 
 function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, rating, showDeleteButton, deletingQuotation, onDeletePress }: QuotationsCardModel): JSX.Element {
@@ -21,6 +22,8 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
     <View>
       <SliderBox
         ImageComponentStyle={styles.slider}
+        ImageComponent={CustomImage}
+        LoaderComponent={() => null}
         parentWidth={Dimensions.get('screen').width * 0.84}
         paginationBoxStyle={{
           position: "absolute",

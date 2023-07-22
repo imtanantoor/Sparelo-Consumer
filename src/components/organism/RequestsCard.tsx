@@ -9,13 +9,18 @@ import VoicePlayerPopup from "./VoicePlayerPopup";
 
 function RequestsCard({ imageBackground, make, model, year, category, buttonDisabled, buttonTitle, audioNote, onButtonPress }: RequestCardProps): JSX.Element {
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
+  const [imageError, setImageError] = useState<boolean>(false)
   function hideVoiceModal() {
     setShowVoicePlayer(false)
   }
 
   return <TouchableOpacity style={styles.container} activeOpacity={0.9}>
     <ImageBackground
-      source={{ uri: imageBackground }}
+      onError={() => {
+        setImageError(true)
+      }}
+      loadingIndicatorSource={require('../../assets/loadingSource.png')}
+      source={imageError ? require('../../assets/ImagePlaceholder.png') : { uri: imageBackground }}
       style={styles.imageContainer}
       imageStyle={{ borderRadius: 10 }}
     >

@@ -11,6 +11,7 @@ import AvailabilityCardModel from "../../models/AvailabilityCardsModel";
 import { Fragment, useState } from "react";
 import VoiceSVG from "../../assets/VoiceSVG";
 import VoicePlayerPopup from "./VoicePlayerPopup";
+import CustomImage from "../global/CustomImage";
 
 interface AvailabilityCardProps extends AvailabilityCardModel {
   type: 'results' | 'availability'
@@ -84,6 +85,8 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
     <View>
       <SliderBox
         ImageComponentStyle={styles.slider}
+        ImageComponent={CustomImage}
+        LoaderComponent={() => null}
         paginationBoxStyle={{
           position: "absolute",
           bottom: 0,

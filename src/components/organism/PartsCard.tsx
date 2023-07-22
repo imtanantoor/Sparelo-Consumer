@@ -16,6 +16,7 @@ import CustomModal from "./CustomModal";
 import RequestCreationSuccess from "../../assets/RequestCreationSuccess";
 import VoicePlayerPopup from "./VoicePlayerPopup";
 import { useState } from "react";
+import CustomImage from "../global/CustomImage";
 
 
 function PartsCard({ id, make, model, year, images, price, bid, audioNote, rating, checkAvailability }: PartsCardModel): JSX.Element {
@@ -58,6 +59,8 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
     <View>
       <SliderBox
         ImageComponentStyle={styles.slider}
+        ImageComponent={CustomImage}
+        LoaderComponent={() => null}
         parentWidth={Dimensions.get('screen').width * 0.84}
         paginationBoxStyle={{
           position: "absolute",

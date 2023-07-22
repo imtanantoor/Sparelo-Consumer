@@ -4,6 +4,7 @@ import Modal from "react-native-modal";
 import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import { SliderBox } from "react-native-image-slider-box";
+import CustomImage from "../global/CustomImage";
 
 
 interface ImagesModalProps {
@@ -23,6 +24,8 @@ function ImagesModal({ visible, images, hideModal }: ImagesModalProps): JSX.Elem
     {/* <View style={styles.popUp}> */}
     <SliderBox
       ImageComponentStyle={styles.slider}
+      ImageComponent={CustomImage}
+      LoaderComponent={() => null}
       parentWidth={Dimensions.get('screen').width * 0.9}
       paginationBoxStyle={{
         position: "absolute",

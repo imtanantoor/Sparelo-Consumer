@@ -25,6 +25,8 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
     setError(false)
   }, [imageUrl])
 
+  console.log({ imageUrl, source })
+
   return <View style={{ justifyContent: 'center' }}>
     {loading && <View style={[styles.loadingIndicatorStyle, { height: myProps?.style?.height ? myProps?.style?.height : styles.loadingIndicatorStyle.height }]}>
       <ActivityIndicator
@@ -37,7 +39,7 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
       // onLoadStart={handleLoadStart}
       onLoadEnd={handleLoadEnd}
       onError={onError}
-      source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : { uri: imageUrl }}
+      source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : { uri: imageUrl ? imageUrl : source?.uri }}
     />
   </View>
 }
