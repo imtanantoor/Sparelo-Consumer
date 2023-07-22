@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SliderBox } from "react-native-image-slider-box";
 import colors from "../../constants/colors";
 import font from "../../constants/fonts";
@@ -98,6 +98,7 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
           paddingVertical: 10
         }}
         sliderBoxHeight={140}
+        // parentWidth={Dimensions.get('screen').width * 0.8}
         images={images} />
     </View>
     <View style={styles.detailContainer}>
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', alignContent: 'center'
 
   },
-  slider: { borderRadius: 15, width: '80%', marginRight: 60 },
+  slider: { borderRadius: 15, width: '80%', marginRight: 60, },
   detailContainer: {
     padding: 10
   },

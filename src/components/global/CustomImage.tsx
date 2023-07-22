@@ -25,22 +25,24 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
     setError(false)
   }, [imageUrl])
 
-  console.log({ imageUrl, source })
-
   return <View style={{ justifyContent: 'center' }}>
-    {loading && <View style={[styles.loadingIndicatorStyle, { height: myProps?.style?.height ? myProps?.style?.height : styles.loadingIndicatorStyle.height }]}>
-      <ActivityIndicator
-        size={'small'}
-        color={colors.white}
+    <View {...props}>
+      {loading && <View style={[styles.loadingIndicatorStyle, { height: myProps?.style?.height ? myProps?.style?.height : styles.loadingIndicatorStyle.height, borderRadius: 15 }]}>
+        <ActivityIndicator
+          size={'small'}
+          color={colors.white}
+        />
+      </View>}
+      <Image
+        {...props}
+        // onLoadStart={handleLoadStart}
+        onLoadEnd={handleLoadEnd}
+        loadingIndicatorSource={require('../../assets/loadingSource.png')}
+        onError={onError}
+        source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : { uri: imageUrl ? imageUrl : source?.uri }}
+        style={[myProps?.style, { width: '100%', marginRight: 0 }]}
       />
-    </View>}
-    <Image
-      {...props}
-      // onLoadStart={handleLoadStart}
-      onLoadEnd={handleLoadEnd}
-      onError={onError}
-      source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : { uri: imageUrl ? imageUrl : source?.uri }}
-    />
+    </View>
   </View>
 }
 const styles = StyleSheet.create({
