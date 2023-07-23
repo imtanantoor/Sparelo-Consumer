@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { CartDataModel } from "../../models/cartModel";
 import cartSlice from "../../store/slices/cartSlice";
 import AvailabilityCardModel from "../../models/AvailabilityCardsModel";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import VoiceSVG from "../../assets/VoiceSVG";
 import VoicePlayerPopup from "./VoicePlayerPopup";
 import CustomImage from "../global/CustomImage";
@@ -72,6 +72,7 @@ function StatusAndButtons({ isVendor, available, availibilityStatus, submitting,
 
 function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, audioNote, availibilityStatus, mode, submitting = false, handleAvailabilityStatus, onButtonPress }: AvailabilityCardProps): JSX.Element {
   const dispatch = useDispatch()
+  const [width, setWidth] = useState(Dimensions.get('screen').width)
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
   function hideVoiceModal() {
     setShowVoicePlayer(false)
@@ -80,6 +81,13 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
   function AddToCart({ item }: { item: CartDataModel }) {
     return () => dispatch(cartSlice.actions.addToCart(item))
   }
+
+  useEffect(() => {
+    Dimensions.addEventListener('change', () => {
+      setWidth(Dimensions.get('screen').width * 1)
+    })
+
+  }, [])
 
   return <TouchableOpacity activeOpacity={0.9} style={styles.container}>
     <View>
@@ -98,8 +106,9 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
           paddingVertical: 10
         }}
         sliderBoxHeight={140}
-        // parentWidth={Dimensions.get('screen').width * 0.8}
-        images={images} />
+        parentWidth={Dimensions.get('screen').width * 1}
+        images={images}
+      />
     </View>
     <View style={styles.detailContainer}>
       <Text style={styles.description}>{make} | {year} | {model}</Text>

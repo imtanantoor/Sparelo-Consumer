@@ -37,7 +37,6 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
         {...props}
         // onLoadStart={handleLoadStart}
         onLoadEnd={handleLoadEnd}
-        loadingIndicatorSource={require('../../assets/loadingSource.png')}
         onError={onError}
         source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : { uri: imageUrl ? imageUrl : source?.uri }}
         style={[myProps?.style, { width: '100%', marginRight: 0 }]}

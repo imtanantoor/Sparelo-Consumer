@@ -6,13 +6,20 @@ import VoiceSVG from "../../assets/VoiceSVG";
 import { Rating } from 'react-native-ratings'
 import CustomButton from "../global/CustomButton";
 import VoicePlayerPopup from "./VoicePlayerPopup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import QuotationsCardModel from "../../models/QuotationsCardModel";
 import CustomImage from "../global/CustomImage";
 
 
 function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, rating, showDeleteButton, deletingQuotation, onDeletePress }: QuotationsCardModel): JSX.Element {
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
+  const [width, setWidth] = useState(Dimensions.get('screen').width * 1)
+
+  useEffect(() => {
+    Dimensions.addEventListener('change', () => {
+      setWidth(Dimensions.get('screen').width * 1)
+    })
+  }, [])
 
   function hideVoiceModal() {
     setShowVoicePlayer(false)
@@ -24,7 +31,7 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
         ImageComponentStyle={styles.slider}
         ImageComponent={CustomImage}
         LoaderComponent={() => null}
-        parentWidth={Dimensions.get('screen').width * 0.84}
+        parentWidth={width}
         paginationBoxStyle={{
           position: "absolute",
           bottom: 0,
@@ -100,7 +107,8 @@ const styles = StyleSheet.create({
   },
   slider: {
     borderRadius: 15,
-    width: '100%'
+    width: '80%',
+    marginRight: 60
   },
   detailContainer: {
     padding: 10

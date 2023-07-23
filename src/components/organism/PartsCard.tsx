@@ -15,7 +15,7 @@ import actions from "../../store/actions";
 import CustomModal from "./CustomModal";
 import RequestCreationSuccess from "../../assets/RequestCreationSuccess";
 import VoicePlayerPopup from "./VoicePlayerPopup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomImage from "../global/CustomImage";
 
 
@@ -25,6 +25,7 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
   const { checkingAvailability, checkingAvailabilitySuccess, checkingAvailabilityError } = useSelector((state: any) => state.Availability)
   const { user } = useSelector((state: any) => state.Auth)
+  const [width, setWidth] = useState(Dimensions.get('screen').width * 1)
 
   function determineAvailability() {
     dispatch(actions.checkAvailability({ bid: bid.toString(), user: user._id }))
@@ -55,13 +56,19 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
     }))
   }
 
+  useEffect(() => {
+    Dimensions.addEventListener('change', () => {
+      setWidth(Dimensions.get('screen').width)
+    })
+  }, [])
+
   return <TouchableOpacity activeOpacity={0.9} style={styles.container}>
     <View>
       <SliderBox
         ImageComponentStyle={styles.slider}
         ImageComponent={CustomImage}
         LoaderComponent={() => null}
-        parentWidth={Dimensions.get('screen').width * 0.84}
+        parentWidth={width}
         paginationBoxStyle={{
           position: "absolute",
           bottom: 0,
@@ -151,7 +158,8 @@ const styles = StyleSheet.create({
   },
   slider: {
     borderRadius: 15,
-    width: '100%'
+    width: '80%',
+    marginRight: 60
   },
   detailContainer: {
     padding: 10
