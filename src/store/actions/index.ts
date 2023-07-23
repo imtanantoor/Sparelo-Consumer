@@ -213,7 +213,7 @@ const createFormData = (data: any) => {
     ) {
       if (Array.isArray(data[key])) {
         data[key].forEach((value: any) => {
-          formData.append(key, value);
+          formData.append(`${key}[]`, value);
         });
       } else formData.append(key, data[key]);
     }
