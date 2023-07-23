@@ -414,7 +414,6 @@ const changePassword = createAsyncThunk(
 const updateShop = createAsyncThunk(
   'Auth/ Update Shop',
   async (data: UpdateShopModel, {rejectWithValue}) => {
-    console.log({formData: createFormData(data)});
     try {
       const response = await constants.apiInstance.patch(
         'shop/update',

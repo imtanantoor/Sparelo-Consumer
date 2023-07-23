@@ -278,6 +278,7 @@ function ShopDetails({
           latitudeDelta: 0.002,
           longitudeDelta: 0.002,
         });
+        setShouldReset(true)
       }, 200)
 
       setAssets(shopDetails?.images?.map((image: string) => ({
@@ -285,7 +286,7 @@ function ShopDetails({
         type: "image/jpg",
         uri: constants.baseURL + image,
       })))
-      setShouldReset(true)
+
     }
   }, [fetchError, fetching])
 
