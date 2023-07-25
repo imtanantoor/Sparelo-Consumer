@@ -33,7 +33,7 @@ function handleAvailabilityResponse(response: any): AvailabilityCardModel[] {
     bid: item.bid._id,
     images:
       item?.bid?.images && item?.bid?.images.length > 0
-        ? item?.bid?.images?.map((image: string) => constants.baseURL + image)
+        ? item?.bid?.images?.map((image: string) => image)
         : [],
     make: item?.bid?.request?.brand?.name,
     model: item?.bid?.request?.model?.name,

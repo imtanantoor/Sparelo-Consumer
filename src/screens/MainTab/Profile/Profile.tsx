@@ -19,7 +19,7 @@ function Profile({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   return <SafeAreaView>
     <ScrollView style={styles.container}>
       <MyProfileCard
-        imageUrl={user?.profilePic ? constants.baseURL + user?.profilePic : ''}
+        imageUrl={user?.profilePic ? user?.profilePic : ''}
         name={user.name}
         contact={user.contact}
         onPress={() => navigation.navigate('Edit Profile')}

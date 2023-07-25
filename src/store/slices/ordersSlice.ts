@@ -23,9 +23,7 @@ function handleOrdersHistoryResponse(data: any): OrderHistoryCardProps[] {
 
     if (requestData)
       return {
-        images: requestData?.images?.map(
-          (image: string) => constants.baseURL + image,
-        ),
+        images: requestData?.images?.map((image: string) => image),
         make: requestData?.brand?.name,
         model: requestData?.model?.name,
         year: requestData?.manufacturingYear,

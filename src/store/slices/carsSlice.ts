@@ -22,8 +22,7 @@ function handleCarsResponse(cars: any): CarCardProps[] {
     makeId: car.model._id,
     makeName: car.model.name,
     year: car.manufacturingYear,
-    imageUrl:
-      car.images.length > 0 ? `${constants.baseURL}${car.images[0]}` : '',
+    imageUrl: car.images.length > 0 ? `${car.images[0]}` : '',
     carName: car.model.name,
     carMake: `${car.brand.name} | ${car.manufacturingYear}`,
     outOfStock: false,

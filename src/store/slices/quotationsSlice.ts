@@ -43,9 +43,7 @@ function handleQuotationsResponse(bids: any): QuotationsCardModel[] {
   return bids.map((bid: any, index: number) => ({
     id: bid?.request?._id,
     bid: bid?._id,
-    images: bid?.request?.images.map(
-      (image: string) => constants.baseURL + image,
-    ),
+    images: bid?.request?.images.map((image: string) => image),
     make: bid?.request?.model?.name ? bid?.request?.model?.name : 'make',
     model: bid?.request?.model?.name ? bid?.request?.model?.name : 'model',
     year: bid?.manufacturingYear ? bid?.manufacturingYear : 'year',

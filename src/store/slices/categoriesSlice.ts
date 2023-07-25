@@ -12,7 +12,7 @@ function handleCategoriesResponse(categories: any) {
   return categories.map((category: any) => ({
     id: category._id,
     title: category.name,
-    image: category.image ? constants.baseURL + category.image : '',
+    image: category.image ? category.image : '',
   }));
 }
 

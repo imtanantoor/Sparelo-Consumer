@@ -284,7 +284,7 @@ function ShopDetails({
       setAssets(shopDetails?.images?.map((image: string) => ({
         fileName: image?.split('/')?.[0] ? image.split('/')[0] : image,
         type: "image/jpg",
-        uri: constants.baseURL + image,
+        uri: image,
       })))
 
     }

@@ -61,7 +61,7 @@ function handlePartsResponse(bids: any, isSearch: boolean): PartsCardModel[] {
     return bids.map((part: any, index: number) => ({
       id: part?._id,
       bid: part?.bids[index]?._id ? part?.bids[index]?._id : 0,
-      images: part?.images.map((image: string) => constants.baseURL + image),
+      images: part?.images.map((image: string) => image),
       make: part?.model?.name ? part?.model?.name : 'make',
       model: part?.model?.name ? part?.model?.name : 'model',
       year: part?.manufacturingYear ? part?.manufacturingYear : 'year',
@@ -74,9 +74,7 @@ function handlePartsResponse(bids: any, isSearch: boolean): PartsCardModel[] {
   return bids.map((bid: any, index: number) => ({
     id: bid?.request?._id,
     bid: bid?._id,
-    images: bid?.request?.images.map(
-      (image: string) => constants.baseURL + image,
-    ),
+    images: bid?.request?.images.map((image: string) => image),
     make: bid?.request?.model?.name ? bid?.request?.model?.name : 'make',
     model: bid?.request?.model?.name ? bid?.request?.model?.name : 'model',
     year: bid?.manufacturingYear ? bid?.manufacturingYear : 'year',

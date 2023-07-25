@@ -23,7 +23,7 @@ function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
 
   function HandlePlay() {
     setLoading(true)
-    const player = new Sound(constants.baseURL + audioNote, undefined, (error) => {
+    const player = new Sound(audioNote, undefined, (error) => {
       if (error) {
         setLoading(false)
         hideModal()
@@ -78,7 +78,7 @@ function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
     style={{ flex: 1, height: 500 }}
   >
     <VoicePlayer
-      uri={constants.baseURL + audioNote}
+      uri={audioNote}
       duration="0"
       callBack={setPlaying}
       isPopup={true}

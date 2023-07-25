@@ -69,7 +69,7 @@ function EditProfile({ navigation, user, submitting, error, success, updateUser,
           assets={assets}
           setAssets={setAssets}
           showInitialImage
-          image={user?.profilePic && assets.length == 0 ? constants.baseURL + user?.profilePic : ''}
+          image={user?.profilePic && assets.length == 0 ? user?.profilePic : ''}
           multiple={false}
           style={{ alignSelf: 'center' }}
         />

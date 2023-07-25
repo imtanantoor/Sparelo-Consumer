@@ -29,11 +29,10 @@ function handleRequestsData(
     make: request?.brand?.name ? request.brand.name : 'N/A',
     model: request?.model.name,
     year: request?.manufacturingYear,
-    imageBackground:
-      request?.images?.length > 0 ? constants.baseURL + request.images[0] : '',
+    imageBackground: request?.images?.length > 0 ? request.images[0] : '',
     images:
       request?.images?.length > 0
-        ? request.images.map((image: string) => constants.baseURL + image)
+        ? request.images.map((image: string) => image)
         : [],
     buttonDisabled: request?.numberOfBids <= 0,
     // buttonTitle: `Send Quotation`,

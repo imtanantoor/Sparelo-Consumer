@@ -16,7 +16,7 @@ const initialState: {
 function handleBrandsResponse(brands: any): BrandCardProps[] {
   return brands.map((brand: any) => ({
     id: brand._id,
-    imageUrl: brand.image ? constants.baseURL + brand.image : '',
+    imageUrl: brand.image ? brand.image : '',
     title: brand.name,
   }));
 }
