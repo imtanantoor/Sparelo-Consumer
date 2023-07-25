@@ -43,7 +43,7 @@ function AvailabilityHome({ data, fetching, error, user, mode, changingStatus, c
 
   return <FlatList
     refreshControl={<RefreshControl refreshing={fetching} onRefresh={handleApiCall} />}
-    data={data}
+    data={data.filter((item) => mode === 'vendor' ? item.availibilityStatus === 'IN-PROCESS' : true)}
     ListEmptyComponent={() => <ListEmptyComponent
       fetching={fetching}
       error={error}

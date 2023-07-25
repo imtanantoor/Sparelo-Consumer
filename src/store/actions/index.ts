@@ -386,12 +386,16 @@ const sendQuotation = createAsyncThunk(
 
 const changeAvailability = createAsyncThunk(
   'Availability/ Change Availability Status',
-  async (data: ChangeAvailabilityStatusModel) => {
-    const resposne = await constants.apiInstance.post(
-      'availability/changeAvailibilityStatus',
-      data,
-    );
-    return resposne;
+  async (data: ChangeAvailabilityStatusModel, {rejectWithValue}) => {
+    try {
+      const resposne = await constants.apiInstance.post(
+        'availability/changeAvailibilityStatus',
+        data,
+      );
+      return resposne;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data);
+    }
   },
 );
 

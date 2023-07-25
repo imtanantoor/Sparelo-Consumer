@@ -4,6 +4,7 @@ import AvailabilityCardModel from '../../models/AvailabilityCardsModel';
 import {constant} from 'lodash';
 import constants from '../../utils/constants';
 import ToastService from '../../Services/ToastService';
+import store from '..';
 
 const initialState: {
   fetching: boolean;
@@ -101,7 +102,7 @@ const availabilitySlice = createSlice({
         state.checkingAvailabilitySuccess = true;
         state.checkingAvailabilityError = false;
       })
-      .addCase(actions.checkAvailability.rejected, (state, action) => {
+      .addCase(actions.checkAvailability.rejected, (state, action: any) => {
         state.checkingAvailability = false;
         state.checkingAvailabilitySuccess = false;
         ToastService.error(
@@ -124,16 +125,24 @@ const availabilitySlice = createSlice({
         state.changeStatusError = false;
         state.changeStatusSuccess = true;
       })
-      .addCase(actions.changeAvailability.rejected, (state, action) => {
+      .addCase(actions.changeAvailability.rejected, (state, action: any) => {
         state.changingStatus = false;
         state.changeStatusError = true;
         state.changeStatusSuccess = false;
         ToastService.error(
-          'Change Availability',
-          action?.error?.message
-            ? action.error.message
+          'Availability',
+          action?.payload?.error
+            ? action.payload.error
+            : action?.payload?.message
+            ? action.payload.message
             : 'Something went wrong, please try again',
         );
+        // ToastService.error(
+        //   'Change Availability',
+        //   action?.error?.message
+        //     ? action.error.message
+        //     : 'Something went wrong, please try again',
+        // );
         state.checkingAvailabilityError = true;
       });
   },
