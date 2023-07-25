@@ -27,8 +27,12 @@ function CodeBox({ reference, ...props }: codeBoxProps): JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
-    width: 50,
+    minHeight: 50,
+    minWidth: 50,
+    maxHeight: 65,
+    maxWidth: 65,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 8,
     borderColor: colors.codeBoxBorder,
     borderWidth: 1
@@ -37,6 +41,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     paddingHorizontal: 5,
+    textAlignVertical: 'center',
     textAlign: 'center',
     fontSize: font.sizes.codeBoxText,
     color: colors.codeBoxText
