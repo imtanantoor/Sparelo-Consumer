@@ -33,6 +33,8 @@ const styles = StyleSheet.create({
     maxWidth: 65,
     justifyContent: 'center',
     alignItems: 'center',
+    flex: 1,
+    marginHorizontal: 3,
     borderRadius: 8,
     borderColor: colors.codeBoxBorder,
     borderWidth: 1
