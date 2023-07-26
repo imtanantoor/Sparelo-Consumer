@@ -11,6 +11,7 @@ import AddCarModel from "../../../models/addCarModel";
 import constants from "../../../utils/constants";
 import ToastService from "../../../Services/ToastService";
 import carSlice from "../../../store/slices/carsSlice";
+import YearPickerModal from "../../../components/organism/YearPickerModal";
 
 interface AddCarProps {
   navigation: any
@@ -39,7 +40,7 @@ function AddCar({ navigation, submitting, error, success, user, addCar, resetCre
     }
   }
   const [values, setValues] = useState(initialState)
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  // const [selectedDate, setSelectedDate] = useState(new Date())
   const [dateTImePickerVisible, setDateTimePickerVisible] = useState(false)
   const [images, setImages] = useState<any>([])
   const toast = ToastService
@@ -52,14 +53,14 @@ function AddCar({ navigation, submitting, error, success, user, addCar, resetCre
     setDateTimePickerVisible(false)
   }
 
-  function handleConfirm(date: any) {
-    let rawDate = new Date(date)
-    let year = rawDate.getFullYear().toString()
+  // function handleConfirm(date: any) {
+  //   let rawDate = new Date(date)
+  //   let year = rawDate.getFullYear().toString()
 
-    setValues({ ...values, manufacturingYear: year })
-    setSelectedDate(date)
-    hideDatePicker()
-  }
+  //   setValues({ ...values, manufacturingYear: year })
+  //   setSelectedDate(date)
+  //   hideDatePicker()
+  // }
 
   async function handleAddCar() {
     const data: AddCarModel = {
@@ -77,7 +78,7 @@ function AddCar({ navigation, submitting, error, success, user, addCar, resetCre
     resetCreationState()
     setValues(initialState)
     setImages([])
-    setSelectedDate(new Date())
+    // setSelectedDate(new Date())
   }
 
   useEffect(() => {
@@ -133,12 +134,21 @@ function AddCar({ navigation, submitting, error, success, user, addCar, resetCre
         type='primary'
         onPress={handleAddCar}
       />
-      <DateTimePickerModal
+      {/* <DateTimePickerModal
         isVisible={dateTImePickerVisible}
         mode="date"
         date={selectedDate}
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
+      /> */}
+      <YearPickerModal
+        visible={dateTImePickerVisible}
+        hideModal={hideDatePicker}
+        selectedYear={Number(values.manufacturingYear)}
+        setYear={(year: number) => {
+          setValues({ ...values, manufacturingYear: year.toString() })
+          hideDatePicker()
+        }}
       />
     </View>
   </SafeAreaView>

@@ -6,6 +6,7 @@ import FilterSection from "../../../../components/organism/FilterSection";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import ToastService from "../../../../Services/ToastService";
+import YearPickerModal from "../../../../components/organism/YearPickerModal";
 
 function FilterScreen({ navigation, route }: NativeStackScreenProps<any>): JSX.Element {
   const [values, setValues] = useState({
@@ -117,12 +118,21 @@ function FilterScreen({ navigation, route }: NativeStackScreenProps<any>): JSX.E
         })
       }}
     />
-    <DateTimePickerModal
+    {/* <DateTimePickerModal
       isVisible={dateTImePickerVisible}
       mode="date"
       date={selectedDate}
       onConfirm={handleConfirm}
       onCancel={hideDatePicker}
+    /> */}
+    <YearPickerModal
+      visible={dateTImePickerVisible}
+      hideModal={hideDatePicker}
+      selectedYear={values.manufacturingYear}
+      setYear={(year: number) => {
+        setValues({ ...values, manufacturingYear: year })
+        hideDatePicker()
+      }}
     />
   </SafeAreaView>
 }
