@@ -58,12 +58,6 @@ function AdsSlider({ data, fetching, error, fetchAds }: Slides): JSX.Element | n
             source={{ uri: item.imageUrl }}
             style={{ width: '100%', height: '100%', ...styles.container }}
           />
-          {/* <CustomImage
-            source={{ uri: '' }}
-            imageUrl={item.imageUrl}
-            style={{ width: '100%', height: '100%', ...styles.container }}
-
-          /> */}
         </TouchableOpacity>
       )}
       sliderWidth={Dimensions.get('screen').width}

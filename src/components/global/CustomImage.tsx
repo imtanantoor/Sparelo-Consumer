@@ -26,8 +26,6 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
     setError(false)
   }, [imageUrl])
 
-  console.log({ loading, error })
-
   return <View style={{ justifyContent: 'center' }}>
     <View {...props}>
       {loading && <View style={[styles.loadingIndicatorStyle, { height: myProps?.style?.height ? myProps?.style?.height : styles.loadingIndicatorStyle.height, borderRadius: myProps?.style?.borderRadius ? myProps.style.borderRadius : 15 }]}>
