@@ -33,6 +33,7 @@ function AdsSlider({ data, fetching, error, fetchAds }: Slides): JSX.Element | n
   if (fetching) return <View style={{ height: 250, marginVertical: 30, justifyContent: 'center', alignItems: 'center' }}>
     <ActivityIndicator color={colors.primary} size={'large'} />
   </View>
+
   if (error) return <View style={{ height: 250, marginVertical: 30, justifyContent: 'center', alignItems: 'center' }}>
     <Text style={{
       fontFamily: font.fontFamilies({ type: 'Poppins' }).medium,
@@ -53,12 +54,11 @@ function AdsSlider({ data, fetching, error, fetchAds }: Slides): JSX.Element | n
       data={data}
       onSnapToItem={handleSnapToItem}
       renderItem={({ item }) => (
-        <TouchableOpacity activeOpacity={0.9} style={styles.container}>
-          <Image
-            source={{ uri: item.imageUrl }}
-            style={{ width: '100%', height: '100%', ...styles.container }}
-          />
-        </TouchableOpacity>
+        <CustomImage
+          source={{ uri: '' }}
+          imageUrl={item.imageUrl}
+          style={{ height: '100%', width: '100%', ...styles.container }}
+        />
       )}
       sliderWidth={Dimensions.get('screen').width}
       scrollEnabled
