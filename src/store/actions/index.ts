@@ -200,6 +200,17 @@ const fetchVendorsOrderHistory = createAsyncThunk(
     return (await response).data;
   },
 );
+const fetchAds = createAsyncThunk(
+  'Ads/fetch Ads',
+  async (undefined, {rejectWithValue}) => {
+    try {
+      const response = constants.apiInstance.get(`ads`);
+      return (await response).data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data);
+    }
+  },
+);
 
 const createFormData = (data: any) => {
   const formData = new FormData();
@@ -306,7 +317,7 @@ const signUpUser = createAsyncThunk(
       const response = await constants.apiInstance.post('users/signup', data);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error?.response?.data);
     }
   },
 );
@@ -464,6 +475,7 @@ const actions = {
   fetchOrdersHistory,
   fetchVendorsOrderHistory,
   fetchShop,
+  fetchAds,
   searchParts,
   searchBrands,
   searchModelsOfBrand,

@@ -1,7 +1,12 @@
-import { Fragment, useState } from "react";
-import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Fragment, useEffect, useState } from "react";
+import { ActivityIndicator, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import colors from "../../constants/colors";
+import { connect } from "react-redux";
+import actions from "../../store/actions";
+import CustomImage from "../global/CustomImage";
+import font from "../../constants/fonts";
+import CustomButton from "../global/CustomButton";
 
 
 export interface Slide {
@@ -10,13 +15,38 @@ export interface Slide {
 
 interface Slides {
   data: Slide[]
+  fetching: boolean,
+  error: boolean
+  fetchAds: () => void
 }
 
-function AdsSlider({ data }: Slides): JSX.Element {
+function AdsSlider({ data, fetching, error, fetchAds }: Slides): JSX.Element | null {
   const [activeIndex, setActiveIndex] = useState<number>(0)
   function handleSnapToItem(index: number) {
     setActiveIndex(index)
   }
+
+  useEffect(() => {
+    fetchAds()
+  }, [])
+
+  if (fetching) return <View style={{ height: 250, marginVertical: 30, justifyContent: 'center', alignItems: 'center' }}>
+    <ActivityIndicator color={colors.primary} size={'large'} />
+  </View>
+  if (error) return <View style={{ height: 250, marginVertical: 30, justifyContent: 'center', alignItems: 'center' }}>
+    <Text style={{
+      fontFamily: font.fontFamilies({ type: 'Poppins' }).medium,
+      fontSize: font.sizes.title,
+      color: colors.red
+    }}>Something went wrong</Text>
+    <CustomButton
+      title="Refresh"
+      type='transparent'
+      onPress={fetchAds}
+      disabled={fetching}
+      submitting={false}
+    />
+  </View>
 
   return <View style={{ height: 250, marginVertical: 30, }}>
     <Carousel
@@ -24,7 +54,16 @@ function AdsSlider({ data }: Slides): JSX.Element {
       onSnapToItem={handleSnapToItem}
       renderItem={({ item }) => (
         <TouchableOpacity activeOpacity={0.9} style={styles.container}>
-          <Image source={{ uri: item.imageUrl }} style={{ width: '100%', height: '100%', ...styles.container }} />
+          <Image
+            source={{ uri: item.imageUrl }}
+            style={{ width: '100%', height: '100%', ...styles.container }}
+          />
+          {/* <CustomImage
+            source={{ uri: '' }}
+            imageUrl={item.imageUrl}
+            style={{ width: '100%', height: '100%', ...styles.container }}
+
+          /> */}
         </TouchableOpacity>
       )}
       sliderWidth={Dimensions.get('screen').width}
@@ -74,4 +113,15 @@ const styles = StyleSheet.create({
   },
 })
 
-export default AdsSlider
+const mapStateToProps = (state: any) => ({
+  fetching: state.Ads.fetching,
+  error: state.Ads.error,
+  success: state.Ads.success,
+  data: state.Ads.data
+})
+
+const mapDispatchToProps = {
+  fetchAds: actions.fetchAds
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdsSlider)

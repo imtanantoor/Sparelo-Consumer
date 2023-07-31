@@ -13,8 +13,10 @@ import QuotationsSlice from './slices/quotationsSlice';
 import ordersSlice from './slices/ordersSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {persistReducer, persistStore} from 'redux-persist';
+import adsSlice from './slices/adsSlice';
 
 const rootReducer = combineReducers({
+  Ads: adsSlice.reducer,
   Auth: authSlice.reducer,
   Availability: availabilitySlice.reducer,
   Brands: brandsSlice.reducer,

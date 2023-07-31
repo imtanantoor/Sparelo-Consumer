@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Image, ImageProps, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Image, ImageErrorEventData, ImageProps, NativeSyntheticEvent, StyleSheet, View } from "react-native";
 import colors from "../../constants/colors";
 
 interface CustomImageProps extends ImageProps {
@@ -17,13 +17,16 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
     setLoading(false)
   }
 
-  function onError() {
+  function onError(error: NativeSyntheticEvent<ImageErrorEventData>) {
     setError(true)
+    setLoading(false)
   }
 
   useEffect(() => {
     setError(false)
   }, [imageUrl])
+
+  console.log({ loading, error })
 
   return <View style={{ justifyContent: 'center' }}>
     <View {...props}>
@@ -38,6 +41,7 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
         // onLoadStart={handleLoadStart}
         onLoadEnd={handleLoadEnd}
         onError={onError}
+        // source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : require('../../assets/ImagePlaceholder.png')}
         source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : { uri: imageUrl ? imageUrl : source?.uri }}
         style={[myProps?.style, { width: '100%', marginRight: 0 }]}
       />
