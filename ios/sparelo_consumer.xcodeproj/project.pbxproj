@@ -53,6 +53,7 @@
 		2EA5741608A5453DAE00A64D /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		3B3B473DB8CF4BEBB2DB417A /* UnicaOne-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "UnicaOne-Regular.ttf"; path = "../assets/fonts/UnicaOne-Regular.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-sparelo_consumer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sparelo_consumer.debug.xcconfig"; path = "Target Support Files/Pods-sparelo_consumer/Pods-sparelo_consumer.debug.xcconfig"; sourceTree = "<group>"; };
+		452D26492A789A5100B473B8 /* sparelo_consumer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = sparelo_consumer.entitlements; path = sparelo_consumer/sparelo_consumer.entitlements; sourceTree = "<group>"; };
 		45C665B92A1264C0006FBCAC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-sparelo_consumer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sparelo_consumer.release.xcconfig"; path = "Target Support Files/Pods-sparelo_consumer/Pods-sparelo_consumer.release.xcconfig"; sourceTree = "<group>"; };
 		58A1E46DB5F047578A44F40F /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
@@ -110,6 +111,7 @@
 		13B07FAE1A68108700A75B9A /* sparelo_consumer */ = {
 			isa = PBXGroup;
 			children = (
+				452D26492A789A5100B473B8 /* sparelo_consumer.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -555,6 +557,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = sparelo_consumer/sparelo_consumer.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = sparelo_consumer/Info.plist;
@@ -582,6 +585,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = sparelo_consumer/sparelo_consumer.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = sparelo_consumer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
