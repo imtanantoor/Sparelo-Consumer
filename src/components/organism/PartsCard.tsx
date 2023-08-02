@@ -25,7 +25,7 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
   const { checkingAvailability, checkingAvailabilitySuccess, checkingAvailabilityError } = useSelector((state: any) => state.Availability)
   const { user } = useSelector((state: any) => state.Auth)
-  const [width, setWidth] = useState(Dimensions.get('screen').width * 1)
+  const [width, setWidth] = useState(Dimensions.get('screen').width * 0.83)
 
   function determineAvailability() {
     dispatch(actions.checkAvailability({ bid: bid.toString(), user: user._id }))
@@ -58,12 +58,12 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
 
   useEffect(() => {
     Dimensions.addEventListener('change', () => {
-      setWidth(Dimensions.get('screen').width)
+      setWidth(Dimensions.get('screen').width * 0.83)
     })
   }, [])
 
   return <TouchableOpacity activeOpacity={0.9} style={styles.container}>
-    <View>
+    <View style={{ overflow: 'hidden' }}>
       <SliderBox
         ImageComponentStyle={styles.slider}
         ImageComponent={CustomImage}
@@ -158,8 +158,7 @@ const styles = StyleSheet.create({
   },
   slider: {
     borderRadius: 15,
-    width: '80%',
-    marginRight: 60
+    width: '100%',
   },
   detailContainer: {
     padding: 10
