@@ -1,13 +1,17 @@
 import {createSlice} from '@reduxjs/toolkit';
 import actions from '../actions';
 import OrderHistoryCardProps from '../../models/orderHistoryCardProps';
-import constants from '../../utils/constants';
+import ToastService from '../../Services/ToastService';
 
 interface OrdersSlice {
   ordersHistory: any[];
   fetchingOrdersHistory: boolean;
   fetchingOrdersHistorySuccess: boolean;
   fetchingOrdersHistoryError: boolean;
+  changingOrderStatus: boolean;
+  changingOrderStatusError: boolean;
+  changingOrderStatusSuccess: boolean;
+  changingStatusType: 'approve' | 'cancel' | '';
 }
 
 const initialState: OrdersSlice = {
@@ -15,6 +19,10 @@ const initialState: OrdersSlice = {
   fetchingOrdersHistory: false,
   fetchingOrdersHistoryError: false,
   fetchingOrdersHistorySuccess: false,
+  changingOrderStatus: false,
+  changingOrderStatusError: false,
+  changingOrderStatusSuccess: false,
+  changingStatusType: '',
 };
 
 function handleOrdersHistoryResponse(data: any): OrderHistoryCardProps[] {
@@ -23,6 +31,7 @@ function handleOrdersHistoryResponse(data: any): OrderHistoryCardProps[] {
 
     if (requestData)
       return {
+        id: order?._id ?? '',
         images: requestData?.images?.map((image: string) => image),
         make: requestData?.brand?.name,
         model: requestData?.model?.name,
@@ -33,6 +42,7 @@ function handleOrdersHistoryResponse(data: any): OrderHistoryCardProps[] {
       };
 
     return {
+      id: order?._id ?? '',
       images: [],
       make: '',
       model: '',
@@ -88,6 +98,60 @@ const ordersSlice = createSlice({
         state.fetchingOrdersHistory = false;
         state.fetchingOrdersHistoryError = true;
         state.fetchingOrdersHistorySuccess = false;
+      });
+
+    //Approve Order
+    builder
+      .addCase(actions.approveOrder.pending, (state, action) => {
+        state.changingOrderStatus = true;
+        state.changingOrderStatusError = false;
+        state.changingOrderStatusSuccess = false;
+        state.changingStatusType = 'approve';
+      })
+      .addCase(actions.approveOrder.fulfilled, (state, action) => {
+        state.changingOrderStatus = false;
+        state.changingOrderStatusError = false;
+        state.changingOrderStatusSuccess = true;
+        state.changingStatusType = '';
+      })
+      .addCase(actions.approveOrder.rejected, (state, action: any) => {
+        state.changingOrderStatus = false;
+        state.changingOrderStatusError = true;
+        state.changingOrderStatusSuccess = false;
+        state.changingStatusType = '';
+        ToastService.error(
+          'Orders',
+          action?.payload?.error
+            ? action.payload.error
+            : 'Something went wrong',
+        );
+      });
+
+    //Cancel Order
+    builder
+      .addCase(actions.cancelOrder.pending, (state, action) => {
+        state.changingOrderStatus = true;
+        state.changingOrderStatusError = false;
+        state.changingOrderStatusSuccess = false;
+        state.changingStatusType = 'approve';
+      })
+      .addCase(actions.cancelOrder.fulfilled, (state, action) => {
+        state.changingOrderStatus = false;
+        state.changingOrderStatusError = false;
+        state.changingOrderStatusSuccess = true;
+        state.changingStatusType = '';
+      })
+      .addCase(actions.cancelOrder.rejected, (state, action: any) => {
+        state.changingOrderStatus = false;
+        state.changingOrderStatusError = true;
+        state.changingOrderStatusSuccess = false;
+        state.changingStatusType = '';
+        ToastService.error(
+          'Orders',
+          action?.payload?.error
+            ? action.payload.error
+            : 'Something went wrong',
+        );
       });
   },
 });

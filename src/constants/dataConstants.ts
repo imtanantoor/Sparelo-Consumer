@@ -21,7 +21,7 @@ enum orderStatusTextColor {
   confirmed = '#04b347',
 }
 
-const dataConstants: any = {
+const dataConstants = {
   dummyImages,
   orderStatus,
   orderStatusTextColor,

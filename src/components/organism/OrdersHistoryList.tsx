@@ -15,17 +15,23 @@ interface OrdersHistoryListProps {
   mode: 'buyer' | 'vendor'
   fetchOrdersHistory: (userId: string) => void
   fetchVendorsOrderHistory: (userId: string) => void
+  approveOrder: (id: string) => void
+  cancelOrder: (id: string) => void
   filterStatus?: string
+  changingOrderStatus: boolean;
+  changingOrderStatusError: boolean;
+  changingOrderStatusSuccess: boolean;
+  changingStatusType: 'approve' | 'cancel' | '';
 }
 
-function OrdersHistoryList({ data, fetching, user, error, mode, filterStatus, fetchOrdersHistory, fetchVendorsOrderHistory }: OrdersHistoryListProps) {
+function OrdersHistoryList({ data, fetching, user, error, mode, filterStatus, changingOrderStatus, changingStatusType, changingOrderStatusError, changingOrderStatusSuccess, fetchOrdersHistory, fetchVendorsOrderHistory, approveOrder, cancelOrder }: OrdersHistoryListProps) {
 
   useEffect(() => {
     if (mode === 'vendor')
       fetchVendorsOrderHistory(user._id)
     else
       fetchOrdersHistory(user._id)
-  }, [])
+  }, [changingOrderStatusSuccess])
 
   function handleApiCall() {
     if (!fetching) {
@@ -46,7 +52,14 @@ function OrdersHistoryList({ data, fetching, user, error, mode, filterStatus, fe
       fetching={fetching}
       onPress={handleApiCall}
       error={error} />}
-    renderItem={({ item }) => <OrderHistoryCard {...item} />}
+    renderItem={({ item }) => <OrderHistoryCard
+      {...item}
+      mode={mode}
+      changingStatus={changingOrderStatus}
+      cancelOrder={cancelOrder}
+      approveOrder={approveOrder}
+      changingStatusType={changingStatusType}
+    />}
   />
 }
 
@@ -54,13 +67,19 @@ const mapStateToProps = (state: any) => ({
   data: state.Orders.ordersHistory,
   fetching: state.Orders.fetchingOrdersHistory,
   error: state.Orders.fetchingOrdersHistoryError,
+  changingOrderStatus: state.Orders.changingOrderStatus,
+  changingOrderStatusError: state.Orders.changingOrderStatusError,
+  changingOrderStatusSuccess: state.Orders.changingOrderStatusSuccess,
+  changingStatusType: state.Orders.changingStatusType,
   mode: state.Auth.mode,
   user: state.Auth.user
 })
 
 const mapDispatchToProps = {
   fetchOrdersHistory: actions.fetchOrdersHistory,
-  fetchVendorsOrderHistory: actions.fetchVendorsOrderHistory
+  fetchVendorsOrderHistory: actions.fetchVendorsOrderHistory,
+  approveOrder: actions.approveOrder,
+  cancelOrder: actions.cancelOrder
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersHistoryList)

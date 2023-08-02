@@ -445,6 +445,33 @@ const updateShop = createAsyncThunk(
     }
   },
 );
+const approveOrder = createAsyncThunk(
+  'Orders/Approve Order',
+  async (id: string, {rejectWithValue}) => {
+    try {
+      const response = await constants.apiInstance.patch(
+        `orders/approvedOrder/${id}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data);
+    }
+  },
+);
+
+const cancelOrder = createAsyncThunk(
+  'Orders/Cancel Order',
+  async (id: string, {rejectWithValue}) => {
+    try {
+      const response = await constants.apiInstance.patch(
+        `orders/cancelOrder/${id}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data);
+    }
+  },
+);
 
 // DELETE REQUESTS
 const deleteQuotation = createAsyncThunk(
@@ -492,6 +519,8 @@ const actions = {
   updateShop,
   sendQuotation,
   deleteQuotation,
+  approveOrder,
+  cancelOrder,
 };
 
 export default actions;
