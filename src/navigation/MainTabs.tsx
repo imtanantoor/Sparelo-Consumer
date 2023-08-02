@@ -62,7 +62,7 @@ function MainTabs(): JSX.Element {
       options={{
         tabBarLabelStyle: { marginBottom: 5 },
         tabBarIcon({ focused, color }) {
-          return <MyCartBottomTab focused={focused} color={color} />
+          return <MyCartBottomTab hideBage focused={focused} color={color} />
         },
       }}
     />}

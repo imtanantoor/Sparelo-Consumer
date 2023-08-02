@@ -3,11 +3,11 @@ import CartIcon from "../../assets/icons/CartIcon";
 import colors from "../../constants/colors";
 import { useSelector } from "react-redux";
 
-function MyCartBottomTab({ focused, color }: any): JSX.Element {
+function MyCartBottomTab({ focused, color, hideBage }: any): JSX.Element {
   const { data } = useSelector((state: any) => state.Cart)
   return <View>
     <CartIcon stroke={focused ? colors.activeTabIconColor : color} />
-    {data.length > 0 && <View style={styles.badge} />}
+    {data.length > 0 && !!hideBage == false && <View style={styles.badge} />}
   </View>
 }
 
