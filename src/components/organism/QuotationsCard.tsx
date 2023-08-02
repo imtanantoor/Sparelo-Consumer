@@ -27,7 +27,7 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
   }
 
   return <TouchableOpacity activeOpacity={0.9} style={styles.container}>
-    <View>
+    <View style={{ overflow: 'hidden' }}>
       <SliderBox
         ImageComponentStyle={styles.slider}
         ImageComponent={CustomImage}
