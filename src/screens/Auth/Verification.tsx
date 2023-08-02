@@ -12,8 +12,10 @@ import ToastService from "../../Services/ToastService"
 function CodeRefresh({ onResend, reset }: any): JSX.Element {
   const [seconds, setSeconds] = useState(0)
   const [buttonDisabled, setButtonDisabled] = useState(false)
+  const timeInterval = createRef<any>()
 
   useEffect(() => {
+    console.log('useEffecct called')
     let seconds = 60
     const interval = setInterval(() => {
       if (seconds > 0) {
@@ -32,9 +34,24 @@ function CodeRefresh({ onResend, reset }: any): JSX.Element {
     return () => {
       clearInterval(interval)
     }
-  }, [reset])
+  }, [])
+
 
   function handleResend() {
+    let seconds = 60
+    const timeInterval: any = setInterval(() => {
+      if (seconds > 0) {
+        seconds = seconds - 1
+        setSeconds(seconds)
+        if (buttonDisabled == false)
+          setButtonDisabled(true)
+      } else {
+        seconds = 60
+        setSeconds(60)
+        setButtonDisabled(false)
+        clearInterval(timeInterval)
+      }
+    }, 1000)
     onResend()
   }
 
@@ -102,6 +119,7 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
   }
 
   async function resendCode() {
+    console.log('Resending code')
     setCode('')
     try {
       const confirmation = await auth().signInWithPhoneNumber(contact, true)

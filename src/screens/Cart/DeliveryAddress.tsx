@@ -19,6 +19,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
     longitude: 71.5249,
     addressText: ''
   })
+  const [pickedAddressFromGoogle, setPickedAddressFromGoogle] = useState<boolean>(false)
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -33,6 +34,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
   }, [])
 
   function handleChange(value: string, fieldName: string) {
+    setPickedAddressFromGoogle(false)
     setLocationValue({ ...locationValue, [fieldName]: value })
   }
 
@@ -44,6 +46,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
         latitude: detail?.geometry?.location?.lat,
         addressText: detail?.formatted_address ? detail.formatted_address : locationValue.addressText
       })
+      setPickedAddressFromGoogle(true)
     }
   }
 
@@ -73,7 +76,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
     </View>
     <CustomButton
       title="Continue"
-      disabled={!!locationValue?.addressText === false}
+      disabled={!!locationValue?.addressText === false || pickedAddressFromGoogle === false}
       submitting={false}
       type="primary"
       buttonStyle={{ alignSelf: 'flex-end', width: '100%' }}
@@ -87,6 +90,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
       hideModal={() => {
         setModalVisible(false)
         setFromContinue(false)
+        setPickedAddressFromGoogle(true)
       }}
     />
   </SafeAreaView>

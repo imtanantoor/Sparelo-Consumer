@@ -1,9 +1,13 @@
+import { useDispatch } from "react-redux";
 import Step1SVG from "../../assets/Step1Svg";
 import StaticPage from "../../components/organism/StaticPage";
+import globalConfig from "../../store/slices/globalConfigSlice";
 
 function Step1({ navigation }: any): JSX.Element {
+  const dispatch = useDispatch()
   function handleSkip() {
-    console.log('Skip onboarding')
+    navigation.navigate('Mode Selection')
+    dispatch(globalConfig.actions.hideOnboarding())
   }
   function handleNext() {
     navigation.navigate('step2')

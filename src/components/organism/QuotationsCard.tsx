@@ -15,6 +15,7 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
   const [width, setWidth] = useState(Dimensions.get('screen').width * 1)
 
+
   useEffect(() => {
     Dimensions.addEventListener('change', () => {
       setWidth(Dimensions.get('screen').width * 1)
@@ -66,13 +67,14 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
           </View>
         </TouchableOpacity>}
       </View>
+
       {rating !== 0 && <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Rating
           ratingCount={rating}
           ratingColor="#EDD011"
           ratingTextColor="red"
           imageSize={20}
-          startingValue={3.5}
+          startingValue={rating}
           readonly
           style={{ padding: 0, marginVertical: 5, }}
           onFinishRating={() => { }}

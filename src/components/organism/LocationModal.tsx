@@ -28,6 +28,8 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, h
   const [address, setAddress] = useState<string>(addressValue)
   const [disableAddressFetching, setDisableAddressFetching] = useState(fromContinue)
   const locationService = LocationServices;
+  const [latitude, setLatitude] = useState(initialLocation?.latitude)
+  const [longitude, setLongitude] = useState(initialLocation?.longitude)
   const [initialRegion, setInitialRegion] = useState({
     latitude: 34.0151,
     longitude: 71.5249,
@@ -38,6 +40,8 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, h
 
   useEffect(() => {
     setInitialRegion({ ...initialRegion, ...initialLocation })
+    setLatitude(initialLocation?.latitude)
+    setLongitude(initialLocation?.longitude)
     setAddress(addressValue)
     setDisableAddressFetching(fromContinue)
     setTimeout(() => {
@@ -55,6 +59,8 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, h
     if (error === null) {
       setAddress(position.addressText ? position.addressText : '')
       setInitialRegion({ ...initialRegion, ...position })
+      setLatitude(position.latitude)
+      setLongitude(position.longitude)
       mapRef?.current?.animateToRegion({
         ...initialRegion,
         ...position,
@@ -70,6 +76,9 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, h
         setAddress(value)
       }
     }
+
+    setLongitude(region.longitude)
+    setLatitude(region.latitude)
     setInitialRegion({ ...initialRegion, ...region });
   }
 
@@ -94,7 +103,7 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, h
   }
 
   function handleConfirmLocation() {
-    navigation.navigate('Order Summary', { address, initialRegion: initialRegion })
+    navigation.navigate('Order Summary', { address, initialRegion: { ...initialRegion, latitude, longitude } })
     hideModal()
   }
 

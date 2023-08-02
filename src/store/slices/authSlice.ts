@@ -4,7 +4,6 @@ import ToastService from '../../Services/ToastService';
 
 const initialState: {
   authenticated: boolean;
-  showOnBoarding: boolean;
   mode: 'buyer' | 'vendor';
   registering: boolean;
   registerError: boolean;
@@ -32,7 +31,6 @@ const initialState: {
   changingPasswordSuccess: boolean;
 } = {
   authenticated: false,
-  showOnBoarding: true,
   mode: 'buyer',
   registering: false,
   registerError: false,
@@ -64,9 +62,6 @@ const authSlice = createSlice({
   name: 'Auth',
   initialState,
   reducers: {
-    hideOnboarding: state => {
-      state.showOnBoarding = false;
-    },
     setMode: (state, action) => {
       state.mode = action.payload;
     },

@@ -1,9 +1,13 @@
+import { useDispatch } from "react-redux";
 import Step2SVG from "../../assets/Step2Svg";
 import StaticPage from "../../components/organism/StaticPage";
+import globalConfig from "../../store/slices/globalConfigSlice";
 
 function Step2({ navigation }: any): JSX.Element {
+  const dispatch = useDispatch()
   function handleGetStarted() {
     navigation.navigate('Mode Selection')
+    dispatch(globalConfig.actions.hideOnboarding())
   }
   return <StaticPage
     SVG={() => <Step2SVG style={{ alignSelf: 'center' }} />}

@@ -14,6 +14,7 @@ import ordersSlice from './slices/ordersSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {persistReducer, persistStore} from 'redux-persist';
 import adsSlice from './slices/adsSlice';
+import globalConfig from './slices/globalConfigSlice';
 
 const rootReducer = combineReducers({
   Ads: adsSlice.reducer,
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   Requests: requestsSlice.reducer,
   Parts: partsSlice.reducer,
   Quotations: QuotationsSlice.reducer,
+  GlobalConfig: globalConfig.reducer,
 });
 
 const persistConfig = {

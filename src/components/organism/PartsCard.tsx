@@ -86,7 +86,7 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
     <View style={styles.detailContainer}>
       <Text style={styles.description}>{make} | {year} | {model}</Text>
       <Text style={styles.price}>Rs {price}</Text>
-      <View style={styles.voiceAndBidsContainer}>
+      <View style={[styles.voiceAndBidsContainer, { justifyContent: audioNote ? 'space-between' : 'flex-end', alignItems: 'center' }]}>
         {audioNote && <TouchableOpacity onPress={() => setShowVoicePlayer(true)} style={styles.voiceCard}>
           <VoiceSVG />
         </TouchableOpacity>}
@@ -112,7 +112,7 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
           ratingColor="#EDD011"
           ratingTextColor="red"
           imageSize={20}
-          startingValue={3.5}
+          startingValue={rating}
           readonly
           style={{ padding: 0, marginVertical: 5, }}
           onFinishRating={() => { }}

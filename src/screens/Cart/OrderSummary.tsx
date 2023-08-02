@@ -52,10 +52,14 @@ function OrderSummary({ navigation, route }: any): JSX.Element {
   async function handleSubmit() {
     setSubmitting(true)
 
-    const payload = {
+    const payload: any = {
       address,
       orderBy: user._id,
       items: data.map((cart: CartDataModel) => ({ request: cart.id, bid: cart.bid }))
+    }
+
+    if (initialRegion.latitude && initialRegion.longitude) {
+      payload.coordinates = [initialRegion.latitude, initialRegion.longitude]
     }
 
     try {
@@ -67,7 +71,7 @@ function OrderSummary({ navigation, route }: any): JSX.Element {
       setSubmitting(false)
 
     } catch (error: any) {
-      ToastService.error('Create Order', error?.message ? error.message : 'Could not create order!')
+      ToastService.error('Create Order', error?.response?.data?.error ? error?.response?.data?.error : error.message ? error.message : 'Could not create order!')
       setSubmitting(false)
     }
   }
