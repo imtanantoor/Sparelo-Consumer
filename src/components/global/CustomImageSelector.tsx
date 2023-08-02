@@ -24,12 +24,14 @@ function ShowImage({ assets, multiple, imageUrl, showInitialImage }: { assets: a
       imageUrl={''}
       source={multiple ? require(`../../assets/MultipleImagePlaceholder.png`) : require(`../../assets/ImagePlaceholder.png`)}
       isStatic
-      style={{ height: '100%', width: '100%', resizeMode: 'contain', }}
+      resizeMode="contain"
+      style={{ height: '100%', width: '100%', }}
     /> : <CustomImage
       imageUrl={imageUrl}
       source={{ uri: imageUrl }}
       isStatic={false}
-      style={{ height: '100%', width: '100%', resizeMode: 'contain', }}
+      resizeMode="contain"
+      style={{ height: '100%', width: '100%', }}
     />}
   </Fragment>
 }
