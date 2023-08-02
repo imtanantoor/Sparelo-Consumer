@@ -30,6 +30,7 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, h
   const locationService = LocationServices;
   const [latitude, setLatitude] = useState(initialLocation?.latitude)
   const [longitude, setLongitude] = useState(initialLocation?.longitude)
+  const [confirmDisabled, setConfirmDisabled] = useState<boolean>(true)
   const [initialRegion, setInitialRegion] = useState({
     latitude: 34.0151,
     longitude: 71.5249,
@@ -65,6 +66,7 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, h
         ...initialRegion,
         ...position,
       })
+      setConfirmDisabled(true)
       setDisableAddressFetching(false)
     }
   }
@@ -74,6 +76,7 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, h
       const value = await locationService.getAddressFromCoords({ latitude: region.latitude, longitude: region.longitude })
       if (value) {
         setAddress(value)
+        setConfirmDisabled(false)
       }
     }
 
@@ -84,6 +87,7 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, h
 
   function handleLocationPress(data: GooglePlaceData, detail: GooglePlaceDetail | null) {
     setDisableAddressFetching(true)
+    setConfirmDisabled(false)
     setAddress(detail?.formatted_address ? detail.formatted_address : '')
     if (detail?.geometry.location) {
       setInitialRegion({
@@ -124,11 +128,16 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, h
         handleRegionChange={handleRegionChange}
         disableAddressFetching={disableAddressFetching}
         address={address}
-        setAddress={setAddress}
+        setAddress={(val: string) => {
+          if (val === '') {
+            setConfirmDisabled(true)
+          }
+          setAddress(val)
+        }}
       />
       <CustomButton
         title="Confirm Location"
-        disabled={!!address === false}
+        disabled={!!address === false || confirmDisabled}
         submitting={false}
         type='primary'
         buttonStyle={{ width: '100%' }}
