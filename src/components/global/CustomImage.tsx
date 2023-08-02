@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Image, ImageErrorEventData, ImageProps, NativeSyntheticEvent, StyleSheet, View } from "react-native";
 import colors from "../../constants/colors";
+import FastImage, { FastImageProps } from 'react-native-fast-image'
 
-interface CustomImageProps extends ImageProps {
+interface CustomImageProps extends FastImageProps {
   imageUrl: string
   isStatic?: boolean
 }
@@ -26,7 +27,7 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
     setError(false)
   }, [imageUrl])
 
-  return <View style={{ justifyContent: 'center' }}>
+  return <View style={{ justifyContent: 'center', overflow: 'hidden' }}>
     <View {...props}>
       {loading && <View style={[styles.loadingIndicatorStyle, { height: myProps?.style?.height ? myProps?.style?.height : styles.loadingIndicatorStyle.height, borderRadius: myProps?.style?.borderRadius ? myProps.style.borderRadius : 15 }]}>
         <ActivityIndicator
@@ -34,7 +35,18 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
           color={colors.white}
         />
       </View>}
-      <Image
+      <FastImage
+        {...props}
+        // source={{ uri: 'https://unsplash.it/400/400?image=1' }}
+        source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : { uri: imageUrl ? imageUrl : source?.uri }}
+        onLoadStart={() => setLoading(true)}
+        onLoadEnd={handleLoadEnd}
+        onError={() => {
+          setError(true)
+          setLoading(false)
+        }}
+      />
+      {/* <Image
         {...props}
         // onLoadStart={handleLoadStart}
         onLoadEnd={handleLoadEnd}
@@ -42,7 +54,7 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
         // source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : require('../../assets/ImagePlaceholder.png')}
         source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : { uri: imageUrl ? imageUrl : source?.uri }}
         style={[myProps?.style, { width: '100%', marginRight: 0 }]}
-      />
+      /> */}
     </View>
   </View>
 }

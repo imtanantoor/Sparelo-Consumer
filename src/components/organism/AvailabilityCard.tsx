@@ -72,7 +72,7 @@ function StatusAndButtons({ isVendor, available, availibilityStatus, submitting,
 
 function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, audioNote, availibilityStatus, mode, submitting = false, handleAvailabilityStatus, onButtonPress }: AvailabilityCardProps): JSX.Element {
   const dispatch = useDispatch()
-  const [width, setWidth] = useState(Dimensions.get('screen').width)
+  const [width, setWidth] = useState(Dimensions.get('screen').width * 0.83)
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
   function hideVoiceModal() {
     setShowVoicePlayer(false)
@@ -84,13 +84,13 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
 
   useEffect(() => {
     Dimensions.addEventListener('change', () => {
-      setWidth(Dimensions.get('screen').width * 1)
+      setWidth(Dimensions.get('screen').width * 0.83)
     })
 
   }, [])
 
   return <TouchableOpacity activeOpacity={0.9} style={styles.container}>
-    <View>
+    <View style={{ overflow: 'hidden' }}>
       <SliderBox
         ImageComponentStyle={styles.slider}
         ImageComponent={CustomImage}
@@ -106,7 +106,8 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
           paddingVertical: 10
         }}
         sliderBoxHeight={140}
-        parentWidth={Dimensions.get('screen').width * 1}
+        parentWidth={width}
+        // parentWidth={Dimensions.get('screen').width * 0.85}
         images={images}
       />
     </View>
@@ -193,7 +194,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center', alignContent: 'center'
 
   },
-  slider: { borderRadius: 15, width: '80%', marginRight: 60, },
+  slider: {
+    borderRadius: 15,
+    width: '100%',
+  },
   detailContainer: {
     padding: 10
   },
