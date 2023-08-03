@@ -67,7 +67,11 @@ function VoicePlayer({ duration, uri, showActions, actionContainerStyle, isPopup
         <Text style={styles.duration}>{duration}</Text>
         <CustomButton
           title="Delete Note"
-          onPress={deleteNote}
+          onPress={() => {
+            AudioServices.StopAudio()
+            setPlaying(false)
+            deleteNote()
+          }}
           disabled={false}
           submitting={false}
           type='transparent'
