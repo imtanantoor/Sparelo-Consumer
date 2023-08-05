@@ -13,7 +13,9 @@ import CustomImage from "../global/CustomImage";
 
 function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, rating, showDeleteButton, deletingQuotation, onDeletePress }: QuotationsCardModel): JSX.Element {
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
-  const [width, setWidth] = useState(Dimensions.get('screen').width * 1)
+  // const [width, setWidth] = useState(Dimensions.get('screen').width * 1)
+  const [width, setWidth] = useState(Dimensions.get('screen').width * 0.83)
+
 
 
   useEffect(() => {
@@ -109,8 +111,9 @@ const styles = StyleSheet.create({
   },
   slider: {
     borderRadius: 15,
-    width: '80%',
-    marginRight: 60
+    width: '100%',
+    // width: '80%',
+    // marginRight: 60
   },
   detailContainer: {
     padding: 10

@@ -24,7 +24,7 @@ function CancelledQuotationsTab({ data, user, fetching, error, deleteSuccess, su
     data={data}
     fetching={fetching}
     error={error}
-    handleApiCall={() => fetchCancelledQuotations('64656e68bec729d8efdbb90a')}
+    handleApiCall={() => fetchCancelledQuotations(user._id)}
   />
 }
 

@@ -24,7 +24,7 @@ function ApprovedQuotationsTab({ data, user, fetching, error, deleteSuccess, suc
     data={data}
     fetching={fetching}
     error={error}
-    handleApiCall={() => fetchApprovedQuotations('64656e68bec729d8efdbb90a')}
+    handleApiCall={() => fetchApprovedQuotations(user._id)}
   />
 }
 

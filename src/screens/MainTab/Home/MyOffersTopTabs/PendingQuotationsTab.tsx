@@ -35,7 +35,7 @@ function PendingQuotationsTab({ data, user, fetching, error, deleteSuccess, dele
     data={data}
     fetching={fetching}
     error={error}
-    handleApiCall={() => fetchPendingQuotations('64656e68bec729d8efdbb90a')}
+    handleApiCall={() => fetchPendingQuotations(user._id)}
     showDeleteButton
     deletingQuotation={deletingQuotation}
     onDeletePress={handleDelete}
