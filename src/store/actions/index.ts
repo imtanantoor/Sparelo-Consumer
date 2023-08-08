@@ -295,20 +295,27 @@ const createRequest = createAsyncThunk(
   },
 );
 
-const addCar = createAsyncThunk('Cars/Add Car', async (data: AddCarModel) => {
-  const response = await constants.apiInstance.post(
-    'cars/create',
-    createFormData(data),
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-      },
-    },
-  );
+const addCar = createAsyncThunk(
+  'Cars/Add Car',
+  async (data: AddCarModel, {rejectWithValue}) => {
+    try {
+      const response = await constants.apiInstance.post(
+        'cars/create',
+        createFormData(data),
+        {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
 
-  return response.data;
-});
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data);
+    }
+  },
+);
 
 const signUpUser = createAsyncThunk(
   'Auth/SignUp',

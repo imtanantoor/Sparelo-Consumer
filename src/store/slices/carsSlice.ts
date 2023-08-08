@@ -81,12 +81,18 @@ const carSlice = createSlice({
         state.addingCarError = false;
         state.addCarSuccess = true;
       })
-      .addCase(actions.addCar.rejected, (state, action) => {
+      .addCase(actions.addCar.rejected, (state, action: any) => {
         state.addingCar = false;
         state.addingCarError = true;
+        // ToastService.error(
+        //   'Add Car Error',
+        //   action?.error?.message ? action.error.message : 'Adding car failed',
+        // );
         ToastService.error(
           'Add Car Error',
-          action?.error?.message ? action.error.message : 'Adding car failed',
+          action?.payload?.message
+            ? action.payload.message
+            : 'Adding car failed',
         );
         state.addCarSuccess = false;
       });

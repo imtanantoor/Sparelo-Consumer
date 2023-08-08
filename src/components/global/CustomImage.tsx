@@ -45,6 +45,7 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
           setError(true)
           setLoading(false)
         }}
+        resizeMode={props.resizeMode ? props.resizeMode : FastImage.resizeMode.contain}
       />
       {/* <Image
         {...props}

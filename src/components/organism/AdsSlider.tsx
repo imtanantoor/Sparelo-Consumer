@@ -57,7 +57,7 @@ function AdsSlider({ data, fetching, error, fetchAds }: Slides): JSX.Element | n
         <CustomImage
           source={{ uri: '' }}
           imageUrl={item.imageUrl}
-          style={{ height: '100%', width: '100%', ...styles.container }}
+          style={{ height: '95%', width: '98%', margin: 5, ...styles.container }}
         />
       )}
       sliderWidth={Dimensions.get('screen').width}

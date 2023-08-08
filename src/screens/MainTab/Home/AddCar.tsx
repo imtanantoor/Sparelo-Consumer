@@ -63,6 +63,7 @@ function AddCar({ navigation, submitting, error, success, user, addCar, resetCre
   // }
 
   async function handleAddCar() {
+    if (images.length === 0) return ToastService.warning('Add Car', 'Please select images')
     const data: AddCarModel = {
       manufacturingYear: values.manufacturingYear,
       brand: values.brand.id,
