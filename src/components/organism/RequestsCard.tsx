@@ -19,6 +19,7 @@ function RequestsCard({ imageBackground, make, model, year, category, buttonDisa
       onError={() => {
         setImageError(true)
       }}
+      resizeMode="contain"
       loadingIndicatorSource={require('../../assets/loadingSource.png')}
       source={imageError ? require('../../assets/ImagePlaceholder.png') : { uri: imageBackground }}
       style={styles.imageContainer}
