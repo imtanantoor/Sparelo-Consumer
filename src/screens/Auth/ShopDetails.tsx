@@ -189,6 +189,7 @@ function ShopDetails({
   }
 
   function handleSignUp() {
+    if (assets.length === 0) return ToastService.warning('Shop', 'Please select images')
     const data: CreateShopModel = {
       name: values.storeName,
       coordinates: [initialRegion.latitude.toString(), initialRegion.longitude.toString()],
@@ -203,6 +204,7 @@ function ShopDetails({
   }
 
   function handleUpdate() {
+    if (assets.length === 0) return ToastService.warning('Shop', 'Please select images')
 
     const data: UpdateShopModel = {
       name: values.storeName,

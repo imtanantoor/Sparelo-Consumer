@@ -19,7 +19,8 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
     longitude: 71.5249,
     addressText: ''
   })
-  const [pickedAddressFromGoogle, setPickedAddressFromGoogle] = useState<boolean>(false)
+  // const [pickedAddressFromGoogle, setPickedAddressFromGoogle] = useState<boolean>(false)
+  const [confirmDisabled, setConfirmDisabled] = useState<boolean>(true)
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -34,7 +35,8 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
   }, [])
 
   function handleChange(value: string, fieldName: string) {
-    setPickedAddressFromGoogle(false)
+    // setPickedAddressFromGoogle(false)
+    setConfirmDisabled(true)
     setLocationValue({ ...locationValue, [fieldName]: value })
   }
 
@@ -47,7 +49,8 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
         addressText: detail?.formatted_address ? detail.formatted_address : locationValue.addressText
       })
 
-      setPickedAddressFromGoogle(true)
+      // setPickedAddressFromGoogle(true)
+      setConfirmDisabled(false)
     }
   }
 
@@ -77,7 +80,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
     </View>
     <CustomButton
       title="Continue"
-      disabled={!!locationValue?.addressText === false || pickedAddressFromGoogle === false}
+      disabled={!!locationValue?.addressText === false || confirmDisabled}
       submitting={false}
       type="primary"
       buttonStyle={{ alignSelf: 'flex-end', width: '100%' }}
@@ -87,13 +90,14 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
       visible={modalVisible}
       initialLocation={locationValue}
       fromContinue={fromContinue}
-      confirmDisabled={pickedAddressFromGoogle === false}
+      confirmDisabled={confirmDisabled}
       addressValue={locationValue.addressText ? locationValue.addressText : ''}
-      setConfirmDisabled={setPickedAddressFromGoogle}
+      setConfirmDisabled={setConfirmDisabled}
       hideModal={() => {
         setModalVisible(false)
         setFromContinue(false)
-        setPickedAddressFromGoogle(true)
+        setConfirmDisabled(false)
+        // setPickedAddressFromGoogle(true)
       }}
     />
   </SafeAreaView>
