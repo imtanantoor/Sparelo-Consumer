@@ -10,15 +10,12 @@ import { Region } from "react-native-maps";
 import { View } from "react-native";
 import ToastService from "../../Services/ToastService";
 import CustomButton from "../../components/global/CustomButton";
-import CustomImageSelector from "../../components/global/CustomImageSelector";
-import MultipleImageSelector from "../../components/organism/MultipleImageSelector";
 import { connect } from "react-redux";
 import actions from "../../store/actions";
 import CreateShopModel from "../../models/CreateShopModel";
 import authSlice from "../../store/slices/authSlice";
-import { constant } from "lodash";
-import constants from "../../utils/constants";
 import UpdateShopModel from "../../models/UpdateShopModel";
+import MultipleImagesList from "../../components/organism/MultipleImagesList";
 
 type itemType = {
   id: string
@@ -164,35 +161,31 @@ function ShopDetails({
 
     }
   }
-  function handleAssets(asset: any[], index: number, assets: any[]) {
+  function handleAssets(asset: any[], index: number) {
+    let temp = [...assets]
+    let imageData = asset[0]
 
-    if (assets.length == 0) {
+    // When no image is present
+    if (temp.length == 0) {
       setAssets(asset)
       return
     }
 
-    if (!!assets[index]?.uri && index !== -1) {
-      let imageData = asset[0]
-
-      setAssets(assets.map((item: any, currIndex: number) => {
-        if (index === currIndex) {
-          return {
-            ...item,
-            ...imageData
-          }
-        }
-        return item
-      }))
-      return
+    // Replace image
+    if (index !== -1) {
+      temp[index] = imageData
+      return setAssets(temp)
     }
 
-    if (asset && asset[0]?.uri) {
-      let temp = assets.map((item: any) => item)
-      let imageData = asset[0]
-      temp.push(imageData)
+    // Image Selector default button assets
+    if (index === -1) {
+      asset.map((asset) => temp.push(asset))
       setAssets(temp)
       return
     }
+  }
+  function handleDelete(index: number) {
+    setAssets(assets.filter((item: any, currIndex: number) => currIndex !== index))
   }
 
   function handleSignUp() {
@@ -362,10 +355,10 @@ function ShopDetails({
           navigation.navigate('Search', { title: 'Category', values, setValues, multiSelect: true })
         }}
       />
-      <MultipleImageSelector
+      <MultipleImagesList
         assets={assets}
         handleAssets={handleAssets}
-        contentContainerStyle={{ paddingHorizontal: 0 }}
+        handleDelete={handleDelete}
       />
       <CustomButton
         title={isProfileStack ? 'Update' : "Sign Up"}

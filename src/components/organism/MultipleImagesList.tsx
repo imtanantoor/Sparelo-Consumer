@@ -5,13 +5,14 @@ interface MultipleImagesListProps {
   assets: any[]
   handleAssets: (asset: any, index: number) => void
   handleDelete: (index: number) => void
+  contentContainerStyle?: any
 }
 
-function MultipleImagesList({ assets, handleAssets, handleDelete }: MultipleImagesListProps): JSX.Element {
+function MultipleImagesList({ assets, contentContainerStyle, handleAssets, handleDelete }: MultipleImagesListProps): JSX.Element {
   return <FlatList
     horizontal
     data={assets}
-    // contentContainerStyle={{ paddingHorizontal: 20 }}
+    contentContainerStyle={{ ...contentContainerStyle }}
     ListHeaderComponent={assets.length < 3 ? <CustomImageSelector
       assets={[]}
       style={{ marginRight: 20 }}
