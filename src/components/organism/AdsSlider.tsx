@@ -7,6 +7,7 @@ import actions from "../../store/actions";
 import CustomImage from "../global/CustomImage";
 import font from "../../constants/fonts";
 import CustomButton from "../global/CustomButton";
+import FastImage from "react-native-fast-image";
 
 
 export interface Slide {
@@ -57,14 +58,15 @@ function AdsSlider({ data, fetching, error, fetchAds }: Slides): JSX.Element | n
         <CustomImage
           source={{ uri: '' }}
           imageUrl={item.imageUrl}
-          style={{ height: '95%', width: '98%', margin: 5, ...styles.container }}
+          resizeMode={FastImage.resizeMode.cover}
+          style={{ height: '100%', width: '100%', ...styles.container }}
         />
       )}
       sliderWidth={Dimensions.get('screen').width}
       scrollEnabled
-      itemHeight={240}
+      itemHeight={250}
       sliderHeight={250}
-      contentContainerStyle={{ paddingHorizontal: 20 }}
+      contentContainerStyle={{ paddingHorizontal: 20, backgroundColor: 'red' }}
       itemWidth={Dimensions.get('screen').width - 35}
       horizontal
     />

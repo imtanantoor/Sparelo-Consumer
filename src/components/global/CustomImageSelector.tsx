@@ -5,6 +5,9 @@ import CustomModal from "../organism/CustomModal";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import ImagePlus from "../../assets/icons/ImagePlus";
 import ToastService from "../../Services/ToastService";
+import CustomButton from "./CustomButton";
+import colors from "../../constants/colors";
+import font from "../../constants/fonts";
 
 const ImageOptions: any = {
   mediaType: 'photo',
@@ -17,7 +20,18 @@ const ImageOptions: any = {
   },
 };
 
-function ShowImage({ assets, multiple, imageUrl, showInitialImage }: { assets: any[], multiple: boolean, imageUrl: string, showInitialImage?: boolean }) {
+interface CustomImageProps {
+  assets: any[],
+  setAssets: (assets: []) => void,
+  multiple: boolean,
+  image: string,
+  showInitialImage?: boolean,
+  style?: any
+  handleDelete?: () => void
+  selectQuantity?: number
+}
+
+function ShowImage({ assets, multiple, imageUrl, showInitialImage, handleDelete }: { assets: any[], multiple: boolean, imageUrl: string, showInitialImage?: boolean, handleDelete?: () => void }) {
 
   return <Fragment>
     {assets.length == 0 && !showInitialImage ? <CustomImage
@@ -26,17 +40,37 @@ function ShowImage({ assets, multiple, imageUrl, showInitialImage }: { assets: a
       isStatic
       resizeMode="contain"
       style={{ height: '100%', width: '100%', }}
-    /> : <CustomImage
-      imageUrl={imageUrl}
-      source={{ uri: imageUrl }}
-      isStatic={false}
-      resizeMode="contain"
-      style={{ height: '100%', width: '100%', }}
-    />}
+    /> : <View>
+      {handleDelete && <CustomButton
+        disabled={false}
+        submitting={false}
+        onPress={handleDelete}
+        title="Delete"
+        buttonStyle={{
+          padding: 5,
+          backgroundColor:
+            colors.red,
+          alignSelf: 'flex-end',
+          position: 'absolute',
+          zIndex: 999,
+          margin: 0,
+          right: 10
+        }}
+        titleStyle={{ fontSize: font.sizes.normal }}
+        type="primary"
+      />}
+      <CustomImage
+        imageUrl={imageUrl}
+        source={{ uri: imageUrl }}
+        isStatic={false}
+        resizeMode="contain"
+        style={{ height: '100%', width: '100%', }}
+      />
+    </View>}
   </Fragment>
 }
 
-function CustomImageSelector({ assets, multiple, image, style, showInitialImage, setAssets }: { assets: any[], setAssets: (assets: []) => void, multiple: boolean, image: string, showInitialImage?: boolean, style?: any }) {
+function CustomImageSelector({ assets, multiple, image, style, showInitialImage, selectQuantity, setAssets, handleDelete }: CustomImageProps) {
   const [imageUrl, setImageUrl] = useState(image ? image : '')
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -63,7 +97,7 @@ function CustomImageSelector({ assets, multiple, image, style, showInitialImage,
 
   async function SelectFromGallery() {
     try {
-      const response: any = await launchImageLibrary(ImageOptions)
+      const response: any = await launchImageLibrary({ ...ImageOptions, selectionLimit: selectQuantity ? selectQuantity : 1 })
       if (response.assets) {
         setAssets(response.assets)
         setImageUrl(response?.assets[0]?.uri)
@@ -92,6 +126,7 @@ function CustomImageSelector({ assets, multiple, image, style, showInitialImage,
         imageUrl={multiple ? image : imageUrl}
         multiple={multiple}
         showInitialImage={showInitialImage}
+        handleDelete={handleDelete}
       />
       {multiple ? null : <TouchableOpacity onPress={openModal} style={{
         height: 26,

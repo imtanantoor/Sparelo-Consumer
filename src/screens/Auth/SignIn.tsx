@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { Platform, SafeAreaView, StyleSheet, View, } from "react-native";
+import { Button, Platform, SafeAreaView, StyleSheet, View, } from "react-native";
 import CustomButton from "../../components/global/CustomButton";
 import CustomHeader from "../../components/global/CustomHeader";
 import HeaderLeft from "../../components/global/HeaderLeft";
@@ -146,7 +146,8 @@ function SignIn({ navigation, submitting, loginSuccess, loginError, login }: Sig
           navigation.navigate('Forgot Password')
         }
       }}
-    />
+    >
+    </CustomForm>
 
   </SafeAreaView>
 }

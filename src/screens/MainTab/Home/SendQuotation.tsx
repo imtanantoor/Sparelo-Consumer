@@ -13,6 +13,7 @@ import CustomTextInput from "../../../components/global/CustomTextInput";
 import CreateQuotationModel from "../../../models/createQuotationModel";
 import partsSlice from "../../../store/slices/partsSlice";
 import ManufacturerListModal from "../../../components/organism/ManufacturerListModal";
+import MultipleImagesList from "../../../components/organism/MultipleImagesList";
 interface SendQuotationProps {
   fetching: boolean;
   error: boolean;
@@ -42,36 +43,6 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
     price: ''
   })
 
-  function handleAssets(asset: any[], index: number, assets: any[]) {
-
-    if (assets.length == 0) {
-      setAssets(asset)
-      return
-    }
-
-    if (!!assets[index]?.uri && index !== -1) {
-      let imageData = asset[0]
-
-      setAssets(assets.map((item: any, currIndex: number) => {
-        if (index === currIndex) {
-          return {
-            ...item,
-            ...imageData
-          }
-        }
-        return item
-      }))
-
-    }
-
-    if (asset && asset[0]?.uri) {
-      let temp = assets.map((item: any) => item)
-      let imageData = asset[0]
-      temp.push(imageData)
-      setAssets(temp)
-      return
-    }
-  }
   function handleBlur(fieldName: string, required: boolean) {
     type ObjectKey = keyof typeof values
     const myKey = fieldName as ObjectKey
@@ -89,6 +60,32 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
         setErrors({ ...errors, [fieldName]: '' })
       }
     }
+  }
+  function handleAssets(asset: any[], index: number) {
+    let temp = [...assets]
+    let imageData = asset[0]
+
+    // When no image is present
+    if (temp.length == 0) {
+      setAssets(asset)
+      return
+    }
+
+    // Replace image
+    if (index !== -1) {
+      temp[index] = imageData
+      return setAssets(temp)
+    }
+
+    // Image Selector default button assets
+    if (index === -1) {
+      asset.map((asset) => temp.push(asset))
+      setAssets(temp)
+      return
+    }
+  }
+  function handleDelete(index: number) {
+    setAssets(assets.filter((item: any, currIndex: number) => currIndex !== index))
   }
 
   function handleChange(value: string, fieldName: string) {
@@ -143,47 +140,34 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
 
   return <SafeAreaView style={styles.container}>
     <ScrollView style={styles.contentContainer}>
-      <FlatList
-        horizontal
-        data={assets}
-        // contentContainerStyle={{ paddingHorizontal: 20 }}
-        ListHeaderComponent={assets.length < 3 ? <CustomImageSelector
-          assets={[]}
-          style={{ marginRight: 20 }}
-          setAssets={(asset) => handleAssets(asset, -1, assets)}
-          multiple={true}
-          image={''}
-        /> : null}
-        ItemSeparatorComponent={() => <View style={{ paddingRight: 20 }} />}
-        renderItem={({ item, index }) => {
-          return <CustomImageSelector
-            assets={assets}
-            setAssets={(asset) => handleAssets(asset, index, assets)}
-            multiple={true}
-            image={item?.uri ? item.uri : ''}
-          />
-        }}
+      <MultipleImagesList
+        assets={assets}
+        handleAssets={handleAssets}
+        handleDelete={handleDelete}
       />
-      <Text style={styles.text}>Is your spare part</Text>
       <View style={styles.buttonsContainer}>
-        <CustomButton
-          title="New"
-          type="transparent"
-          onPress={() => { setIsNew(true) }}
-          submitting={false}
-          disabled={false}
-          buttonStyle={{ padding: 0, marginRight: 20 }}
-          titleStyle={{ color: isNew ? colors.bannerText : '#262626', fontSize: font.sizes.normal }}
-        />
-        <CustomButton
-          title="Used"
-          type="transparent"
-          onPress={() => { setIsNew(false) }}
-          submitting={false}
-          disabled={false}
-          buttonStyle={{ padding: 0, marginRight: 20 }}
-          titleStyle={{ color: isNew ? '#262626' : colors.bannerText, fontSize: font.sizes.normal }}
-        />
+        <Text /* style={styles.text} */>Is your spare part</Text>
+        <View style={{ flexDirection: 'row', width: '100%' }}>
+          <CustomButton
+            title="New"
+            type="transparent"
+            onPress={() => { setIsNew(true) }}
+            submitting={false}
+            disabled={false}
+            // buttonStyle={{ padding: 0, marginRight: 20 }}
+            buttonStyle={{ backgroundColor: !isNew ? '#F5F5F5' : colors.primary, paddingVertical: 10, marginRight: 20 }}
+            titleStyle={{ color: isNew ? colors.white : '#262626', fontSize: font.sizes.normal }}
+          />
+          <CustomButton
+            title="Used"
+            type="transparent"
+            onPress={() => { setIsNew(false) }}
+            submitting={false}
+            disabled={false}
+            buttonStyle={{ backgroundColor: isNew ? '#F5F5F5' : colors.primary, paddingVertical: 10, }}
+            titleStyle={{ color: isNew ? '#262626' : colors.white, fontSize: font.sizes.normal }}
+          />
+        </View>
 
       </View>
       <CustomTextInput
@@ -259,10 +243,37 @@ const styles = StyleSheet.create({
     fontSize: font.sizes.normal,
     color: '#7F7F7F'
   },
+  // itemRequiredCard: {
+  //   backgroundColor: colors.white,
+  //   shadowColor: "#000",
+  //   shadowOffset: {
+  //     width: 0,
+  //     height: 1,
+  //   },
+  //   margin: 20,
+  //   shadowOpacity: 0.20,
+  //   shadowRadius: 1.41,
+  //   elevation: 2,
+  //   padding: 10,
+  //   borderRadius: 13
+  // }
   buttonsContainer: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#03014C'
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#03014C',
+    backgroundColor: colors.white,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.20,
+    shadowRadius: 1.41,
+    elevation: 2,
+    marginVertical: 20,
+    // padding: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    borderRadius: 13
   }
 })
 

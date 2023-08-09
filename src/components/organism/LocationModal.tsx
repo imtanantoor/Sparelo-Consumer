@@ -20,9 +20,11 @@ interface LocationModalProps {
   addressValue: string
   initialLocation: MapPosition | null
   fromContinue: boolean
+  confirmDisabled: boolean
+  setConfirmDisabled: (val: boolean) => void
 }
 
-function LocationModal({ visible, addressValue, initialLocation, fromContinue, hideModal }: LocationModalProps): JSX.Element {
+function LocationModal({ visible, addressValue, initialLocation, fromContinue, confirmDisabled, setConfirmDisabled, hideModal }: LocationModalProps): JSX.Element {
   const mapRef = useRef<any>(null);
   const navigation = useNavigation<NavigationProp<any>>()
   const [address, setAddress] = useState<string>(addressValue)
@@ -30,7 +32,6 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, h
   const locationService = LocationServices;
   const [latitude, setLatitude] = useState(initialLocation?.latitude)
   const [longitude, setLongitude] = useState(initialLocation?.longitude)
-  const [confirmDisabled, setConfirmDisabled] = useState<boolean>(true)
   const [initialRegion, setInitialRegion] = useState({
     latitude: 34.0151,
     longitude: 71.5249,

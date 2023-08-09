@@ -18,6 +18,7 @@ import requestsSlice from "../../../store/slices/requestsSlice";
 import VoiceRecorder from "../../../components/organism/VoiceRecorder";
 import VoicePlayer from "../../../components/organism/VoicePlayer";
 import AudioServices from "../../../Services/AudioServices";
+import MultipleImagesList from "../../../components/organism/MultipleImagesList";
 
 interface RequestSummaryProps {
   categories: CategoryCardProps[],
@@ -64,35 +65,32 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
     }
   }, [creationFailed, creationSuccessful])
 
-  function handleAssets(asset: any[], index: number, assets: any[]) {
+  function handleAssets(asset: any[], index: number) {
+    let temp = [...assets]
+    let imageData = asset[0]
 
-    if (assets.length == 0) {
+    // When no image is present
+    if (temp.length == 0) {
       setAssets(asset)
       return
     }
 
-    if (!!assets[index]?.uri && index !== -1) {
-      let imageData = asset[0]
-
-      setAssets(assets.map((item: any, currIndex: number) => {
-        if (index === currIndex) {
-          return {
-            ...item,
-            ...imageData
-          }
-        }
-        return item
-      }))
-
+    // Replace image
+    if (index !== -1) {
+      temp[index] = imageData
+      return setAssets(temp)
     }
 
-    if (asset && asset[0]?.uri) {
-      let temp = assets.map((item: any) => item)
-      let imageData = asset[0]
-      temp.push(imageData)
+    // Image Selector default button assets
+    if (index === -1) {
+      asset.map((asset) => temp.push(asset))
       setAssets(temp)
       return
     }
+  }
+
+  function handleDelete(index: number) {
+    setAssets(assets.filter((item: any, currIndex: number) => currIndex !== index))
   }
 
   function handleModalClose() {
@@ -130,29 +128,11 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
 
   return <SafeAreaView style={styles.container}>
     <ScrollView >
-
-      <FlatList
-        horizontal
-        data={assets}
-        contentContainerStyle={{ paddingHorizontal: 20 }}
-        ListHeaderComponent={assets.length < 3 ? <CustomImageSelector
-          assets={[]}
-          style={{ marginRight: 20 }}
-          setAssets={(asset) => handleAssets(asset, -1, assets)}
-          multiple={true}
-          image={''}
-        /> : null}
-        ItemSeparatorComponent={() => <View style={{ paddingRight: 20 }} />}
-        renderItem={({ item, index }) => {
-          return <CustomImageSelector
-            assets={assets}
-            setAssets={(asset) => handleAssets(asset, index, assets)}
-            multiple={true}
-            image={item?.uri ? item.uri : ''}
-          />
-        }}
+      <MultipleImagesList
+        assets={assets}
+        handleAssets={handleAssets}
+        handleDelete={handleDelete}
       />
-
       <RequestSummaryCategoryCard
         title={category.title}
         image={category.image}

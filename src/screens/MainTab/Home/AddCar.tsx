@@ -12,6 +12,7 @@ import constants from "../../../utils/constants";
 import ToastService from "../../../Services/ToastService";
 import carSlice from "../../../store/slices/carsSlice";
 import YearPickerModal from "../../../components/organism/YearPickerModal";
+import MultipleImagesList from "../../../components/organism/MultipleImagesList";
 
 interface AddCarProps {
   navigation: any
@@ -93,12 +94,49 @@ function AddCar({ navigation, submitting, error, success, user, addCar, resetCre
     }
   }, [success, error])
 
+  function handleAssets(asset: any[], index: number) {
+    let temp = [...images]
+    let imageData = asset[0]
+
+    // When no image is present
+    if (temp.length == 0) {
+      setImages(asset)
+      return
+    }
+
+    // Replace image
+    if (index !== -1) {
+      temp[index] = imageData
+      return setImages(temp)
+    }
+
+    // Image Selector default button assets
+    if (index === -1) {
+      asset.map((asset) => temp.push(asset))
+      setImages(temp)
+      return
+    }
+  }
+
+  function handleDelete(index: number) {
+    setImages(images.filter((item: any, currIndex: number) => currIndex !== index))
+  }
+
   return <SafeAreaView style={{ flex: 1 }}>
     <View style={styles.container}>
       <View>
         <View style={styles.uploadSection}>
           <Text style={styles.title}>Add Car</Text>
-          <CustomImageSelector multiple={false} image="" assets={images} setAssets={setImages} />
+          <MultipleImagesList
+            assets={images}
+            handleAssets={handleAssets}
+            handleDelete={handleDelete}
+          />
+          {/* <CustomImageSelector
+            multiple={false} image=""
+            assets={images}
+            setAssets={setImages}
+          /> */}
         </View>
         <FilterSection
           sectionTitle="Specifying your car!"

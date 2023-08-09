@@ -46,6 +46,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
         latitude: detail?.geometry?.location?.lat,
         addressText: detail?.formatted_address ? detail.formatted_address : locationValue.addressText
       })
+
       setPickedAddressFromGoogle(true)
     }
   }
@@ -86,7 +87,9 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
       visible={modalVisible}
       initialLocation={locationValue}
       fromContinue={fromContinue}
+      confirmDisabled={pickedAddressFromGoogle === false}
       addressValue={locationValue.addressText ? locationValue.addressText : ''}
+      setConfirmDisabled={setPickedAddressFromGoogle}
       hideModal={() => {
         setModalVisible(false)
         setFromContinue(false)
