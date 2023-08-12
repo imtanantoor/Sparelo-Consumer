@@ -1,6 +1,7 @@
 import {createSlice, current} from '@reduxjs/toolkit';
-import CartModel from '../../models/cartModel';
+import CartModel, {CartDataModel} from '../../models/cartModel';
 import ToastService from '../../Services/ToastService';
+import QuotationsCardModel from '../../models/QuotationsCardModel';
 
 const initialState: CartModel = {
   total: 0,
@@ -26,7 +27,8 @@ const cartSlice = createSlice({
     },
     removeFromCart: (state, action) => {
       const {payload} = action;
-      state.data = state.data.filter((item: any) => item.bid !== payload);
+      state.data = state.data.filter((item: any) => item.bid !== payload.bid);
+      state.total = state.total - payload.price;
     },
     reset: () => initialState,
   },

@@ -134,12 +134,11 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
       voiceNote: voiceNote?.uri ? voiceNote.uri : '',
       images: assets
     }
-    console.log({ data })
     createQuotation(data)
   }
 
   return <SafeAreaView style={styles.container}>
-    <ScrollView style={styles.contentContainer}>
+    <ScrollView>
       <MultipleImagesList
         assets={assets}
         handleAssets={handleAssets}
@@ -170,21 +169,23 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
         </View>
 
       </View>
-      <CustomTextInput
-        touched={touched}
-        errors={errors}
-        fieldName="price"
-        disabled={false}
-        label="Choose Price"
-        value={values.price}
-        keyboardType='number-pad'
-        placeholder="Price"
-        onBlur={() => { handleBlur('price', true) }}
-        onChangeText={(text: string) => handleChange(text, 'price')}
-        setTouched={setTouched}
-        required
-      />
-      <View>
+      <View style={{ marginHorizontal: 20 }}>
+        <CustomTextInput
+          touched={touched}
+          errors={errors}
+          fieldName="price"
+          disabled={false}
+          label="Choose Price"
+          value={values.price}
+          keyboardType='number-pad'
+          placeholder="Price"
+          onBlur={() => { handleBlur('price', true) }}
+          onChangeText={(text: string) => handleChange(text, 'price')}
+          setTouched={setTouched}
+          required
+        />
+      </View>
+      <View style={{ marginHorizontal: 20 }}>
         <Text style={{ color: 'rgba(0,0,0,0.5)' }}>Company</Text>
         <CustomButton
           disabled={data.length == 0 || fetching}
@@ -196,7 +197,7 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
           onPress={showModal}
         />
       </View>
-      <View>
+      <View style={{ marginHorizontal: 20 }}>
         {!!voiceNote && <VoicePlayer
           key={voiceNote.uri}
           duration={voiceNote.timeInString}
@@ -235,9 +236,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 1,
   },
-  contentContainer: {
-    paddingHorizontal: 20,
-  },
   text: {
     fontFamily: font.fontFamilies({ type: 'Inter' }).regular,
     fontSize: font.sizes.normal,
@@ -260,6 +258,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     // borderBottomWidth: 1,
     // borderBottomColor: '#03014C',
+    marginHorizontal: 20,
     backgroundColor: colors.white,
     shadowColor: "#000",
     shadowOffset: {

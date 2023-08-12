@@ -79,7 +79,7 @@ function CartCard({ id, bid, title, offeredBy, make, model, year, images, price 
       </View>
     </View>
     <TouchableOpacity onPress={() => {
-      dispatch(cartSlice.actions.removeFromCart(bid))
+      dispatch(cartSlice.actions.removeFromCart({ bid, price }))
     }} style={{ padding: 10, position: 'absolute', top: 0, right: 0 }}>
       <Text>X</Text>
     </TouchableOpacity>

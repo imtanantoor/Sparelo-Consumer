@@ -45,19 +45,22 @@ function ShowImage({ assets, multiple, imageUrl, showInitialImage, handleDelete 
         disabled={false}
         submitting={false}
         onPress={handleDelete}
-        title="Delete"
+        title="X"
         buttonStyle={{
           padding: 5,
-          backgroundColor:
-            colors.red,
+          // backgroundColor: colors.red,
+          borderRadius: 25 / 2,
+          // backgroundColor:
+          //   colors.red,
           alignSelf: 'flex-end',
           position: 'absolute',
           zIndex: 999,
           margin: 0,
-          right: 10
+          top: -15,
+          right: -15
         }}
-        titleStyle={{ fontSize: font.sizes.normal }}
-        type="primary"
+        titleStyle={{ fontSize: font.sizes.fourteen, }}
+        type="transparent"
       />}
       <CustomImage
         imageUrl={imageUrl}
