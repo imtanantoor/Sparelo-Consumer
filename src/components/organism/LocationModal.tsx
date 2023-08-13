@@ -82,7 +82,6 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, c
     if (!disableAddressFetching) {
       const value = await locationService.getAddressFromCoords({ latitude: region.latitude, longitude: region.longitude })
       if (value) {
-        console.log({ addressFromCords: value })
         setAddress(value)
         setConfirmDisabled(false)
       }

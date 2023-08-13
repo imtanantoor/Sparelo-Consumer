@@ -23,43 +23,31 @@ function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
 
   function HandlePlay() {
     setLoading(true)
-    const player = new Sound(audioNote, undefined, (error) => {
+    if (playing) {
+      player.pause()
+      setPlaying(false)
+      setLoading(false)
+      return
+    }
+    const audioPlayer = new Sound(audioNote, undefined, (error) => {
       if (error) {
         setLoading(false)
         hideModal()
         ToastService.error('Voice player', 'Audio file is invalid!')
       } else {
         setLoading(false)
-        setPlayer(player)
-        if (playing) {
-          player.pause()
-        } else {
-          setPlaying(true)
-          player.play(() => {
-            player.release()
-            setPlaying(false)
-          })
-        }
+        setPlayer(audioPlayer)
+        setPlaying(true)
+        audioPlayer.play(() => {
+          audioPlayer.release()
+          setPlaying(false)
+        })
       }
     })
-
-
-    // setTimeout(() => {
-    //   AudioServices.PlayAudio(constants.baseURL + audioNote, { 'Accept': 'application/json', })
-    //     .then((data) => {
-    //       setPlaying(true)
-    //       setLoading(false)
-    //     }).catch(error => {
-    //       setLoading(false)
-    //       hideModal()
-    //       ToastService.error('Voice player', JSON.stringify(error))
-    //     })
-    // }, 500)
   }
 
   function handleHide() {
-    AudioServices.StopAudio()
-    setPlaying(false)
+    StopAudio()
     hideModal()
   }
 
