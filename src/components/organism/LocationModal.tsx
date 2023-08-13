@@ -3,7 +3,7 @@ import colors from "../../constants/colors";
 import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 import font from "../../constants/fonts";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import LocationServices from "../../Services/LocationServices";
 import CustomTextInput from "../global/CustomTextInput";
 import MapPosition from "../../models/mapPosition";
@@ -13,6 +13,7 @@ import { GooglePlaceData, GooglePlaceDetail } from "react-native-google-places-a
 import CustomButton from "../global/CustomButton";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import LocationSelector from "./LocationSelector";
+import { debounce } from "lodash";
 
 interface LocationModalProps {
   visible: boolean
@@ -21,13 +22,13 @@ interface LocationModalProps {
   initialLocation: MapPosition | null
   fromContinue: boolean
   confirmDisabled: boolean
+  setAddress: (address: string) => void
   setConfirmDisabled: (val: boolean) => void
 }
 
-function LocationModal({ visible, addressValue, initialLocation, fromContinue, confirmDisabled, setConfirmDisabled, hideModal }: LocationModalProps): JSX.Element {
+function LocationModal({ visible, addressValue, initialLocation, fromContinue, confirmDisabled, setConfirmDisabled, hideModal, setAddress }: LocationModalProps): JSX.Element {
   const mapRef = useRef<any>(null);
   const navigation = useNavigation<NavigationProp<any>>()
-  const [address, setAddress] = useState<string>(addressValue)
   const [disableAddressFetching, setDisableAddressFetching] = useState(fromContinue)
   const locationService = LocationServices;
   const [latitude, setLatitude] = useState(initialLocation?.latitude)
@@ -44,7 +45,6 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, c
     setInitialRegion({ ...initialRegion, ...initialLocation })
     setLatitude(initialLocation?.latitude)
     setLongitude(initialLocation?.longitude)
-    setAddress(addressValue)
     setDisableAddressFetching(fromContinue)
     setTimeout(() => {
       mapRef?.current?.animateToRegion({
@@ -52,13 +52,13 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, c
         ...initialLocation
       })
     }, 500)
-  }, [initialLocation?.latitude, initialLocation?.longitude, addressValue, fromContinue])
+  }, [initialLocation?.latitude, initialLocation?.longitude, fromContinue])
 
   function handleCurrentLocation() {
-
     const { position, error } = locationService.getCurrentLocation()
 
     if (error === null) {
+      setDisableAddressFetching(true)
       setAddress(position.addressText ? position.addressText : '')
       setInitialRegion({ ...initialRegion, ...position })
       setLatitude(position.latitude)
@@ -67,15 +67,22 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, c
         ...initialRegion,
         ...position,
       })
+      setConfirmDisabled(false)
+      setTimeout(() => {
+        setDisableAddressFetching(false)
+      }, 500)
+    } else {
       setConfirmDisabled(true)
-      setDisableAddressFetching(false)
     }
   }
+
+  const debounceRegion = useCallback(debounce(handleRegionChange, 700), [])
 
   async function handleRegionChange(region: Region) {
     if (!disableAddressFetching) {
       const value = await locationService.getAddressFromCoords({ latitude: region.latitude, longitude: region.longitude })
       if (value) {
+        console.log({ addressFromCords: value })
         setAddress(value)
         setConfirmDisabled(false)
       }
@@ -108,7 +115,7 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, c
   }
 
   function handleConfirmLocation() {
-    navigation.navigate('Order Summary', { address, initialRegion: { ...initialRegion, latitude, longitude } })
+    navigation.navigate('Order Summary', { address: addressValue, initialRegion: { ...initialRegion, latitude, longitude } })
     hideModal()
   }
 
@@ -126,9 +133,9 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, c
         initialRegion={initialRegion}
         handleLocationPress={handleLocationPress}
         handleCurrentLocation={handleCurrentLocation}
-        handleRegionChange={handleRegionChange}
+        handleRegionChange={debounceRegion}
         disableAddressFetching={disableAddressFetching}
-        address={address}
+        address={addressValue}
         setAddress={(val: string) => {
           if (val === '') {
             setConfirmDisabled(true)
@@ -138,7 +145,7 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, c
       />
       <CustomButton
         title="Confirm Location"
-        disabled={!!address === false || confirmDisabled}
+        disabled={!!addressValue === false || confirmDisabled}
         submitting={false}
         type='primary'
         buttonStyle={{ width: '100%' }}

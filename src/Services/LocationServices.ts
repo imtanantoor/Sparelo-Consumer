@@ -1,5 +1,7 @@
 import Geolocation from '@react-native-community/geolocation';
 import MapPosition from '../models/mapPosition';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import ToastService from './ToastService';
 
 class LocationServices {
   private position: MapPosition = {

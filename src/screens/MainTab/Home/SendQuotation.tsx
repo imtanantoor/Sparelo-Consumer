@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import { FlatList, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import colors from "../../../constants/colors";
 import { useEffect, useState } from "react";
 import CustomImageSelector from "../../../components/global/CustomImageSelector";
@@ -143,6 +143,7 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
         assets={assets}
         handleAssets={handleAssets}
         handleDelete={handleDelete}
+        contentContainerStyle={{ paddingHorizontal: Platform.OS === 'ios' ? 20 : 0 }}
       />
       <View style={styles.buttonsContainer}>
         <Text /* style={styles.text} */>Is your spare part</Text>

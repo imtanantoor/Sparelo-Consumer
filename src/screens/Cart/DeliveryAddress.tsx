@@ -10,9 +10,11 @@ import CurrentLocation from "../../assets/icons/CurrentLocation";
 import { View } from "react-native";
 import LocationModal from "../../components/organism/LocationModal";
 import MapPosition from "../../models/mapPosition";
+import LocationServices from "../../Services/LocationServices";
 
 function DeliveryAddress({ navigation }: any): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false)
+  const [address, setAddress] = useState<string>('')
   const [fromContinue, setFromContinue] = useState(false)
   const [locationValue, setLocationValue] = useState<MapPosition>({
     latitude: 34.0151,
@@ -48,17 +50,30 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
         latitude: detail?.geometry?.location?.lat,
         addressText: detail?.formatted_address ? detail.formatted_address : locationValue.addressText
       })
+      setAddress(detail.formatted_address)
 
       // setPickedAddressFromGoogle(true)
       setConfirmDisabled(false)
     }
   }
 
+
   function openModal() {
-    setFromContinue(locationValue.addressText ? true : false)
-    setTimeout(() => {
+    const { position, error } = LocationServices.getCurrentLocation()
+
+    if (error === null) {
+      handleChange(position.addressText ? position.addressText : '', 'address')
+      setAddress(position?.addressText ? position.addressText : '')
+      setLocationValue({ ...locationValue, ...position })
+      setFromContinue(true)
       setModalVisible(true)
-    }, 500)
+      setConfirmDisabled(false)
+
+    }
+    // setFromContinue(locationValue.addressText ? true : false)
+    // setTimeout(() => {
+    //   setModalVisible(true)
+    // }, 500)
   }
 
 
@@ -69,7 +84,9 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
         disabled={false}
         label="Your address"
         addressValue={locationValue.addressText ? locationValue.addressText : ''}
-        onAddressChange={(value) => handleChange(value, 'addressText')}
+        onAddressChange={(value) => {
+          handleChange(value, 'addressText')
+        }}
         onLocationPress={handleLocationPress}
         placeHolder="Enter address"
       />
@@ -86,12 +103,13 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
       buttonStyle={{ alignSelf: 'flex-end', width: '100%' }}
       onPress={openModal}
     />
-    <LocationModal
+    {modalVisible && <LocationModal
       visible={modalVisible}
       initialLocation={locationValue}
       fromContinue={fromContinue}
       confirmDisabled={confirmDisabled}
-      addressValue={locationValue.addressText ? locationValue.addressText : ''}
+      addressValue={address}
+      setAddress={setAddress}
       setConfirmDisabled={setConfirmDisabled}
       hideModal={() => {
         setModalVisible(false)
@@ -99,7 +117,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
         setConfirmDisabled(false)
         // setPickedAddressFromGoogle(true)
       }}
-    />
+    />}
   </SafeAreaView>
 }
 
