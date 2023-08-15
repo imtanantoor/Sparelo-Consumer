@@ -17,7 +17,7 @@ function RequestsCard({ imageBackground, make, model, year, category, buttonDisa
   }
 
   return <TouchableOpacity
-    onLongPress={() => navigation.navigate('Request Detail', { id })}
+    onPress={() => navigation.navigate('Request Detail', { id })}
     style={styles.container}
     activeOpacity={0.9}>
     <ImageBackground
