@@ -36,6 +36,7 @@ function RequestDetail({ route, requestDetail, fetching, fetchRequestDetail }: R
   const [width, setWidth] = useState(Dimensions.get('screen').width * 1)
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
   const [popUpVisible, setPopUpVisible] = useState<boolean>(false)
+  const [initialImage, setInitialImage] = useState(0)
 
   function hideVoiceModal() {
     setShowVoicePlayer(false)
@@ -57,7 +58,8 @@ function RequestDetail({ route, requestDetail, fetching, fetchRequestDetail }: R
   if (requestDetail)
     return <ScrollView style={styles.container}>
       <SliderBox
-        onCurrentImagePressed={() => {
+        onCurrentImagePressed={(index: any) => {
+          setInitialImage(index)
           ToastService.warning('Note', 'Please swipe down to close full screen')
           setTimeout(() => {
             setPopUpVisible(true)
@@ -130,6 +132,7 @@ function RequestDetail({ route, requestDetail, fetching, fetchRequestDetail }: R
       <Modal visible={popUpVisible} onDismiss={() => setPopUpVisible(false)} transparent >
         <ImageViewer
           enableSwipeDown
+          index={initialImage}
           onSwipeDown={() => setPopUpVisible(false)}
           loadingRender={() => <ActivityIndicator />}
           imageUrls={requestDetail.images.map((image: string) => ({ url: image, props: { height: 200, width: Dimensions.get('window').width } }))} />
