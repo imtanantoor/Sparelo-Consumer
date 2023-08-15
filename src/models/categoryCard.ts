@@ -4,6 +4,7 @@ interface CategoryCardProps {
   onPress: (props?: any) => any;
   // Icon: JSX.Element;
   image: string;
+  hideImage?: boolean;
   style?: any;
   selected?: boolean;
 }

@@ -95,7 +95,7 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
       <SliderBox
         ImageComponentStyle={styles.slider}
         ImageComponent={CustomImage}
-        resizeMode={FastImage.resizeMode.contain}
+        // resizeMode={FastImage.resizeMode.contain}
         LoaderComponent={() => null}
         paginationBoxStyle={{
           position: "absolute",

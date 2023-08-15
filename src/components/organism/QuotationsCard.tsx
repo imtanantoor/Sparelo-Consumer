@@ -46,7 +46,6 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
           justifyContent: "center",
           paddingVertical: 10
         }}
-        resizeMode={FastImage.resizeMode.contain}
         sliderBoxHeight={140}
         images={images}
       />

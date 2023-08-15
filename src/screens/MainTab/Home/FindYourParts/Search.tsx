@@ -162,10 +162,11 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
           title={item.title}
           key={item.id}
           image={item.image}
+          hideImage
           id={item.id}
           onPress={handleOnPress('model', item)}
           selected={multiSelect ? values?.model?.findIndex((value: { id: string, title: string }) => value.title == item.title) !== -1 ? true : false : values?.model?.name == item.title}
-          style={{ width: '45.333%', }}
+          style={{ width: '45.333%', height: 'auto' }}
         />}
       />
     }
@@ -180,10 +181,11 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
       renderItem={({ item }) => <CategoryCard
         title={item.title}
         image={item.image}
+        hideImage
         id={item.id}
         onPress={handleOnPress('model', item)}
         selected={multiSelect ? values?.model?.findIndex((value: { id: string, title: string }) => value.title == item.title) !== -1 ? true : false : values?.model?.name == item.title}
-        style={{ width: '30.333%', marginRight: 5, marginLeft: 3 }}
+        style={{ width: '30.333%', marginRight: 5, marginLeft: 3, height: 'auto' }}
       />
       }
     />

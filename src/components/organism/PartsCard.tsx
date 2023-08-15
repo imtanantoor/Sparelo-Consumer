@@ -80,12 +80,11 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
           justifyContent: "center",
           paddingVertical: 10
         }}
-        resizeMode={FastImage.resizeMode.stretch}
         sliderBoxHeight={140}
         images={images}
       />
 
-      <View style={{ position: 'absolute', bottom: 0, paddingHorizontal: 5 }}>
+      <View style={{ position: 'absolute', borderRadius: 20, justifyContent: 'flex-end', bottom: 0, paddingHorizontal: 5, }}>
         <Text style={{
           fontFamily: font.fontFamilies({ type: 'Poppins' }).regular,
           color: colors.white,
