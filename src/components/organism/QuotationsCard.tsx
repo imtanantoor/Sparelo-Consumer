@@ -11,7 +11,7 @@ import QuotationsCardModel from "../../models/QuotationsCardModel";
 import CustomImage from "../global/CustomImage";
 
 
-function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, rating, showDeleteButton, deletingQuotation, onDeletePress }: QuotationsCardModel): JSX.Element {
+function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, rating, offeredBy, showDeleteButton, deletingQuotation, onDeletePress }: QuotationsCardModel): JSX.Element {
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
   // const [width, setWidth] = useState(Dimensions.get('screen').width * 1)
   const [width, setWidth] = useState(Dimensions.get('screen').width * 0.83)

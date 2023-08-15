@@ -20,7 +20,7 @@ export interface CartCardProps {
   images: string[]
 }
 
-function CartCard({ id, bid, title, offeredBy, make, model, year, images, price }: CartCardProps): JSX.Element {
+function CartCard({ id, bid, title, offeredBy, make, model, year, images, price, }: CartCardProps): JSX.Element {
   const dispatch = useDispatch()
   const [showImages, setShowImages] = useState<boolean>(false)
 

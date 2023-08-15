@@ -40,17 +40,21 @@ const initialState: QuotationsState = {
 };
 
 function handleQuotationsResponse(bids: any): QuotationsCardModel[] {
+  console.log({bids});
   return bids.map((bid: any, index: number) => ({
     id: bid?.request?._id,
     bid: bid?._id,
     images: bid?.request?.images.map((image: string) => image),
     make: bid?.request?.model?.name ? bid?.request?.model?.name : 'make',
     model: bid?.request?.model?.name ? bid?.request?.model?.name : 'model',
-    year: bid?.manufacturingYear ? bid?.manufacturingYear : 'year',
+    year: bid?.request?.manufacturingYear
+      ? bid?.request?.manufacturingYear
+      : 'year',
     price: bid?.price,
     audioNote: bid?.request?.voiceNote ? bid?.request?.voiceNote : '',
     quantity: bid?.quantity,
     rating: bid?.user?.rating,
+    offeredBy: bid?.user?.name,
   }));
 }
 

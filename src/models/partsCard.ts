@@ -9,6 +9,7 @@ interface PartsCardModel {
   quantity: number;
   audioNote?: any;
   rating: number;
+  offeredBy: string;
   checkAvailability: boolean;
 }
 

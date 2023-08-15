@@ -10,6 +10,7 @@ interface AvailabilityCardModel {
   available: boolean;
   quantity: number;
   rating: number;
+  offeredBy: string;
   availibilityStatus: string;
   audioNote?: string;
 }

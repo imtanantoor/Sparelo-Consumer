@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import CustomImage from "../global/CustomImage";
 
 
-function PartsCard({ id, make, model, year, images, price, bid, audioNote, rating, checkAvailability }: PartsCardModel): JSX.Element {
+function PartsCard({ id, make, model, year, images, price, bid, audioNote, rating, checkAvailability, offeredBy }: PartsCardModel): JSX.Element {
   const dispatch: any = useDispatch()
   const navigation: any = useNavigation()
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
@@ -51,7 +51,7 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
       year,
       title: `${make} | ${model} | ${year}`,
       price: price,
-      offeredBy: '',
+      offeredBy,
       images
     }))
   }
@@ -82,6 +82,15 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
         sliderBoxHeight={140}
         images={images}
       />
+
+      <View style={{ position: 'absolute', bottom: 0, paddingHorizontal: 5 }}>
+        <Text style={{
+          fontFamily: font.fontFamilies({ type: 'Poppins' }).regular,
+          color: colors.white,
+          fontSize: font.sizes.fourteen,
+          marginBottom: 5
+        }}>Offered By:{' '}{offeredBy}</Text>
+      </View>
     </View>
     <View style={styles.detailContainer}>
       <Text style={styles.description}>{make} | {year} | {model}</Text>

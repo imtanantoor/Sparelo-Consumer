@@ -70,7 +70,7 @@ function StatusAndButtons({ isVendor, available, availibilityStatus, submitting,
   </View>
 }
 
-function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, audioNote, availibilityStatus, mode, submitting = false, handleAvailabilityStatus, onButtonPress }: AvailabilityCardProps): JSX.Element {
+function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, audioNote, availibilityStatus, mode, offeredBy, submitting = false, handleAvailabilityStatus, onButtonPress }: AvailabilityCardProps): JSX.Element {
   const dispatch = useDispatch()
   const [width, setWidth] = useState(Dimensions.get('screen').width * 0.83)
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
@@ -141,7 +141,7 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
               year,
               title: `${make} | ${model} | ${year}`,
               price: price,
-              offeredBy: '',
+              offeredBy,
               images
             }
           })}

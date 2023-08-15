@@ -11,6 +11,7 @@ interface QuotationsCardModel {
   rating: number;
   showDeleteButton?: boolean;
   deletingQuotation?: boolean;
+  offeredBy: string;
   onDeletePress?: (id: string) => void;
 }
 
