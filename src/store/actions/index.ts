@@ -279,6 +279,18 @@ const createFormData = (data: any) => {
   return formData;
 };
 
+const fetchRequestDetail = createAsyncThunk(
+  'Requests / Fetch Detail',
+  async (id: number, {rejectWithValue}) => {
+    try {
+      const response = await constants.apiInstance.get(`requests/${id}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data);
+    }
+  },
+);
+
 // POST REQUESTS
 const createRequest = createAsyncThunk(
   'Requests/Create Request',
@@ -528,6 +540,7 @@ const actions = {
   deleteQuotation,
   approveOrder,
   cancelOrder,
+  fetchRequestDetail,
 };
 
 export default actions;

@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import RequestCardProps from '../../models/requestCard';
 import actions from '../actions';
 import constants from '../../utils/constants';
+import ToastService from '../../Services/ToastService';
 
 const initialState: {
   fetching: boolean;
@@ -10,6 +11,10 @@ const initialState: {
   creating: boolean;
   creationFailed: boolean;
   creationSuccessful: boolean;
+  fetchingRequestDetail: boolean;
+  fetchingRequestDetailError: boolean;
+  fetchingRequestDetailSuccess: boolean;
+  requestDetail: any;
 } = {
   fetching: true,
   error: false,
@@ -17,6 +22,10 @@ const initialState: {
   creationFailed: false,
   creationSuccessful: false,
   data: [],
+  fetchingRequestDetail: false,
+  fetchingRequestDetailError: false,
+  fetchingRequestDetailSuccess: false,
+  requestDetail: null,
 };
 
 function handleRequestsData(
@@ -115,6 +124,31 @@ const requestsSlice = createSlice({
       .addCase(actions.fetchRequestsOfVendor.rejected, (state, action) => {
         state.fetching = false;
         state.error = true;
+      });
+
+    //fetch Request Detail
+    builder
+      .addCase(actions.fetchRequestDetail.pending, (state, action) => {
+        state.fetchingRequestDetail = true;
+        state.fetchingRequestDetailError = false;
+        state.fetchingRequestDetailSuccess = false;
+      })
+      .addCase(actions.fetchRequestDetail.fulfilled, (state, action) => {
+        state.fetchingRequestDetail = false;
+        state.fetchingRequestDetailError = false;
+        state.fetchingRequestDetailSuccess = true;
+        state.requestDetail = action.payload.request;
+      })
+      .addCase(actions.fetchRequestDetail.rejected, (state, action: any) => {
+        state.fetchingRequestDetail = false;
+        state.fetchingRequestDetailError = true;
+        state.fetchingRequestDetailSuccess = false;
+        ToastService.error(
+          'Request Detail',
+          action?.payload?.error
+            ? action.payload.error
+            : 'Something went wrong',
+        );
       });
   },
 });

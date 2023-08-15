@@ -17,7 +17,7 @@ import RequestCreationSuccess from "../../assets/RequestCreationSuccess";
 import VoicePlayerPopup from "./VoicePlayerPopup";
 import { useEffect, useState } from "react";
 import CustomImage from "../global/CustomImage";
-import FastImage from "react-native-fast-image";
+
 
 
 function PartsCard({ id, make, model, year, images, price, bid, audioNote, rating, checkAvailability, offeredBy }: PartsCardModel): JSX.Element {
@@ -63,7 +63,7 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
     })
   }, [])
 
-  return <TouchableOpacity activeOpacity={0.9} style={styles.container}>
+  return <TouchableOpacity activeOpacity={0.9} onLongPress={() => navigation.navigate('Request Detail', { id })} style={styles.container}>
     <View style={{ overflow: 'hidden' }}>
       <SliderBox
         ImageComponentStyle={styles.slider}

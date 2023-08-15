@@ -6,15 +6,20 @@ import RequestCardProps from "../../models/requestCard";
 import VoiceSVG from "../../assets/VoiceSVG";
 import { useState } from "react";
 import VoicePlayerPopup from "./VoicePlayerPopup";
+import { useNavigation } from "@react-navigation/native";
 
-function RequestsCard({ imageBackground, make, model, year, category, buttonDisabled, buttonTitle, audioNote, onButtonPress }: RequestCardProps): JSX.Element {
+function RequestsCard({ imageBackground, make, model, year, category, buttonDisabled, buttonTitle, audioNote, id, onButtonPress }: RequestCardProps): JSX.Element {
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
+  const navigation: any = useNavigation()
   const [imageError, setImageError] = useState<boolean>(false)
   function hideVoiceModal() {
     setShowVoicePlayer(false)
   }
 
-  return <TouchableOpacity style={styles.container} activeOpacity={0.9}>
+  return <TouchableOpacity
+    onLongPress={() => navigation.navigate('Request Detail', { id })}
+    style={styles.container}
+    activeOpacity={0.9}>
     <ImageBackground
       onError={() => {
         setImageError(true)
