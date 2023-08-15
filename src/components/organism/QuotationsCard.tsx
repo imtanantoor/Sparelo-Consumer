@@ -9,6 +9,7 @@ import VoicePlayerPopup from "./VoicePlayerPopup";
 import { useEffect, useState } from "react";
 import QuotationsCardModel from "../../models/QuotationsCardModel";
 import CustomImage from "../global/CustomImage";
+import FastImage from "react-native-fast-image";
 
 
 function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, rating, offeredBy, showDeleteButton, deletingQuotation, onDeletePress }: QuotationsCardModel): JSX.Element {
@@ -45,6 +46,7 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
           justifyContent: "center",
           paddingVertical: 10
         }}
+        resizeMode={FastImage.resizeMode.contain}
         sliderBoxHeight={140}
         images={images}
       />

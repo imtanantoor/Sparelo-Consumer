@@ -17,6 +17,7 @@ import RequestCreationSuccess from "../../assets/RequestCreationSuccess";
 import VoicePlayerPopup from "./VoicePlayerPopup";
 import { useEffect, useState } from "react";
 import CustomImage from "../global/CustomImage";
+import FastImage from "react-native-fast-image";
 
 
 function PartsCard({ id, make, model, year, images, price, bid, audioNote, rating, checkAvailability, offeredBy }: PartsCardModel): JSX.Element {
@@ -79,6 +80,7 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
           justifyContent: "center",
           paddingVertical: 10
         }}
+        resizeMode={FastImage.resizeMode.stretch}
         sliderBoxHeight={140}
         images={images}
       />
@@ -89,11 +91,13 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
           color: colors.white,
           fontSize: font.sizes.fourteen,
           marginBottom: 5
-        }}>Offered By:{' '}{offeredBy}</Text>
+        }}>Offered By:{' '}{offeredBy}
+        </Text>
       </View>
     </View>
     <View style={styles.detailContainer}>
       <Text style={styles.description}>{make} | {year} | {model}</Text>
+      {/* <Text style={[styles.description, { marginVertical: 2 }]}><Text style={{ fontFamily: font.fontFamilies({ type: 'Poppins' }).medium }}>Offered By:</Text> {offeredBy}</Text> */}
       <Text style={styles.price}>Rs {price}</Text>
       <View style={[styles.voiceAndBidsContainer, { justifyContent: audioNote ? 'space-between' : 'flex-end', alignItems: 'center' }]}>
         {audioNote && <TouchableOpacity onPress={() => setShowVoicePlayer(true)} style={styles.voiceCard}>

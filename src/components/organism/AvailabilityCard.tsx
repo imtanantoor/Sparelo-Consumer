@@ -12,6 +12,7 @@ import { Fragment, useEffect, useState } from "react";
 import VoiceSVG from "../../assets/VoiceSVG";
 import VoicePlayerPopup from "./VoicePlayerPopup";
 import CustomImage from "../global/CustomImage";
+import FastImage from "react-native-fast-image";
 
 interface AvailabilityCardProps extends AvailabilityCardModel {
   type: 'results' | 'availability'
@@ -94,6 +95,7 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
       <SliderBox
         ImageComponentStyle={styles.slider}
         ImageComponent={CustomImage}
+        resizeMode={FastImage.resizeMode.contain}
         LoaderComponent={() => null}
         paginationBoxStyle={{
           position: "absolute",

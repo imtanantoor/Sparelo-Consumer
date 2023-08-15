@@ -62,7 +62,7 @@ function handlePartsResponse(bids: any, isSearch: boolean): PartsCardModel[] {
       id: part?._id,
       bid: part?.bids[index]?._id ? part?.bids[index]?._id : 0,
       images: part?.images.map((image: string) => image),
-      make: part?.model?.name ? part?.model?.name : 'make',
+      make: part?.brand?.name ? part?.brand?.name : 'make',
       model: part?.model?.name ? part?.model?.name : 'model',
       year: part?.manufacturingYear ? part?.manufacturingYear : 'year',
       price: part?.bids[index]?.price ? part?.bids[index]?.price : '',
@@ -75,7 +75,7 @@ function handlePartsResponse(bids: any, isSearch: boolean): PartsCardModel[] {
     id: bid?.request?._id,
     bid: bid?._id,
     images: bid?.request?.images.map((image: string) => image),
-    make: bid?.request?.model?.name ? bid?.request?.model?.name : 'make',
+    make: bid?.request?.brand?.name ? bid?.request?.brand?.name : 'make',
     model: bid?.request?.model?.name ? bid?.request?.model?.name : 'model',
     year: bid?.request?.manufacturingYear
       ? bid?.request?.manufacturingYear
