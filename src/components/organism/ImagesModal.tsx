@@ -5,6 +5,7 @@ import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import { SliderBox } from "react-native-image-slider-box";
 import CustomImage from "../global/CustomImage";
+import FastImage from "react-native-fast-image";
 
 
 interface ImagesModalProps {
@@ -36,6 +37,7 @@ function ImagesModal({ visible, images, hideModal }: ImagesModalProps): JSX.Elem
         justifyContent: "center",
         padding: 10
       }}
+      resizeMode={FastImage.resizeMode.contain}
       images={images} />
     {/* </View> */}
   </Modal >
@@ -64,6 +66,8 @@ const styles = StyleSheet.create({
   slider: {
     borderRadius: 15,
     width: '100%',
+    // height: undefined,
+    aspectRatio: 16 / 9,
     backgroundColor: 'white',
   },
 

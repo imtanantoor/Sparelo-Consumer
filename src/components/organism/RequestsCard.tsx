@@ -23,7 +23,7 @@ function RequestsCard({ imageBackground, make, model, year, category, buttonDisa
       loadingIndicatorSource={require('../../assets/loadingSource.png')}
       source={imageError ? require('../../assets/ImagePlaceholder.png') : { uri: imageBackground }}
       style={styles.imageContainer}
-      imageStyle={{ borderRadius: 10 }}
+      imageStyle={{ borderRadius: 10, }}
     >
 
       <View style={styles.contentContainer}>
