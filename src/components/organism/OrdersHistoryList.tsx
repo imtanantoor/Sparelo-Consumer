@@ -21,17 +21,18 @@ interface OrdersHistoryListProps {
   changingOrderStatus: boolean;
   changingOrderStatusError: boolean;
   changingOrderStatusSuccess: boolean;
+  refetchHistory: boolean
   changingStatusType: 'approve' | 'cancel' | '';
 }
 
-function OrdersHistoryList({ data, fetching, user, error, mode, filterStatus, changingOrderStatus, changingStatusType, changingOrderStatusError, changingOrderStatusSuccess, fetchOrdersHistory, fetchVendorsOrderHistory, approveOrder, cancelOrder }: OrdersHistoryListProps) {
+function OrdersHistoryList({ data, fetching, user, error, mode, refetchHistory, filterStatus, changingOrderStatus, changingStatusType, changingOrderStatusError, changingOrderStatusSuccess, fetchOrdersHistory, fetchVendorsOrderHistory, approveOrder, cancelOrder }: OrdersHistoryListProps) {
 
   useEffect(() => {
     if (mode === 'vendor')
       fetchVendorsOrderHistory(user._id)
     else
       fetchOrdersHistory(user._id)
-  }, [changingOrderStatusSuccess])
+  }, [changingOrderStatusSuccess, refetchHistory])
 
   function handleApiCall() {
     if (!fetching) {
@@ -72,7 +73,8 @@ const mapStateToProps = (state: any) => ({
   changingOrderStatusSuccess: state.Orders.changingOrderStatusSuccess,
   changingStatusType: state.Orders.changingStatusType,
   mode: state.Auth.mode,
-  user: state.Auth.user
+  user: state.Auth.user,
+  refetchHistory: state.Orders.refetchHistory
 })
 
 const mapDispatchToProps = {

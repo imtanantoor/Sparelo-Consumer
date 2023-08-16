@@ -11,20 +11,31 @@ enum orderStatus {
   CANCELLED = 'Cancelled',
   PENDING = 'Pending',
   APPROVED = 'Approved',
-  CONFIRMED = 'confirmed',
+  CONFIRMED = 'Confirmed',
+  COMPLETED = 'Completed',
 }
 
 enum orderStatusTextColor {
   cancelled = '#D00606',
   pending = '#262626',
   approved = '#04b347',
+  completed = '#04b347',
   confirmed = '#04b347',
 }
-
-const dataConstants = {
+enum canceledBy {
+  VENDOR = 'Seller',
+  BUYER = 'Buyer',
+}
+const dataConstants: {
+  dummyImages: string[];
+  orderStatus: any;
+  orderStatusTextColor: any;
+  canceledBy: any;
+} = {
   dummyImages,
   orderStatus,
   orderStatusTextColor,
+  canceledBy,
 };
 
 export default dataConstants;

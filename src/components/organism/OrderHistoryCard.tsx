@@ -4,10 +4,30 @@ import CustomImage from "../global/CustomImage";
 import OrderHistoryCardProps from "../../models/orderHistoryCardProps";
 import font from "../../constants/fonts";
 import dataConstants from "../../constants/dataConstants";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import CustomButton from "../global/CustomButton";
+import ConfrimOrderModal from "./ConfirmOrderModal";
+import CancelOrderModal from "./CancelOrderModal";
 
-function OrderHistoryCard({ images, make, model, year, category, requestedBy, orderStatus, approveOrder, cancelOrder, mode, changingStatus = false, changingStatusType = '', id }: OrderHistoryCardProps) {
+function OrderHistoryCard({ images, make, model, year, category, requestedBy, orderStatus, approveOrder, cancelOrder, changingStatus = false, changingStatusType = '', mode, id, sellerId }: OrderHistoryCardProps) {
+  const [showCompleteModal, setShowCompleteModal] = useState<boolean>(false)
+  const [showCancelModal, setShowCancelModal] = useState<boolean>(false)
+
+  function openCompleteModal() {
+    setShowCompleteModal(true)
+  }
+
+  function openCancelModal() {
+    setShowCancelModal(true)
+  }
+
+  function hideCompleteModal() {
+    setShowCompleteModal(false)
+  }
+
+  function hideCancelModal() {
+    setShowCancelModal(false)
+  }
 
   return <View style={styles.container}>
     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
@@ -26,7 +46,7 @@ function OrderHistoryCard({ images, make, model, year, category, requestedBy, or
           marginVertical: 10,
           textTransform: 'uppercase',
           color: dataConstants.orderStatusTextColor[orderStatus.toLowerCase()],
-        }}>{orderStatus}
+        }}>{mode === 'buyer' && orderStatus.toLowerCase() === 'approved' ? 'COMPLETED' : orderStatus}
         </Text>
       </View>
     </View>
@@ -34,7 +54,7 @@ function OrderHistoryCard({ images, make, model, year, category, requestedBy, or
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <CustomButton
           title="Cancel"
-          onPress={cancelOrder ? () => cancelOrder(id) : () => { }}
+          onPress={cancelOrder ? () => cancelOrder({ id, cancelledBy: 'Seller' }) : () => { }}
           type='primary'
           buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '48%', backgroundColor: colors.white, borderColor: colors.red, borderWidth: 1 }}
           titleStyle={{ fontSize: 12, color: colors.red }}
@@ -52,6 +72,39 @@ function OrderHistoryCard({ images, make, model, year, category, requestedBy, or
         />
       </View>
     }
+    {orderStatus?.toLowerCase() === 'confirmed' && mode === 'buyer' &&
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <CustomButton
+          title="Cancel"
+          onPress={openCancelModal}
+          type='primary'
+          buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '48%', backgroundColor: colors.white, borderColor: colors.red, borderWidth: 1 }}
+          titleStyle={{ fontSize: 12, color: colors.red }}
+          disabled={changingStatus}
+          submitting={changingStatus && changingStatusType === 'cancel'}
+        />
+        <CustomButton
+          title="Complete"
+          onPress={openCompleteModal}
+          type='primary'
+          buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '48%' }}
+          titleStyle={{ fontSize: 12 }}
+          disabled={changingStatus}
+          submitting={changingStatus && changingStatusType === 'approve'}
+        />
+      </View>
+    }
+    <ConfrimOrderModal
+      visible={showCompleteModal}
+      sellerId={sellerId}
+      orderId={id}
+      hideModal={hideCompleteModal}
+    />
+    <CancelOrderModal
+      visible={showCancelModal}
+      orderId={id}
+      hideModal={hideCancelModal}
+    />
   </View>
 }
 

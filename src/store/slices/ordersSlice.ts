@@ -13,6 +13,7 @@ interface OrdersSlice {
   changingOrderStatusSuccess: boolean;
   changingStatusType: 'approve' | 'cancel' | '';
   orderCreated: boolean;
+  refetchHistory: boolean;
 }
 
 const initialState: OrdersSlice = {
@@ -25,6 +26,7 @@ const initialState: OrdersSlice = {
   changingOrderStatusSuccess: false,
   changingStatusType: '',
   orderCreated: false,
+  refetchHistory: false,
 };
 
 function handleOrdersHistoryResponse(data: any): OrderHistoryCardProps[] {
@@ -41,6 +43,7 @@ function handleOrdersHistoryResponse(data: any): OrderHistoryCardProps[] {
         requestedBy: order?.orderBy?.name,
         category: requestData?.category?.name,
         orderStatus: order?.status,
+        sellerId: order?.bidder,
       };
 
     return {
@@ -51,6 +54,7 @@ function handleOrdersHistoryResponse(data: any): OrderHistoryCardProps[] {
       year: '',
       requestedBy: order?.orderBy?.name,
       category: '',
+      sellerId: order?.bidder,
     };
   });
 }
@@ -60,6 +64,9 @@ const ordersSlice = createSlice({
   reducers: {
     setOrderCreated: (state: OrdersSlice, action) => {
       state.orderCreated = action.payload;
+    },
+    setRefetchHistory: (state: OrdersSlice, action) => {
+      state.refetchHistory = action.payload;
     },
   },
   initialState,

@@ -1,3 +1,5 @@
+import cancelOrderPayload from './cancelOrderModel';
+
 interface OrderHistoryCardProps {
   images: string[];
   make: string;
@@ -6,12 +8,14 @@ interface OrderHistoryCardProps {
   requestedBy: string;
   category: string;
   orderStatus: string;
-  approveOrder?: (id: string) => void;
-  cancelOrder?: (id: string) => void;
-  mode: 'buyer' | 'vendor';
+  approveOrder?: (orderId: string) => void;
+  cancelOrder?: (data: cancelOrderPayload) => void;
+  submitting: boolean;
+  mode: 'vendor' | 'buyer';
   changingStatus?: boolean;
   changingStatusType?: string;
   id: string;
+  sellerId: string;
 }
 
 export default OrderHistoryCardProps;

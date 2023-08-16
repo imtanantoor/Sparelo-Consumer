@@ -9,6 +9,7 @@ import CreateShopModel from '../../models/CreateShopModel';
 import CreateQuotationModel from '../../models/createQuotationModel';
 import UpdateShopModel from '../../models/UpdateShopModel';
 import ChangeAvailabilityStatusModel from '../../models/ChangeAvailabilityStatusModel';
+import cancelOrderPayload from '../../models/cancelOrderModel';
 
 const fetchCategories = createAsyncThunk('Categories/fetchAll', async () => {
   const response = await constants.apiInstance.get('categories');
@@ -480,10 +481,11 @@ const approveOrder = createAsyncThunk(
 
 const cancelOrder = createAsyncThunk(
   'Orders/Cancel Order',
-  async (id: string, {rejectWithValue}) => {
+  async (data: cancelOrderPayload, {rejectWithValue}) => {
     try {
       const response = await constants.apiInstance.patch(
-        `orders/cancelOrder/${id}`,
+        `orders/cancelOrder`,
+        data,
       );
       return response.data;
     } catch (error: any) {
