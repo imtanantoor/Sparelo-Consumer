@@ -12,9 +12,9 @@ function RequestsList({ navigation, route, requests, fetching, error, mode, user
 
   useEffect(() => {
     if (mode === 'buyer')
-      return fetchRequests(user._id)
-
-    fetchRequestsOfVendor(user._id)
+      fetchRequests(user._id)
+    else
+      fetchRequestsOfVendor(user._id)
   }, [creatingQuotationSuccess, orderCreated])
 
   function handleApiCall() {

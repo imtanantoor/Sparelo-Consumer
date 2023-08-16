@@ -47,11 +47,14 @@ function OrderSummary({ navigation, route }: any): JSX.Element {
     navigation.popToTop()
     navigation.navigate('Home', { screen: 'Home', initial: false })
     dispatch(cartSlice.actions.reset())
+    dispatch(ordersSlice.actions.setOrderCreated(true))
     setModalVisible(false)
   }
 
   async function handleSubmit() {
     setSubmitting(true)
+    dispatch(ordersSlice.actions.setOrderCreated(false))
+
 
     const payload: any = {
       address,
@@ -67,10 +70,6 @@ function OrderSummary({ navigation, route }: any): JSX.Element {
       const { data, status } = await constants.apiInstance.post('orders/create', payload)
       if (status == 200) {
         dispatch(cartSlice.actions.reset())
-        dispatch(ordersSlice.actions.setOrderCreated(true))
-        setTimeout(() => {
-          dispatch(ordersSlice.actions.setOrderCreated(false))
-        }, 500)
       }
       setModalVisible(true)
       setSubmitting(false)
