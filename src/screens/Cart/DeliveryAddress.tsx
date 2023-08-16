@@ -11,6 +11,7 @@ import { View } from "react-native";
 import LocationModal from "../../components/organism/LocationModal";
 import MapPosition from "../../models/mapPosition";
 import LocationServices from "../../Services/LocationServices";
+import ToastService from "../../Services/ToastService";
 
 function DeliveryAddress({ navigation }: any): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false)
@@ -68,9 +69,11 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
       setFromContinue(true)
       setModalVisible(true)
       setConfirmDisabled(false)
-
+    } else {
+      setModalVisible(true)
+      setFromContinue(locationValue.addressText ? true : false)
+      setConfirmDisabled(locationValue.addressText ? true : false)
     }
-    // setFromContinue(locationValue.addressText ? true : false)
     // setTimeout(() => {
     //   setModalVisible(true)
     // }, 500)
@@ -103,7 +106,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
       buttonStyle={{ alignSelf: 'flex-end', width: '100%' }}
       onPress={openModal}
     />
-    {modalVisible && <LocationModal
+    <LocationModal
       visible={modalVisible}
       initialLocation={locationValue}
       fromContinue={fromContinue}
@@ -117,7 +120,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
         setConfirmDisabled(false)
         // setPickedAddressFromGoogle(true)
       }}
-    />}
+    />
   </SafeAreaView>
 }
 
