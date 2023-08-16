@@ -11,6 +11,7 @@ interface RequestsListProps {
   fetchRequests: (userId: string) => void;
   fetchRequestsOfVendor: (userId: string) => void;
   creatingQuotationSuccess: boolean;
+  orderCreated: boolean;
 }
 
 export default RequestsListProps;

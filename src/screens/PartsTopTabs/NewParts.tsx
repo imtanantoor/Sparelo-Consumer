@@ -12,16 +12,17 @@ interface NewPartsProps {
   fetching: boolean
   error: boolean
   data: PartsCardModel[]
+  orderCreated: boolean
   fetchNewParts: (requestId: string | number) => void
   route: any
 }
 
-function NewParts({ fetching, error, data, fetchNewParts, route }: NewPartsProps): JSX.Element {
+function NewParts({ fetching, error, data, fetchNewParts, route, orderCreated }: NewPartsProps): JSX.Element {
   const requestId: string | number = route.params.requestId
 
   useEffect(() => {
     fetchNewParts(requestId)
-  }, [])
+  }, [orderCreated])
 
   return <FlatList
     ListEmptyComponent={<ListEmptyComponent
@@ -38,7 +39,8 @@ function NewParts({ fetching, error, data, fetchNewParts, route }: NewPartsProps
 const mapStateToProps = (state: any) => ({
   data: state.Parts.newParts,
   fetching: state.Parts.fetching,
-  error: state.Parts.error
+  error: state.Parts.error,
+  orderCreated: state.Orders.orderCreated
 })
 
 const mapDispatchToProps = {

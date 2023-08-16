@@ -12,6 +12,7 @@ interface OrdersSlice {
   changingOrderStatusError: boolean;
   changingOrderStatusSuccess: boolean;
   changingStatusType: 'approve' | 'cancel' | '';
+  orderCreated: boolean;
 }
 
 const initialState: OrdersSlice = {
@@ -23,6 +24,7 @@ const initialState: OrdersSlice = {
   changingOrderStatusError: false,
   changingOrderStatusSuccess: false,
   changingStatusType: '',
+  orderCreated: false,
 };
 
 function handleOrdersHistoryResponse(data: any): OrderHistoryCardProps[] {
@@ -55,7 +57,11 @@ function handleOrdersHistoryResponse(data: any): OrderHistoryCardProps[] {
 
 const ordersSlice = createSlice({
   name: 'Orders',
-  reducers: {},
+  reducers: {
+    setOrderCreated: (state: OrdersSlice, action) => {
+      state.orderCreated = action.payload;
+    },
+  },
   initialState,
   extraReducers: builder => {
     // fetch buyer orders history

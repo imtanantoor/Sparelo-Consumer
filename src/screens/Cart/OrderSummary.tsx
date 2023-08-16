@@ -14,6 +14,7 @@ import constants from "../../utils/constants"
 import { CartCardProps } from "../../components/global/CartCard"
 import { CartDataModel } from "../../models/cartModel"
 import ToastService from "../../Services/ToastService"
+import ordersSlice from "../../store/slices/ordersSlice"
 
 function OrderSummary({ navigation, route }: any): JSX.Element {
   const { data, user } = useSelector((state: any) => ({
@@ -66,6 +67,10 @@ function OrderSummary({ navigation, route }: any): JSX.Element {
       const { data, status } = await constants.apiInstance.post('orders/create', payload)
       if (status == 200) {
         dispatch(cartSlice.actions.reset())
+        dispatch(ordersSlice.actions.setOrderCreated(true))
+        setTimeout(() => {
+          dispatch(ordersSlice.actions.setOrderCreated(false))
+        }, 500)
       }
       setModalVisible(true)
       setSubmitting(false)
