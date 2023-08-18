@@ -142,9 +142,9 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
         renderSectionHeader={({ section: { title } }) => (
           <View
             style={{
-              marginVertical: 5,
+              marginVertical: 15,
             }}>
-            <Text style={[styles.headerText, { color: colors.black }]}>{title}</Text>
+            <Text style={[styles.headerText, { color: colors.primary }]}>{title}</Text>
           </View>
         )}
         renderSectionFooter={({ section }: any) => {
@@ -175,6 +175,12 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
       data={models}
       numColumns={3}
       style={{ maxHeight: '70%' }}
+      ListHeaderComponent={() => <View
+        style={{
+          marginVertical: 15,
+        }}>
+        <Text style={[styles.headerText, { color: colors.primary }]}>{values?.brand?.name}</Text>
+      </View>}
       ListEmptyComponent={() => <ListEmptyComponent
         height={Dimensions.get('window').height * 0.5}
         fetching={fetchingModels} error={fetchingModelsError} hideButton onPress={() => { }} />}
@@ -313,7 +319,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: colors.red,
-    fontFamily: font.fontFamilies({ type: 'Inter' }).regular,
+    fontFamily: font.fontFamilies({ type: 'Inter' }).medium,
     fontSize: font.sizes.subtitle
   }
 })

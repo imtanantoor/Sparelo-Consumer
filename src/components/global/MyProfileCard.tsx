@@ -30,7 +30,7 @@ function MyProfileCard({ imageUrl, name, contact, rating, onPress }: MyProfileCa
           ratingTextColor="red"
           imageSize={15}
           readonly
-          style={{ padding: 0, marginVertical: 5, marginLeft: -10 }}
+          style={{ padding: 0, marginVertical: 5, justifyContent: 'flex-start', alignItems: 'flex-start' }}
           onFinishRating={() => { }}
         />
       </View>

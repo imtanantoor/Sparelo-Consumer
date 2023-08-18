@@ -51,18 +51,18 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
         latitude: detail?.geometry?.location?.lat,
         addressText: detail?.formatted_address ? detail.formatted_address : locationValue.addressText
       })
-      setAddress(detail.formatted_address)
 
+      setAddress(detail.formatted_address)
       // setPickedAddressFromGoogle(true)
       setConfirmDisabled(false)
     }
   }
 
 
-  function openModal() {
+  function openModal(getLocation: boolean) {
     const { position, error } = LocationServices.getCurrentLocation()
 
-    if (error === null) {
+    if (error === null && getLocation) {
       handleChange(position.addressText ? position.addressText : '', 'address')
       setAddress(position?.addressText ? position.addressText : '')
       setLocationValue({ ...locationValue, ...position })
@@ -70,13 +70,13 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
       setModalVisible(true)
       setConfirmDisabled(false)
     } else {
-      setModalVisible(true)
-      setFromContinue(locationValue.addressText ? true : false)
-      setConfirmDisabled(locationValue.addressText ? true : false)
+      setConfirmDisabled(false)
+      setFromContinue(!!locationValue.addressText ? true : false)
+      setTimeout(() => {
+        setModalVisible(true)
+      }, 500)
     }
-    // setTimeout(() => {
-    //   setModalVisible(true)
-    // }, 500)
+
   }
 
 
@@ -93,7 +93,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
         onLocationPress={handleLocationPress}
         placeHolder="Enter address"
       />
-      <TouchableOpacity onPress={openModal} style={styles.chooseLocation}>
+      <TouchableOpacity onPress={() => openModal(true)} style={styles.chooseLocation}>
         <Text style={styles.locationText}>Choose current location</Text>
         <CurrentLocation />
       </TouchableOpacity>
@@ -104,7 +104,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
       submitting={false}
       type="primary"
       buttonStyle={{ alignSelf: 'flex-end', width: '100%' }}
-      onPress={openModal}
+      onPress={() => openModal(false)}
     />
     <LocationModal
       visible={modalVisible}
