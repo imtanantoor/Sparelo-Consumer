@@ -4,19 +4,9 @@ import dataConstants from "../../constants/dataConstants";
 import { useSelector } from "react-redux";
 import { useLayoutEffect } from "react";
 
-function ApprovedOrders() {
-  const navigation: any = useNavigation()
-  const { mode } = useSelector((state: any) => state.Auth)
+function CompletedOrders() {
 
-  useLayoutEffect(() => {
-    if (mode === 'buyer') {
-      navigation.setOptions({
-        title: 'Completed Orders'
-      })
-    }
-  }, [])
-
-  return <OrdersHistoryList filterStatus={mode == 'buyer' ? dataConstants.orderStatus.COMPLETED : dataConstants.orderStatus.APPROVED} />
+  return <OrdersHistoryList filterStatus={dataConstants.orderStatus.COMPLETED} />
 }
 
-export default ApprovedOrders
+export default CompletedOrders

@@ -51,7 +51,7 @@ function OrderHistoryCard({ images, make, model, year, category, requestedBy, or
       </View>
     </View>
     {orderStatus?.toLowerCase() === 'confirmed' && mode === 'vendor' &&
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
         <CustomButton
           title="Cancel"
           onPress={cancelOrder ? () => cancelOrder({ id, cancelledBy: 'Seller' }) : () => { }}
@@ -61,7 +61,7 @@ function OrderHistoryCard({ images, make, model, year, category, requestedBy, or
           disabled={changingStatus}
           submitting={changingStatus && changingStatusType === 'cancel'}
         />
-        <CustomButton
+        {/* <CustomButton
           title="Approve"
           onPress={approveOrder ? () => approveOrder(id) : () => { }}
           type='primary'
@@ -69,10 +69,11 @@ function OrderHistoryCard({ images, make, model, year, category, requestedBy, or
           titleStyle={{ fontSize: 12 }}
           disabled={changingStatus}
           submitting={changingStatus && changingStatusType === 'approve'}
-        />
+        /> */}
       </View>
     }
-    {orderStatus?.toLowerCase() === 'confirmed' && mode === 'buyer' &&
+    {
+      orderStatus?.toLowerCase() === 'confirmed' && mode === 'buyer' &&
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <CustomButton
           title="Cancel"
@@ -105,7 +106,7 @@ function OrderHistoryCard({ images, make, model, year, category, requestedBy, or
       orderId={id}
       hideModal={hideCancelModal}
     />
-  </View>
+  </View >
 }
 
 export default OrderHistoryCard
