@@ -40,6 +40,9 @@ function OrderSummary({ navigation, route }: any): JSX.Element {
   }, [])
 
   function hideModal() {
+    handleBackToHome()
+    // dispatch(ordersSlice.actions.setOrderCreated(true))
+    // dispatch(cartSlice.actions.reset())
     setModalVisible(false)
   }
 
@@ -68,7 +71,8 @@ function OrderSummary({ navigation, route }: any): JSX.Element {
 
     try {
       const { data, status } = await constants.apiInstance.post('orders/create', payload)
-      if (status == 200) {
+      console.log({ status })
+      if (status == 200 || status == 201) {
         dispatch(cartSlice.actions.reset())
       }
       setModalVisible(true)
