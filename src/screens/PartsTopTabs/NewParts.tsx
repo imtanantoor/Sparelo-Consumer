@@ -20,9 +20,12 @@ interface NewPartsProps {
 function NewParts({ fetching, error, data, fetchNewParts, route, orderCreated }: NewPartsProps): JSX.Element {
   const requestId: string | number = route.params.requestId
 
+
   useEffect(() => {
     fetchNewParts(requestId)
   }, [orderCreated])
+
+  useEffect(() => { }, [data.length])
 
   return <FlatList
     ListEmptyComponent={<ListEmptyComponent

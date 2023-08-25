@@ -24,6 +24,8 @@ function OldParts({ fetching, error, data, fetchOldParts, route, orderCreated }:
     fetchOldParts(requestId)
   }, [orderCreated])
 
+  useEffect(() => { }, [data.length])
+
   return <FlatList
     ListEmptyComponent={<ListEmptyComponent
       fetching={fetching}

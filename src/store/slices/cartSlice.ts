@@ -28,7 +28,7 @@ const cartSlice = createSlice({
     removeFromCart: (state, action) => {
       const {payload} = action;
       state.data = state.data.filter((item: any) => item.bid !== payload.bid);
-      state.total = state.total - payload.price;
+      if (state.total > 0) state.total = state.total - payload.price;
     },
     reset: () => initialState,
   },

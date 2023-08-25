@@ -4,6 +4,7 @@ import colors from "../../constants/colors";
 import font from "../../constants/fonts";
 import { useSelector } from "react-redux";
 import ListEmptyComponent from "../global/ListEmptyComponent";
+import { useEffect } from "react";
 
 function renderItem({ item }: { item: CartCardProps }) {
   return <CartCard
@@ -14,7 +15,10 @@ function renderItem({ item }: { item: CartCardProps }) {
 function CartList(): JSX.Element {
   const { data } = useSelector((state: any) => state.Cart)
 
+  useEffect(() => { }, [data.length])
+
   return <FlatList
+    keyExtractor={(item: any) => item.bid}
     ListEmptyComponent={() => <ListEmptyComponent
       error={false}
       fetching={false}

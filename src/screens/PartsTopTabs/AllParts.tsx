@@ -24,7 +24,10 @@ function AllParts({ fetching, error, data, fetchAllParts, route, orderCreated }:
     fetchAllParts(requestId)
   }, [orderCreated])
 
+  useEffect(() => { }, [data.length])
+
   return <FlatList
+    keyExtractor={(item: any) => item.bid}
     ListEmptyComponent={<ListEmptyComponent
       fetching={fetching}
       error={error}
