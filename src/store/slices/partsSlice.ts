@@ -74,14 +74,15 @@ function handlePartsResponse(bids: any, isSearch: boolean): PartsCardModel[] {
   return bids.map((bid: any, index: number) => ({
     id: bid?.request?._id,
     bid: bid?._id,
-    images: bid?.request?.images.map((image: string) => image),
+    images: bid?.images.map((image: string) => image),
     make: bid?.request?.brand?.name ? bid?.request?.brand?.name : 'make',
     model: bid?.request?.model?.name ? bid?.request?.model?.name : 'model',
     year: bid?.request?.manufacturingYear
       ? bid?.request?.manufacturingYear
       : 'year',
     price: bid?.price,
-    audioNote: bid?.request?.voiceNote ? bid?.request?.voiceNote : '',
+    // audioNote: bid?.request?.voiceNote ? bid?.request?.voiceNote : '',
+    audioNote: bid?.voiceNote ? bid?.voiceNote : '',
     quantity: bid?.quantity,
     offeredBy: bid?.user?.name,
     rating: bid?.user?.rating,
