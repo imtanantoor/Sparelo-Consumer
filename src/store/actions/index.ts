@@ -292,6 +292,18 @@ const fetchRequestDetail = createAsyncThunk(
   },
 );
 
+const fetchBidDetail = createAsyncThunk(
+  'Bid / Fetch Detail',
+  async (id: number, {rejectWithValue}) => {
+    try {
+      const response = await constants.apiInstance.get(`bids/${id}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data);
+    }
+  },
+);
+
 // POST REQUESTS
 const createRequest = createAsyncThunk(
   'Requests/Create Request',
@@ -543,6 +555,7 @@ const actions = {
   approveOrder,
   cancelOrder,
   fetchRequestDetail,
+  fetchBidDetail,
 };
 
 export default actions;

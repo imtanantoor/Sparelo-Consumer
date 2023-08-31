@@ -12,6 +12,7 @@ import font from "../../constants/fonts";
 const ImageOptions: any = {
   mediaType: 'photo',
   selectionLimit: 1,
+  quality: 0.5,
   storageOptions: {
     skipBackup: true,
     path: 'images',

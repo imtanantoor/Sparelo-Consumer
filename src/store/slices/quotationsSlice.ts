@@ -40,7 +40,6 @@ const initialState: QuotationsState = {
 };
 
 function handleQuotationsResponse(bids: any): QuotationsCardModel[] {
-  console.log({bids});
   return bids.map((bid: any, index: number) => ({
     id: bid?.request?._id,
     bid: bid?._id,

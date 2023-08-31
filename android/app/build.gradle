@@ -99,8 +99,8 @@ android {
         applicationId "com.sparelo_consumer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 35
-        versionName "2.0.24"
+        versionCode 36
+        versionName "2.0.25"
     }
 
     splits {

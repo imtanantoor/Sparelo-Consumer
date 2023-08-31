@@ -16,6 +16,10 @@ interface PartsState {
   creatingQuotation: boolean;
   creatingQuotationSuccess: boolean;
   creatingQuotationFailure: boolean;
+  fetchingBidDetail: boolean;
+  fetchingBidDetailError: boolean;
+  fetchingBidDetailSuccess: boolean;
+  bidDetail: any;
   newParts: PartsCardModel[];
   oldParts: PartsCardModel[];
   allParts: PartsCardModel[];
@@ -37,6 +41,10 @@ const initialState: PartsState = {
   creatingQuotation: false,
   creatingQuotationSuccess: false,
   creatingQuotationFailure: false,
+  fetchingBidDetail: false,
+  fetchingBidDetailError: false,
+  fetchingBidDetailSuccess: false,
+  bidDetail: null,
   newParts: [],
   oldParts: [],
   allParts: [],
@@ -189,6 +197,31 @@ const partsSlice = createSlice({
         state.creatingQuotation = false;
         state.creatingQuotationSuccess = false;
         state.creatingQuotationFailure = true;
+      });
+
+    // Bid detail
+    builder
+      .addCase(actions.fetchBidDetail.pending, (state, action) => {
+        state.fetchingBidDetail = true;
+        state.fetchingBidDetailSuccess = false;
+        state.fetchingBidDetailError = false;
+      })
+      .addCase(actions.fetchBidDetail.fulfilled, (state, action) => {
+        state.fetchingBidDetail = false;
+        state.fetchingBidDetailSuccess = true;
+        state.fetchingBidDetailError = false;
+        state.bidDetail = action.payload.bid;
+      })
+      .addCase(actions.fetchBidDetail.rejected, (state, action: any) => {
+        state.fetchingBidDetail = false;
+        state.fetchingBidDetailSuccess = false;
+        state.fetchingBidDetailError = true;
+        ToastService.error(
+          'Request Detail',
+          action?.payload?.error
+            ? action.payload.error
+            : 'Something went wrong',
+        );
       });
   },
 });

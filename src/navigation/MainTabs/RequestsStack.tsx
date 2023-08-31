@@ -5,6 +5,7 @@ import RequestSummary from "../../screens/MainTab/Requests/RequestSummary"
 import font from "../../constants/fonts"
 import SendQuotation from "../../screens/MainTab/Home/SendQuotation"
 import RequestDetail from "../../screens/MainTab/Requests/RequestDetail"
+import BidDetail from "../../screens/MainTab/Requests/BidDetail"
 
 const Stack = createNativeStackNavigator()
 
@@ -20,6 +21,7 @@ function RequestsStack(): JSX.Element {
   }} initialRouteName="Requests" >
     <Stack.Screen name="Requests" component={RequestsList} />
     <Stack.Screen name="Request Detail" options={{ headerBackVisible: true }} component={RequestDetail} />
+    <Stack.Screen name="Bid Detail" options={{ headerBackVisible: true }} component={BidDetail} />
     <Stack.Screen name="Send Quotation" component={SendQuotation} />
     <Stack.Screen name="Quotations" component={QuotationsTabs} />
   </Stack.Navigator>
