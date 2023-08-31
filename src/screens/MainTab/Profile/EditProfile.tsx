@@ -18,12 +18,14 @@ interface EditProfileScreenProps {
   submitting: boolean
   error: boolean
   success: boolean
+  fcmToken: string
   updateUser: (data: UpdateUserModel) => void
   resetUpdateUserState: () => void
 }
 
-function EditProfile({ navigation, user, submitting, error, success, updateUser, resetUpdateUserState }: EditProfileScreenProps): JSX.Element {
+function EditProfile({ navigation, user, fcmToken, submitting, error, success, updateUser, resetUpdateUserState }: EditProfileScreenProps): JSX.Element {
   const [assets, setAssets] = useState<any[]>([])
+
   const [values, setValues] = useState<any>({
     name: user?.name ? user.name : '',
     contact: user.contact ? user.contact : ''
@@ -49,7 +51,8 @@ function EditProfile({ navigation, user, submitting, error, success, updateUser,
     const data: UpdateUserModel = {
       id: user?._id,
       profilePic: assets[0],
-      name: values.name
+      name: values.name,
+      fcmToken
     }
     updateUser(data)
   }
@@ -124,7 +127,8 @@ const mapStateToProps = (state: any) => ({
   user: state.Auth.user,
   submitting: state.Auth.updatingUser,
   error: state.Auth.updatingUserError,
-  success: state.Auth.updatingUserSuccess
+  success: state.Auth.updatingUserSuccess,
+  fcmToken: state.Auth.fcmToken
 })
 
 const mapDispatchToProps = {

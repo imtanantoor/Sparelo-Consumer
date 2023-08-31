@@ -11,21 +11,23 @@ import auth from '@react-native-firebase/auth';
 import ToastService from "../../Services/ToastService";
 import constants from "../../utils/constants";
 import actions from "../../store/actions";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import helpers from "../../utils/helpers";
 
 interface SignInProps {
   navigation: any
   submitting: boolean;
   loginSuccess: boolean;
+  fcmToken: string
   loginError: boolean;
   login: (data: LoginPayloadModel) => void
 }
 
-function SignIn({ navigation, submitting, loginSuccess, loginError, login }: SignInProps): JSX.Element {
+function SignIn({ navigation, submitting, loginSuccess, loginError, fcmToken, login }: SignInProps): JSX.Element {
   const [values, setValues] = useState<LoginPayloadModel>({
     contact: '',
-    password: ''
+    password: '',
+    fcmToken
   })
   const [touched, setTouched] = useState({
     contact: false,
@@ -131,7 +133,7 @@ function SignIn({ navigation, submitting, loginSuccess, loginError, login }: Sig
         title: 'Sign In',
         submitting: submitting,
         type: 'primary',
-        disabled: submitting || Object.values(errors).some((value) => value !== '') || Object.values(values).some((value) => value == ''),
+        disabled: submitting || Object.values(errors).some((value) => value !== '') || Object.values({ contact: values.contact, password: values.password }).some((value) => value == ''),
         onPress: handleSignIn
       }}
       fieldsContainerStyle={{ marginTop: 20, marginBottom: 0 }}
@@ -156,6 +158,7 @@ const mapStateToProps = (state: any) => ({
   submitting: state.Auth.loggingIn,
   loginSuccess: state.Auth.loginSuccess,
   loginError: state.Auth.loginError,
+  fcmToken: state.Auth.fcmToken
 })
 
 const mapDispatchToProps = {

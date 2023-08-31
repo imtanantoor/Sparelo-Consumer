@@ -10,6 +10,8 @@ import CreateQuotationModel from '../../models/createQuotationModel';
 import UpdateShopModel from '../../models/UpdateShopModel';
 import ChangeAvailabilityStatusModel from '../../models/ChangeAvailabilityStatusModel';
 import cancelOrderPayload from '../../models/cancelOrderModel';
+import ToastService from '../../Services/ToastService';
+import store from '..';
 
 const fetchCategories = createAsyncThunk('Categories/fetchAll', async () => {
   const response = await constants.apiInstance.get('categories');
@@ -369,11 +371,37 @@ const searchParts = createAsyncThunk(
   },
 );
 
+const updateFCMToken = async ({
+  userId,
+  fcmToken,
+}: {
+  userId: string;
+  fcmToken: string;
+}) => {
+  try {
+    const response = await constants.apiInstance.patch('/users/update', {
+      id: userId,
+      fcmToken,
+    });
+    console.log(response.data);
+  } catch (error: any) {
+    ToastService.error('Token updation', 'failed to update notification token');
+  }
+};
+
 const loginUser = createAsyncThunk(
   'Auth/Login',
   async (data: LoginPayloadModel, {rejectWithValue}) => {
     try {
-      const response = await constants.apiInstance.post('/users/login', data);
+      const response = await constants.apiInstance.post('/users/login', {
+        contact: data.contact,
+        password: data.password,
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        const {_id} = response.data.user;
+        updateFCMToken({userId: _id, fcmToken: data.fcmToken});
+      }
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);

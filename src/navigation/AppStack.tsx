@@ -6,16 +6,18 @@ import { Fragment, useEffect, useState } from 'react';
 import helpers from '../utils/helpers';
 import { PERMISSIONS } from 'react-native-permissions';
 import { Alert, Platform } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
 import ToastService from '../Services/ToastService';
+import authSlice from '../store/slices/authSlice';
 
 const Stack = createNativeStackNavigator()
 
 function AppStack(): JSX.Element | null {
   const navigation: any = useNavigation()
   const [loading, setLoading] = useState<boolean>(true);
+  const dispatch = useDispatch()
   const [initialRoute, setInitialRoute] = useState<string>('Home');
   const { accessToken, mode, user } = useSelector((state: any) => ({
     accessToken: state.Auth.accessToken,
@@ -43,7 +45,7 @@ function AppStack(): JSX.Element | null {
     try {
       await messaging().registerDeviceForRemoteMessages();
       const token = await messaging().getToken();
-      console.log({ token })
+      dispatch(authSlice.actions.setFcmToken(token))
 
       return token
     } catch (error) {
@@ -86,7 +88,7 @@ function AppStack(): JSX.Element | null {
 
     return unsubscribe
 
-  }, []);
+  }, [accessToken]);
 
   if (loading) return null
 

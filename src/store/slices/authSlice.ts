@@ -28,6 +28,7 @@ const initialState: {
   updateShopError: boolean;
   changingPassword: boolean;
   changingPasswordError: boolean;
+  fcmToken: string;
   changingPasswordSuccess: boolean;
 } = {
   authenticated: false,
@@ -40,6 +41,7 @@ const initialState: {
   loginSuccess: false,
   user: null,
   accessToken: '',
+  fcmToken: '',
   updatingUser: false,
   updatingUserError: false,
   updatingUserSuccess: false,
@@ -94,6 +96,9 @@ const authSlice = createSlice({
       state.changingPassword = false;
       state.changingPasswordError = false;
       state.changingPasswordSuccess = false;
+    },
+    setFcmToken: (state, action) => {
+      state.fcmToken = action.payload;
     },
     logout: state => initialState,
   },
