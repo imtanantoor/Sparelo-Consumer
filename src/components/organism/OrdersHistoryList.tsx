@@ -43,7 +43,7 @@ function OrdersHistoryList({ data, fetching, user, error, mode, refetchHistory, 
   return <FlatList
     data={data.filter((item) => {
       if (!!filterStatus) {
-        return filterStatus?.toLowerCase() === item?.orderStatus.toLowerCase()
+        return filterStatus?.toLowerCase() === item?.orderStatus?.toLowerCase()
       }
       return true
     })}

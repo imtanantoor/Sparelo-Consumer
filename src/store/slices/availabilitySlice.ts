@@ -29,9 +29,10 @@ const initialState: {
 };
 
 function handleAvailabilityResponse(response: any): AvailabilityCardModel[] {
+  console.log({response});
   return response.map((item: any) => ({
     id: item?._id,
-    bid: item.bid._id,
+    bid: item?.bid?._id,
     images:
       item?.bid?.images && item?.bid?.images.length > 0
         ? item?.bid?.images?.map((image: string) => image)
@@ -77,6 +78,7 @@ const availabilitySlice = createSlice({
         (state, action: any) => {
           state.fetching = false;
           state.error = false;
+          console.log({action});
           state.data = handleAvailabilityResponse(
             action.payload.availabilityRequests,
           );

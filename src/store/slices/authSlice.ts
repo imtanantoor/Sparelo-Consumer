@@ -147,7 +147,7 @@ const authSlice = createSlice({
         state.loginSuccess = false;
 
         ToastService.error(
-          'Sign up',
+          'Sign In',
           action?.payload?.error
             ? action.payload.error
             : action?.payload?.message

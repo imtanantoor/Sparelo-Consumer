@@ -44,7 +44,7 @@ function handleQuotationsResponse(bids: any): QuotationsCardModel[] {
     id: bid?.request?._id,
     bid: bid?._id,
     images: bid?.request?.images.map((image: string) => image),
-    make: bid?.request?.model?.name ? bid?.request?.model?.name : 'make',
+    make: bid?.request?.brand?.name ? bid?.request?.brand?.name : 'make',
     model: bid?.request?.model?.name ? bid?.request?.model?.name : 'model',
     year: bid?.request?.manufacturingYear
       ? bid?.request?.manufacturingYear

@@ -51,10 +51,10 @@ function CartCard({ id, bid, title, offeredBy, make, model, year, images, price,
             <Text style={styles.description}>{make}</Text>
           </View>
           <View style={{ minWidth: '20%', borderRightColor: 'rgba(0,0,0,0.4)', borderRightWidth: 1, paddingHorizontal: 10, marginRight: 10 }}>
-            <Text style={styles.description}>{year}</Text>
+            <Text style={styles.description}>{model}</Text>
           </View>
           <View style={{ minWidth: '20%' }}>
-            <Text style={styles.description}>{model}</Text>
+            <Text style={styles.description}>{year}</Text>
           </View>
         </View>
         <View style={styles.priceAndImagesButtonContainer}>

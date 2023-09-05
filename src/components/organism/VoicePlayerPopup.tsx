@@ -6,7 +6,7 @@ import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } fr
 import PlayIcon from "../../assets/icons/PlayIcon";
 import PauseIcon from "../../assets/icons/PauseIcon";
 import StopIcon from "../../assets/icons/StopIcon";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AudioServices from "../../Services/AudioServices";
 import ToastService from "../../Services/ToastService";
 import Sound from "react-native-sound";
@@ -53,6 +53,8 @@ function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
 
   function StopAudio() {
     player?.stop()
+    player?.reset()
+    player?.release()
     AudioServices.StopAudio()
     setPlaying(false)
   }

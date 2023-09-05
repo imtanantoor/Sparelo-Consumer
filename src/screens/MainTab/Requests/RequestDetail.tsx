@@ -102,7 +102,7 @@ function RequestDetail({ route, requestDetail, fetching, fetchRequestDetail }: R
         />
         <View>
           <TitleAndValue
-            title="Offered By"
+            title="Requested By"
             value={requestDetail?.user?.name}
           />
           {requestDetail?.user?.rating !== 0 && <Rating
