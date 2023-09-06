@@ -47,6 +47,7 @@ function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
   }
 
   function handleHide() {
+    if (loading) return ToastService.warning('Audio Player', 'Please wait while audio is loaded')
     StopAudio()
     hideModal()
   }
@@ -55,7 +56,7 @@ function VoicePlayerPopup({ visible, audioNote, hideModal }: VoicePlayerPopup) {
     player?.stop()
     player?.reset()
     player?.release()
-    AudioServices.StopAudio()
+    AudioServices?.StopAudio()
     setPlaying(false)
   }
 

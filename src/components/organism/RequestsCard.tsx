@@ -60,11 +60,11 @@ function RequestsCard({ imageBackground, make, model, year, category, buttonDisa
         titleStyle={{ fontSize: font.sizes.fourteen }}
       />
     </View>
-    <VoicePlayerPopup
+    {!!audioNote && <VoicePlayerPopup
       visible={showVoicePlayer}
       hideModal={hideVoiceModal}
       audioNote={audioNote}
-    />
+    />}
   </TouchableOpacity>
 }
 
