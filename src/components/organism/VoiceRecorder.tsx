@@ -23,9 +23,9 @@ function VoiceRecorderModal({ visible, hideModal, onClose, onSave }: VoiceRecord
   return <Modal
     isVisible={visible}
     backdropColor={colors.lightGray}
-    onBackButtonPress={hideModal}
-    onBackdropPress={hideModal}
-    onDismiss={hideModal}
+  // onBackButtonPress={hideModal}
+  // onBackdropPress={hideModal}
+  // onDismiss={hideModal}
   >
     <View style={styles.popUp}>
       <RandomBars barColor={colors.red} mode='recorder' />
