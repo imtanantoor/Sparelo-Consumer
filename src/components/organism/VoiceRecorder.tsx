@@ -10,6 +10,7 @@ import ButtonWithIcon from "../atomic/ButtonWithIcon";
 import UpArrow from "../../assets/icons/UpArrow";
 import AudioServices from "../../Services/AudioServices";
 import ToastService from "../../Services/ToastService";
+import font from "../../constants/fonts";
 
 interface VoiceRecorderModalProps {
   visible: boolean
@@ -30,11 +31,23 @@ function VoiceRecorderModal({ visible, hideModal, onClose, onSave }: VoiceRecord
     <View style={styles.popUp}>
       <RandomBars barColor={colors.red} mode='recorder' />
       <View style={styles.buttonsContainer}>
-        <ButtonWithIcon
+        <CustomButton
+          title="Cancel"
+          type='primary'
+          onPress={onClose}
+          buttonStyle={{
+            backgroundColor: colors.red,
+            padding: 10,
+            borderRadius: 5
+          }}
+          submitting={false}
+          disabled={false}
+        />
+        {/* <ButtonWithIcon
           style={styles.upArrowButton}
           Icon={() => <UpArrow />}
           onPress={onClose}
-        />
+        /> */}
         <ButtonWithIcon
           style={styles.checkButton}
           Icon={() => <CheckMark />}
@@ -105,6 +118,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   buttonsContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'row',
     marginTop: 10
   },
