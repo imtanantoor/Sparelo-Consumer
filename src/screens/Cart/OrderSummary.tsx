@@ -34,7 +34,7 @@ function OrderSummary({ navigation, route }: any): JSX.Element {
       headerBackVisible: false,
       headerTitleStyle: {
         color: '#3C3A35',
-        fontFamily: font.fontFamilies({ type: 'Inter' }).regular
+        // fontFamily: font.fontFamilies({ type: 'Inter' }).regular
       }
     })
   }, [])

@@ -55,6 +55,7 @@ function VoiceRecorder({ disabled, setVoiceNote }: VoiceRecorderProps): JSX.Elem
   const [modalVisible, setModalVisible] = useState(false)
 
   function hideModal() {
+    AudioServices.StopRecording()
     setModalVisible(false)
   }
 

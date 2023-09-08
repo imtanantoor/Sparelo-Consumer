@@ -32,7 +32,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
       headerLeft: () => <HeaderBack onPress={navigation.goBack} />,
       headerTitleStyle: {
         color: '#3C3A35',
-        fontFamily: font.fontFamilies({ type: 'Inter' }).regular
+        // fontFamily: font.fontFamilies({ type: 'Inter' }).regular
       }
     })
   }, [])
@@ -63,12 +63,15 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
     const { position, error } = LocationServices.getCurrentLocation()
 
     if (error === null && getLocation) {
-      handleChange(position.addressText ? position.addressText : '', 'address')
+      if (!!position.addressText) return ToastService.error('Location', 'failed to get current location')
+      handleChange(position.addressText ? position.addressText : '', 'addressText')
       setAddress(position?.addressText ? position.addressText : '')
       setLocationValue({ ...locationValue, ...position })
       setFromContinue(true)
-      setModalVisible(true)
-      setConfirmDisabled(false)
+      setTimeout(() => {
+        setModalVisible(true)
+        setConfirmDisabled(false)
+      }, 500)
     } else {
       setConfirmDisabled(false)
       setFromContinue(!!locationValue.addressText ? true : false)

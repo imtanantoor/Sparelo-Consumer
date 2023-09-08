@@ -21,7 +21,7 @@ interface BidDetailProps {
   fetching: boolean;
   error: boolean;
   success: boolean;
-  requestDetail: any;
+  bidDetail: any;
   fetchBidDetail: (id: number) => void
 }
 
@@ -32,7 +32,7 @@ function TitleAndValue({ title, value }: { title: string, value: string }): JSX.
   </View>
 }
 
-function BidDetail({ route, requestDetail, fetching, fetchBidDetail }: BidDetailProps): JSX.Element {
+function BidDetail({ route, bidDetail, fetching, fetchBidDetail }: BidDetailProps): JSX.Element {
   const [width, setWidth] = useState(Dimensions.get('screen').width * 1)
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
   const [popUpVisible, setPopUpVisible] = useState<boolean>(false)
@@ -49,13 +49,15 @@ function BidDetail({ route, requestDetail, fetching, fetchBidDetail }: BidDetail
     fetchBidDetail(route?.params?.id)
   }, [])
 
+  console.log({ bidDetail })
+
   if (fetching) {
     return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator color={colors.primary} size={'large'} />
     </View>
   }
 
-  if (requestDetail)
+  if (bidDetail)
     return <ScrollView style={styles.container}>
       <SliderBox
         onCurrentImagePressed={(index: any) => {
@@ -81,32 +83,32 @@ function BidDetail({ route, requestDetail, fetching, fetchBidDetail }: BidDetail
         sliderBoxHeight={200}
         parentWidth={width - 40}
         // parentWidth={Dimensions.get('screen').width * 0.85}
-        images={requestDetail?.images}
+        images={bidDetail?.images}
       />
       <View style={styles.detailContainer}>
         <TitleAndValue
           title="Brand"
-          value={requestDetail?.brand?.name}
+          value={bidDetail?.request?.brand?.name}
         />
         <TitleAndValue
           title="Make"
-          value={requestDetail?.model?.name}
+          value={bidDetail?.request?.model?.name}
         />
         <TitleAndValue
           title="Manufacturing Year"
-          value={requestDetail?.manufacturingYear}
+          value={bidDetail?.request?.manufacturingYear}
         />
-        <TitleAndValue
+        {/* <TitleAndValue
           title="Additional Notes"
-          value={requestDetail?.additionalNotes}
-        />
+          value={bidDetail?.request?.additionalNotes}
+        /> */}
         <View>
           <TitleAndValue
             title="Offered By"
-            value={requestDetail?.user?.name}
+            value={bidDetail?.user?.name}
           />
-          {requestDetail?.user?.rating !== 0 && <Rating
-            ratingCount={requestDetail?.user?.rating}
+          {bidDetail?.user?.rating !== 0 && <Rating
+            ratingCount={bidDetail?.user?.rating}
             ratingColor="#EDD011"
             ratingTextColor="red"
             imageSize={15}
@@ -116,7 +118,7 @@ function BidDetail({ route, requestDetail, fetching, fetchBidDetail }: BidDetail
           />}
         </View>
 
-        {requestDetail?.voiceNote && <TouchableOpacity onPress={() => setShowVoicePlayer(true)} style={styles.voiceCard}>
+        {bidDetail?.voiceNote && <TouchableOpacity onPress={() => setShowVoicePlayer(true)} style={styles.voiceCard}>
           <View style={{ flexDirection: 'row', overflow: 'hidden' }}>
             <VoiceSVG />
             <VoiceSVG />
@@ -126,7 +128,7 @@ function BidDetail({ route, requestDetail, fetching, fetchBidDetail }: BidDetail
         <VoicePlayerPopup
           visible={showVoicePlayer}
           hideModal={hideVoiceModal}
-          audioNote={requestDetail?.voiceNote}
+          audioNote={bidDetail?.voiceNote}
         />
       </View>
       <Modal visible={popUpVisible} onDismiss={() => setPopUpVisible(false)} transparent >
@@ -135,7 +137,7 @@ function BidDetail({ route, requestDetail, fetching, fetchBidDetail }: BidDetail
           index={initialImage}
           onSwipeDown={() => setPopUpVisible(false)}
           loadingRender={() => <ActivityIndicator />}
-          imageUrls={requestDetail.images.map((image: string) => ({ url: image, props: { height: 200, width: Dimensions.get('window').width } }))} />
+          imageUrls={bidDetail.images.map((image: string) => ({ url: image, props: { height: 200, width: Dimensions.get('window').width } }))} />
       </Modal>
     </ScrollView>
 
@@ -180,7 +182,7 @@ const mapStateToProps = (state: any) => ({
   fetching: state.Parts.fetchingBidDetail,
   error: state.Parts.fetchingBidDetailError,
   success: state.Parts.fetchingBidDetailSuccess,
-  requestDetail: state.Parts.bidDetail,
+  bidDetail: state.Parts.bidDetail,
 })
 
 const mapDispatchToProps = {
