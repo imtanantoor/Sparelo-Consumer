@@ -34,7 +34,9 @@ function OldParts({ fetching, error, data, fetchOldParts, route, orderCreated }:
     />}
     style={{ flex: 1, backgroundColor: colors.white }}
     data={data}
-    renderItem={({ item, index }: any) => <PartsCard {...item} />}
+    renderItem={({ item, index }: any) => <PartsCard {...item}
+      checkAvailability={route?.params?.checkAvailability}
+    />}
   />
 }
 
