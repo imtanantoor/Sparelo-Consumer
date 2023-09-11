@@ -10,7 +10,7 @@ function AvailabilityStack(): JSX.Element {
     screenOptions={{
       contentStyle: { backgroundColor: colors.white },
       headerTitleStyle: {
-        fontFamily: font.fontFamilies({ type: 'Inter' }).regular,
+        fontFamily: font.fontFamilies({ type: 'Inter' }).semiBold,
       },
       headerTitleAlign: 'center',
     }}
