@@ -17,12 +17,13 @@ interface AvailabilityHomeProps {
   changingStatus: boolean
   changeStatusSuccess: boolean
   changeStatusError: boolean
+  orderCreated: boolean
   fetchAllAvailableItemsOfUser: (userId: string) => void
   changeAvailability: (data: ChangeAvailabilityStatusModel) => void
   resetChangingState: () => void
 }
 
-function AvailabilityHome({ data, fetching, error, user, mode, changingStatus, changeStatusSuccess, changeStatusError, fetchAllAvailableItemsOfUser, changeAvailability, resetChangingState }: AvailabilityHomeProps): JSX.Element {
+function AvailabilityHome({ data, fetching, error, user, mode, changingStatus, changeStatusSuccess, orderCreated, changeStatusError, fetchAllAvailableItemsOfUser, changeAvailability, resetChangingState }: AvailabilityHomeProps): JSX.Element {
 
   useEffect(() => {
     if (data.length == 0 || changeStatusSuccess)
@@ -31,7 +32,7 @@ function AvailabilityHome({ data, fetching, error, user, mode, changingStatus, c
     if (changeStatusSuccess) {
       resetChangingState()
     }
-  }, [changeStatusSuccess])
+  }, [changeStatusSuccess, orderCreated])
 
   function handleApiCall() {
     fetchAllAvailableItemsOfUser(user._id)
@@ -66,7 +67,9 @@ const mapStateToProps = (state: any) => ({
   changeStatusSuccess: state.Availability.changeStatusSuccess,
   changeStatusError: state.Availability.changeStatusError,
   user: state.Auth.user,
-  mode: state.Auth.mode
+  mode: state.Auth.mode,
+  orderCreated: state.Orders.orderCreated
+
 })
 
 const mapDispatchToProps = {
