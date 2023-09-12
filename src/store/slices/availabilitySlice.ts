@@ -29,7 +29,6 @@ const initialState: {
 };
 
 function handleAvailabilityResponse(response: any): AvailabilityCardModel[] {
-  console.log({response});
   return response.map((item: any) => ({
     id: item?._id,
     bid: item?.bid?._id,
@@ -45,7 +44,7 @@ function handleAvailabilityResponse(response: any): AvailabilityCardModel[] {
     available: item?.isAvaiable,
     quantity: item?.bid?.request?.quantity,
     rating: item?.user?.rating,
-    availibilityStatus: item?.bid?.availibilityStatus,
+    availibilityStatus: item?.availibilityStatus,
   }));
 }
 

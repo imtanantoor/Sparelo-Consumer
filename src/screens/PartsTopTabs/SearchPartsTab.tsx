@@ -28,7 +28,6 @@ function SearchPartsTab({ fetching, error, newParts, user, oldParts, searchParts
     brand: brand.id ? brand.id : "646517a3bec729d8efdbb903",
     model: model.id ? model.id : "64656de2bec729d8efdbb907",
     manufacturingYear: manufacturingYear ? Number(manufacturingYear) : 2013,
-    itemInPair: true,
     user: user._id
   }
 
