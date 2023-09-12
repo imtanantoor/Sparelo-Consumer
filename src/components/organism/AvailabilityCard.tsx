@@ -57,7 +57,7 @@ function StatusAndButtons({ isVendor, available, availibilityStatus, submitting,
       textTransform: 'uppercase',
       color: available ? '#414141' : colors.red
     }}>
-      {availibilityStatus}
+      {availibilityStatus === 'CHECKED' ? 'Available' : availibilityStatus}
     </Text>
     {available && <CustomButton
       title="Add to Cart"
@@ -72,6 +72,7 @@ function StatusAndButtons({ isVendor, available, availibilityStatus, submitting,
 }
 
 function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, audioNote, availibilityStatus, mode, offeredBy, submitting = false, handleAvailabilityStatus, onButtonPress }: AvailabilityCardProps): JSX.Element {
+  console.log({ year })
   const dispatch = useDispatch()
   const [width, setWidth] = useState(Dimensions.get('screen').width * 0.83)
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
@@ -114,7 +115,7 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
       />
     </View>
     <View style={styles.detailContainer}>
-      <Text style={styles.description}>{make} | {year} | {model}</Text>
+      <Text style={styles.description}>{make} | {model} | {year} </Text>
       {type !== 'results' ? <Fragment>
         <Text style={styles.price}>Rs {price}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
