@@ -6,7 +6,7 @@ import font from "../../../constants/fonts";
 import Section from "../../../components/organism/Section";
 import Adjustments from "../../../assets/icons/Adjustments";
 import GarageList from "../../../components/organism/GarageList";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import AdsSlider from "../../../components/organism/AdsSlider";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import CartButton from "../../../components/global/CartButton";
@@ -39,7 +39,7 @@ function Home({ navigation }: NativeStackScreenProps<any>): JSX.Element {
     hideModal()
   }
 
-  return <SafeAreaView style={styles.container}>
+  return <Fragment >
     <CustomModal
       visible={modalVisible}
       buttonTitle="Park the Car"
@@ -71,7 +71,7 @@ function Home({ navigation }: NativeStackScreenProps<any>): JSX.Element {
       />
       <AdsSlider />
     </ScrollView>
-  </SafeAreaView>
+  </Fragment>
 }
 
 const styles = StyleSheet.create({

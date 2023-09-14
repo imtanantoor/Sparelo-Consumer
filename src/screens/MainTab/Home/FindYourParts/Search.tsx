@@ -48,6 +48,8 @@ interface SearchListProps {
 function SearchList({ type, categories, brands, models, values, multiSelect = false, setValues, setModelReset }: SearchListProps): JSX.Element {
   const navigation: any = useNavigation()
   const [modelsData, setModelsData] = useState([])
+  const [orientation, setOrientation] = useState<string>("PORTRAIT")
+  const [categoriesListHeight, setCategoriesListHeight] = useState(Dimensions.get('screen').height * 0.55)
   const { fetchingBrands, fetchingBrandsError, fetchingCategories, fetchingCategoriesError, fetchingModels, fetchingModelsError } = useSelector((state: any) => ({
     fetchingCategoriesError: state.Categories.error,
     fetchingCategories: state.Categories.fetching,
@@ -97,6 +99,14 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
       }
     }
   }
+
+  useEffect(() => {
+    const listener = (orientation: any) => {
+      setOrientation(orientation === "PORTRAIT" ? "LANDSCAPE" : "PORTRAIT")
+      setCategoriesListHeight(orientation === "PORTRAIT" ? Dimensions.get('screen').height * 0.3 : Dimensions.get('screen').height * 0.55)
+    }
+    Dimensions.addEventListener('change', listener)
+  }, [])
 
   useEffect(() => {
     if (multiSelect) {
@@ -199,7 +209,8 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
   return <FlatList
     data={categories}
     numColumns={3}
-    style={{ maxHeight: '70%', minHeight: '50%' }}
+    // style={{ maxHeight: '70%', minHeight: '50%' }}
+    style={{ height: categoriesListHeight }}
     ListEmptyComponent={() => <ListEmptyComponent
       height={Dimensions.get('window').height * 0.5}
       fetching={fetchingCategories} error={fetchingCategoriesError} hideButton onPress={() => { }} />}
