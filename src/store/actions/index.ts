@@ -100,18 +100,18 @@ const searchModelsOfBrand = createAsyncThunk(
 );
 const fetchNewParts = createAsyncThunk(
   'Parts/fetchNewParts',
-  async (requestId: string | number) => {
+  async ({requestId, status}: {requestId: string | number; status: string}) => {
     const response = await constants.apiInstance.get(
-      `bids/getNewBids/${requestId}`,
+      `bids/getNewBids/${requestId}${!!status ? `?status=${status}` : ''}`,
     );
     return response.data;
   },
 );
 const fetchOldParts = createAsyncThunk(
   'Parts/fetchOldParts',
-  async (requestId: string | number) => {
+  async ({requestId, status}: {requestId: string | number; status: string}) => {
     const response = await constants.apiInstance.get(
-      `bids/getOldBids/${requestId}`,
+      `bids/getOldBids/${requestId}${!!status ? `?status=${status}` : ''}`,
     );
     return response.data;
   },

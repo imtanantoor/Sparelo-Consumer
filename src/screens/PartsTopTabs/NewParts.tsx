@@ -13,16 +13,16 @@ interface NewPartsProps {
   error: boolean
   data: PartsCardModel[]
   orderCreated: boolean
-  fetchNewParts: (requestId: string | number) => void
+  fetchNewParts: ({ requestId, status }: { requestId: string | number, status: string }) => void
   route: any
 }
 
 function NewParts({ fetching, error, data, fetchNewParts, route, orderCreated }: NewPartsProps): JSX.Element {
   const requestId: string | number = route.params.requestId
-
+  const status: string = route.params.status
 
   useEffect(() => {
-    fetchNewParts(requestId)
+    fetchNewParts({ requestId, status })
   }, [orderCreated])
 
   useEffect(() => { }, [data.length])
