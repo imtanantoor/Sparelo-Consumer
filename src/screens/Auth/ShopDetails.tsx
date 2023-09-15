@@ -10,12 +10,13 @@ import { Region } from "react-native-maps";
 import { View } from "react-native";
 import ToastService from "../../Services/ToastService";
 import CustomButton from "../../components/global/CustomButton";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import actions from "../../store/actions";
 import CreateShopModel from "../../models/CreateShopModel";
 import authSlice from "../../store/slices/authSlice";
 import UpdateShopModel from "../../models/UpdateShopModel";
 import MultipleImagesList from "../../components/organism/MultipleImagesList";
+import cartSlice from "../../store/slices/cartSlice";
 
 type itemType = {
   id: string
@@ -95,6 +96,7 @@ function ShopDetails({
   logout
 }: ShopDetailsProps): JSX.Element {
   const isProfileStack = route?.params?.isProfileStack
+  const dispatch = useDispatch()
   const [assets, setAssets] = useState<any>([])
   const [values, setValues] = useState<any>(fields)
   const [errors, setErrors] = useState(fields)
@@ -227,11 +229,16 @@ function ShopDetails({
     }
   }, [])
 
+  function handleLogout() {
+    logout()
+    dispatch(cartSlice.actions.reset())
+  }
+
   useEffect(() => {
     if (updateShopSuccess) {
       ToastService.success('Shop Details', 'Shop updated successfully!')
       resetUpdateShopState()
-      logout()
+      handleLogout()
     }
   }, [updateShopSuccess])
 

@@ -7,12 +7,14 @@ import colors from "../../../constants/colors";
 import { useDispatch, useSelector } from "react-redux";
 import authSlice from "../../../store/slices/authSlice";
 import constants from "../../../utils/constants";
+import cartSlice from "../../../store/slices/cartSlice";
 
 function Profile({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   const dispatch = useDispatch()
   const { user, mode } = useSelector((state: any) => state.Auth)
 
   function handleSignOut() {
+    dispatch(cartSlice.actions.reset())
     dispatch(authSlice.actions.logout())
   }
 

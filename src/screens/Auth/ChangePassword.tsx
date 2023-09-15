@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import { Platform, SafeAreaView, StyleSheet } from "react-native";
 import CustomForm from "../../components/organism/CustomForm";
 import colors from "../../constants/colors";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import actions from "../../store/actions";
 import authSlice from "../../store/slices/authSlice";
+import carSlice from "../../store/slices/carsSlice";
+import cartSlice from "../../store/slices/cartSlice";
 
 interface ChangePasswordProps {
   navigation: NativeStackScreenProps<any>
@@ -32,6 +34,7 @@ function ChangePassword({ navigation, user, changingPassword, changingPasswordEr
     resetPassword: ''
   })
   const [submitting, setSubmitting] = useState<boolean>(false)
+  const dispatch = useDispatch()
 
   function handleSubmit() {
     if (values.password !== values.resetPassword) {
@@ -73,9 +76,15 @@ function ChangePassword({ navigation, user, changingPassword, changingPasswordEr
       return setErrors({ ...errors, [fieldName]: '' })
   }
 
+  function handleLogout() {
+    logout()
+    dispatch(cartSlice.actions.reset())
+  }
+
   useEffect(() => {
-    if (changingPasswordSuccess)
-      logout()
+    if (changingPasswordSuccess) {
+      handleLogout()
+    }
   }, [changingPasswordSuccess])
 
   return <SafeAreaView style={styles.container}>
