@@ -55,6 +55,7 @@ function handleOrdersHistoryResponse(data: any): OrderHistoryCardProps[] {
       requestedBy: order?.orderBy?.name,
       category: '',
       sellerId: order?.bidder,
+      orderStatus: order?.status,
     };
   });
 }
