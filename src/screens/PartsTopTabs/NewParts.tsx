@@ -21,6 +21,8 @@ function NewParts({ fetching, error, data, fetchNewParts, route, orderCreated }:
   const requestId: string | number = route.params.requestId
   const status: string = route.params.status
 
+  useEffect(() => { }, [data.length])
+
   useEffect(() => {
     fetchNewParts({ requestId, status })
   }, [orderCreated])

@@ -20,6 +20,8 @@ interface NewPartsProps {
 function AllParts({ fetching, error, data, fetchAllParts, route, orderCreated }: NewPartsProps): JSX.Element {
   const requestId: string | number = route.params.requestId
 
+  useEffect(() => { }, [data.length])
+
   useEffect(() => {
     fetchAllParts(requestId)
   }, [orderCreated])

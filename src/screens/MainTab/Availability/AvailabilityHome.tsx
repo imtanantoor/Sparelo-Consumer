@@ -18,7 +18,7 @@ interface AvailabilityHomeProps {
   changeStatusSuccess: boolean
   changeStatusError: boolean
   orderCreated: boolean
-  fetchAllAvailableItemsOfUser: (userId: string) => void
+  fetchAllAvailableItemsOfUser: ({ userId, mode }: { userId: string, mode: 'buyer' | 'vendor' }) => void
   changeAvailability: (data: ChangeAvailabilityStatusModel) => void
   resetChangingState: () => void
 }
@@ -27,7 +27,7 @@ function AvailabilityHome({ data, fetching, error, user, mode, changingStatus, c
 
   useEffect(() => {
     if (data.length == 0 || changeStatusSuccess)
-      fetchAllAvailableItemsOfUser(user._id)
+      fetchAllAvailableItemsOfUser({ userId: user?._id, mode })
 
     if (changeStatusSuccess) {
       resetChangingState()
@@ -35,7 +35,7 @@ function AvailabilityHome({ data, fetching, error, user, mode, changingStatus, c
   }, [changeStatusSuccess, orderCreated])
 
   function handleApiCall() {
-    fetchAllAvailableItemsOfUser(user._id)
+    fetchAllAvailableItemsOfUser({ userId: user?._id, mode })
   }
 
   function handleAvailabilityStatus(data: ChangeAvailabilityStatusModel) {

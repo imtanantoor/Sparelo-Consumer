@@ -20,6 +20,7 @@ interface NewPartsProps {
 function OldParts({ fetching, error, data, fetchOldParts, route, orderCreated }: NewPartsProps): JSX.Element {
   const requestId: string | number = route.params.requestId
   const status: string = route.params.status
+  useEffect(() => { }, [data.length])
 
   useEffect(() => {
     fetchOldParts({ requestId, status })

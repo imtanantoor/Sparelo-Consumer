@@ -127,9 +127,11 @@ const fetchAllParts = createAsyncThunk(
 );
 const fetchAllAvailableItemsOfUser = createAsyncThunk(
   'Availability/fetchAll',
-  async (userId: string) => {
+  async ({userId, mode}: {userId: string; mode: 'buyer' | 'vendor'}) => {
     const response = await constants.apiInstance.get(
-      `availability/getAllAvailibilityRequests/${userId}`,
+      `availability/getAllAvailibilityRequests/${userId}${
+        mode ? `?mode=${mode == 'vendor' ? 'seller' : mode}` : ''
+      }`,
     );
     return response.data;
   },
