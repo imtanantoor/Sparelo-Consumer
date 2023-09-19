@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { Fragment, createRef, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { StyleSheet, SafeAreaView, Platform, Text, ScrollView, View, TouchableOpacity, TextInput } from "react-native"
+import { StyleSheet, SafeAreaView, Platform, Text, ScrollView, View, TouchableOpacity, TextInput, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native"
 import CodeBox from "../../components/atomic/CodeBox"
 import CustomButton from "../../components/global/CustomButton"
 import colors from "../../constants/colors"
@@ -93,6 +93,14 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
     })
   }, [])
 
+  function handleBackSpace({ nativeEvent, index }: { nativeEvent: any, index: number }) {
+    const { key } = nativeEvent;
+    let previousInputRef = inputRef?.current?.[`ref${index - 1}`]
+    if (key === 'Backspace' && previousInputRef && index !== 0) {
+      previousInputRef?.focus()
+    }
+  }
+
   function handleCodeChange(text: string, index: number) {
     let nexRefInputRef = inputRef?.current?.[`ref${index + 1}`]
 
@@ -150,6 +158,7 @@ function Verification({ navigation, route }: NativeStackScreenProps<any>): JSX.E
                   }}
                   returnKeyType={index !== 5 ? 'next' : 'done'}
                   blurOnSubmit={index == 5}
+                  onKeyPress={({ nativeEvent }) => handleBackSpace({ nativeEvent, index })}
                   onChangeText={(text: string) => handleCodeChange(text, index)}
                 />
               ))
