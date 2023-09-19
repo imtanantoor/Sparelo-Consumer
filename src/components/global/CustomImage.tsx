@@ -10,8 +10,9 @@ interface CustomImageProps extends FastImageProps {
 
 function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps): JSX.Element {
   const [loading, setLoading] = useState<boolean>(isStatic ? false : true)
-  const [image, setImage] = useState(imageUrl)
+  // const [image, setImage] = useState(imageUrl)
   const [error, setError] = useState<boolean>(false)
+  const image = isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : !!imageUrl ? { uri: imageUrl } : source?.uri ? { uri: source?.uri } : require('../../assets/ImagePlaceholder.png')
   const myProps: any = { ...props }
 
   function handleLoadEnd() {
@@ -38,24 +39,17 @@ function CustomImage({ imageUrl, source, isStatic, ...props }: CustomImageProps)
       <FastImage
         {...props}
         // source={{ uri: 'https://unsplash.it/400/400?image=1' }}
-        source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : { uri: imageUrl ? imageUrl : source?.uri }}
+        // source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : { uri: imageUrl ? imageUrl : source?.uri }}
+        source={image}
         onLoadStart={() => setLoading(true)}
         onLoadEnd={handleLoadEnd}
         onError={() => {
+          console.log('error')
           setError(true)
           setLoading(false)
         }}
         resizeMode={props.resizeMode ? props.resizeMode : FastImage.resizeMode.contain}
       />
-      {/* <Image
-        {...props}
-        // onLoadStart={handleLoadStart}
-        onLoadEnd={handleLoadEnd}
-        onError={onError}
-        // source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : require('../../assets/ImagePlaceholder.png')}
-        source={isStatic ? source : error ? require('../../assets/ImagePlaceholder.png') : { uri: imageUrl ? imageUrl : source?.uri }}
-        style={[myProps?.style, { width: '100%', marginRight: 0 }]}
-      /> */}
     </View>
   </View>
 }

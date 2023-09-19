@@ -14,6 +14,7 @@ interface MyProfileCardProps {
 }
 
 function MyProfileCard({ imageUrl, name, contact, rating, onPress }: MyProfileCardProps): JSX.Element {
+
   return <TouchableOpacity activeOpacity={0.9} style={styles.container} onPress={onPress}>
     <View style={styles.imageAndInfoContainer}>
       <CustomImage

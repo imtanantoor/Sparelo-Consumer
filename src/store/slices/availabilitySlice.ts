@@ -77,7 +77,6 @@ const availabilitySlice = createSlice({
         (state, action: any) => {
           state.fetching = false;
           state.error = false;
-          console.log({action});
           state.data = handleAvailabilityResponse(
             action.payload.availabilityRequests,
           );
@@ -108,10 +107,16 @@ const availabilitySlice = createSlice({
         state.checkingAvailabilitySuccess = false;
         ToastService.error(
           'Availability',
-          action?.error?.message
-            ? action.error.message
-            : 'Something went wrong, please try again',
+          action?.payload?.error
+            ? action.payload.error
+            : 'Something went wrong',
         );
+        // ToastService.error(
+        //   'Availability',
+        //   action?.error?.message
+        //     ? action.error.message
+        //     : 'Something went wrong, please try again',
+        // );
         state.checkingAvailabilityError = true;
       });
     // Change status

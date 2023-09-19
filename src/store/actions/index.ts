@@ -145,13 +145,17 @@ const fetchAllManufacturers = createAsyncThunk(
 );
 const checkAvailability = createAsyncThunk(
   'Availability/Check Availability',
-  async (data: CheckAvailability) => {
-    const response = await constants.apiInstance.post(
-      `availability/checkAvailibility`,
-      data,
-    );
+  async (data: CheckAvailability, {rejectWithValue}) => {
+    try {
+      const response = await constants.apiInstance.post(
+        `availability/checkAvailibility`,
+        data,
+      );
 
-    return response.data;
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error?.response?.data);
+    }
   },
 );
 const fetchPendingQuotations = createAsyncThunk(
