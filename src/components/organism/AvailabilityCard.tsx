@@ -19,7 +19,7 @@ interface AvailabilityCardProps extends AvailabilityCardModel {
   buttonTitle: string
   mode: 'buyer' | 'vendor';
   onButtonPress: (props?: any) => void
-  handleAvailabilityStatus?: ({ id, isAvailable }: { id: string, isAvailable: boolean }) => void
+  handleAvailabilityStatus?: ({ id, isAvailable, onSuccess, onError }: { id: string, isAvailable: boolean, onSuccess: () => void, onError: () => void }) => void
   submitting?: boolean
 }
 
@@ -28,15 +28,20 @@ interface StatusAndButtonProps {
   available: boolean
   availibilityStatus: string
   onAddToCart: (props?: any) => void
-  handleAvailabilityStatus: (isAvailable: boolean) => void
+  handleAvailabilityStatus: ({ isAvailable, onSuccess, onError }: { isAvailable: boolean, onSuccess: () => void, onError: () => void }) => void
   submitting: boolean
 }
 
-function StatusAndButtons({ isVendor, available, availibilityStatus, submitting, onAddToCart, handleAvailabilityStatus }: StatusAndButtonProps) {
+function StatusAndButtons({ isVendor, available, availibilityStatus, onAddToCart, handleAvailabilityStatus }: StatusAndButtonProps) {
+  const [submitting, setSubmitting] = useState<boolean>(false)
+
   if (isVendor) return <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
     <CustomButton
       title="Not Available"
-      onPress={() => handleAvailabilityStatus(false)}
+      onPress={() => {
+        setSubmitting(true)
+        handleAvailabilityStatus({ isAvailable: false, onSuccess: () => setSubmitting(false), onError: () => setSubmitting(false) })
+      }}
       type='primary'
       buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '48%', backgroundColor: colors.white, borderColor: colors.red, borderWidth: 1 }}
       titleStyle={{ fontSize: 12, color: colors.red }}
@@ -44,7 +49,10 @@ function StatusAndButtons({ isVendor, available, availibilityStatus, submitting,
       submitting={submitting} />
     <CustomButton
       title="Available"
-      onPress={() => handleAvailabilityStatus(true)}
+      onPress={() => {
+        setSubmitting(true)
+        handleAvailabilityStatus({ isAvailable: true, onSuccess: () => setSubmitting(false), onError: () => setSubmitting(false) })
+      }}
       type='primary'
       buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '48%' }}
       titleStyle={{ fontSize: 12 }}
@@ -150,9 +158,9 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
             }
           })}
           submitting={submitting}
-          handleAvailabilityStatus={(isAvailable) => {
+          handleAvailabilityStatus={({ isAvailable, onSuccess, onError }: { isAvailable: boolean, onSuccess: () => void, onError: () => void }) => {
             if (handleAvailabilityStatus) {
-              handleAvailabilityStatus({ id: availabilityId?.toString(), isAvailable })
+              handleAvailabilityStatus({ id: availabilityId?.toString(), isAvailable, onSuccess, onError })
             }
           }}
         />

@@ -467,10 +467,17 @@ const changeAvailability = createAsyncThunk(
     try {
       const resposne = await constants.apiInstance.post(
         'availability/changeAvailibilityStatus',
-        data,
+        {
+          id: data.id,
+          isAvailable: data.isAvailable,
+        },
       );
+      if (resposne.status == 200 || resposne.status == 201) {
+        data.onSuccess();
+      }
       return resposne;
     } catch (error: any) {
+      data.onError();
       return rejectWithValue(error?.response?.data);
     }
   },
