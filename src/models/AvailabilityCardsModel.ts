@@ -1,5 +1,6 @@
 interface AvailabilityCardModel {
   id: string | number;
+  availabilityId: string;
   bid: string | number;
   images: string[];
   make: string;

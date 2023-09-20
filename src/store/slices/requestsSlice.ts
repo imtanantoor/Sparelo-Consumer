@@ -59,6 +59,7 @@ const requestsSlice = createSlice({
       state.creationFailed = false;
       state.creationSuccessful = false;
     },
+    resetRequests: () => initialState,
   },
   extraReducers: builder => {
     // Get All requests

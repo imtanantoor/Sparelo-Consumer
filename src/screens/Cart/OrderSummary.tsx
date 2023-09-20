@@ -61,7 +61,7 @@ function OrderSummary({ navigation, route }: any): JSX.Element {
 
     const payload: any = {
       address,
-      orderBy: user._id,
+      orderBy: user?._id,
       items: data.map((cart: CartDataModel) => ({ request: cart.id, bid: cart.bid }))
     }
 

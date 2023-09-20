@@ -51,13 +51,14 @@ function StatusAndButtons({ isVendor, available, availibilityStatus, submitting,
       disabled={submitting}
       submitting={submitting} />
   </View>
+
   return <View style={styles.voiceAndBidsContainer}>
     <Text style={{
       fontFamily: font.fontFamilies({ type: 'Poppins' }).semiBold,
       textTransform: 'uppercase',
       color: available ? '#414141' : colors.red
     }}>
-      {availibilityStatus === 'CHECKED' ? 'Available' : availibilityStatus}
+      {availibilityStatus === 'CHECKED' && available ? 'Available' : availibilityStatus === 'CHECKED' && !available ? 'Unavailable' : availibilityStatus}
     </Text>
     {available && <CustomButton
       title="Add to Cart"
@@ -71,8 +72,8 @@ function StatusAndButtons({ isVendor, available, availibilityStatus, submitting,
   </View>
 }
 
-function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, audioNote, availibilityStatus, mode, offeredBy, submitting = false, handleAvailabilityStatus, onButtonPress }: AvailabilityCardProps): JSX.Element {
-  console.log({ year })
+function AvailabilityCard({ id, make, model, year, images, price, bid, rating, available, type, buttonTitle, audioNote, availabilityId, availibilityStatus, mode, offeredBy, submitting = false, handleAvailabilityStatus, onButtonPress }: AvailabilityCardProps): JSX.Element {
+
   const dispatch = useDispatch()
   const [width, setWidth] = useState(Dimensions.get('screen').width * 0.83)
   const [showVoicePlayer, setShowVoicePlayer] = useState<boolean>(false)
@@ -151,7 +152,7 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
           submitting={submitting}
           handleAvailabilityStatus={(isAvailable) => {
             if (handleAvailabilityStatus) {
-              handleAvailabilityStatus({ id: id.toString(), isAvailable })
+              handleAvailabilityStatus({ id: availabilityId?.toString(), isAvailable })
             }
           }}
         />

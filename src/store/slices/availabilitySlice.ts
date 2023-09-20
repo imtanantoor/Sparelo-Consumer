@@ -30,7 +30,8 @@ const initialState: {
 
 function handleAvailabilityResponse(response: any): AvailabilityCardModel[] {
   return response.map((item: any) => ({
-    id: item?._id,
+    id: item?.bid?.request?._id,
+    availabilityId: item._id,
     bid: item?.bid?._id,
     images:
       item?.bid?.images && item?.bid?.images.length > 0
@@ -62,6 +63,7 @@ const availabilitySlice = createSlice({
       state.changeStatusError = false;
       state.changeStatusSuccess = false;
     },
+    resetAvailabilityState: () => initialState,
   },
   extraReducers: builder => {
     builder

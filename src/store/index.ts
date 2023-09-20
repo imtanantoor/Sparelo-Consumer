@@ -36,6 +36,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  blacklist: ['Availability', 'Quotations'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

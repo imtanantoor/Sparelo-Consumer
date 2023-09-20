@@ -17,6 +17,8 @@ import authSlice from "../../store/slices/authSlice";
 import UpdateShopModel from "../../models/UpdateShopModel";
 import MultipleImagesList from "../../components/organism/MultipleImagesList";
 import cartSlice from "../../store/slices/cartSlice";
+import availabilitySlice from "../../store/slices/availabilitySlice";
+import requestsSlice from "../../store/slices/requestsSlice";
 
 type itemType = {
   id: string
@@ -231,6 +233,8 @@ function ShopDetails({
 
   function handleLogout() {
     logout()
+    dispatch(requestsSlice.actions.resetRequests())
+    dispatch(availabilitySlice.actions.resetAvailabilityState())
     dispatch(cartSlice.actions.reset())
   }
 

@@ -26,7 +26,7 @@ interface AvailabilityHomeProps {
 function AvailabilityHome({ data, fetching, error, user, mode, changingStatus, changeStatusSuccess, orderCreated, changeStatusError, fetchAllAvailableItemsOfUser, changeAvailability, resetChangingState }: AvailabilityHomeProps): JSX.Element {
 
   useEffect(() => {
-    if (data.length == 0 || changeStatusSuccess)
+    if (data.length == 0 || changeStatusSuccess || orderCreated)
       fetchAllAvailableItemsOfUser({ userId: user?._id, mode })
 
     if (changeStatusSuccess) {
