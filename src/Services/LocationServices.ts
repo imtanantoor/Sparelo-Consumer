@@ -44,8 +44,10 @@ class LocationServices {
     position: MapPosition;
     error: any;
   } {
+    this.error = null;
     Geolocation.getCurrentPosition(
       position => {
+        console.log({position});
         if (position) {
           this.position.latitude = position?.coords?.latitude ?? 34.0151;
           this.position.longitude = position?.coords?.longitude ?? 71.5249;
@@ -55,10 +57,11 @@ class LocationServices {
           longitude: this.position.longitude,
         })
           .then((value: any) => {
+            console.log({value});
             if (value) this.position.addressText = value;
           })
           .catch(error => {
-            console.log({error});
+            console.log({addressTextError: error});
           });
       },
       error => {

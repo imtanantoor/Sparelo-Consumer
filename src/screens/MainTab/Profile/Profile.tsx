@@ -9,12 +9,16 @@ import authSlice from "../../../store/slices/authSlice";
 import constants from "../../../utils/constants";
 import cartSlice from "../../../store/slices/cartSlice";
 import availabilitySlice from "../../../store/slices/availabilitySlice";
+import partsSlice from "../../../store/slices/partsSlice";
+import requestsSlice from "../../../store/slices/requestsSlice";
 
 function Profile({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   const dispatch = useDispatch()
   const { user, mode } = useSelector((state: any) => state.Auth)
 
   function handleSignOut() {
+    dispatch(partsSlice.actions.resetPartsState())
+    dispatch(requestsSlice.actions.resetRequests())
     dispatch(availabilitySlice.actions.resetAvailabilityState())
     dispatch(cartSlice.actions.reset())
     dispatch(authSlice.actions.logout())

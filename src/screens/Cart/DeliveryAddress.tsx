@@ -63,7 +63,7 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
     const { position, error } = LocationServices.getCurrentLocation()
 
     if (error === null && getLocation) {
-      if (!!position.addressText) return ToastService.error('Location', 'failed to get current location')
+      if (!!position.addressText === false) return ToastService.error('Location', 'failed to get current location')
       handleChange(position.addressText ? position.addressText : '', 'addressText')
       setAddress(position?.addressText ? position.addressText : '')
       setLocationValue({ ...locationValue, ...position })

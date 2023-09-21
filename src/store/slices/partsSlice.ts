@@ -106,6 +106,7 @@ const partsSlice = createSlice({
       state.creatingQuotationSuccess = false;
       state.creatingQuotationFailure = false;
     },
+    resetPartsState: () => initialState,
   },
   extraReducers: builder => {
     // New Parts

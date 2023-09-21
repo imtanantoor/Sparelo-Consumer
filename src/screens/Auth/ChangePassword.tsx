@@ -10,6 +10,7 @@ import carSlice from "../../store/slices/carsSlice";
 import cartSlice from "../../store/slices/cartSlice";
 import availabilitySlice from "../../store/slices/availabilitySlice";
 import requestsSlice from "../../store/slices/requestsSlice";
+import partsSlice from "../../store/slices/partsSlice";
 
 interface ChangePasswordProps {
   navigation: NativeStackScreenProps<any>
@@ -80,6 +81,7 @@ function ChangePassword({ navigation, user, changingPassword, changingPasswordEr
 
   function handleLogout() {
     logout()
+    dispatch(partsSlice.actions.resetPartsState())
     dispatch(requestsSlice.actions.resetRequests())
     dispatch(availabilitySlice.actions.resetAvailabilityState())
     dispatch(cartSlice.actions.reset())
