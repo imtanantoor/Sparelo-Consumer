@@ -100,18 +100,50 @@ const searchModelsOfBrand = createAsyncThunk(
 );
 const fetchNewParts = createAsyncThunk(
   'Parts/fetchNewParts',
-  async ({requestId, status}: {requestId: string | number; status: string}) => {
+  async ({
+    requestId,
+    status,
+    userId,
+  }: {
+    requestId: string | number;
+    status: string;
+    userId: string;
+  }) => {
+    let query = '';
+    if (!!status && !!userId) {
+      query = `?status=${status}&userId=${userId}`;
+    } else if (!!status) {
+      query = `?status=${status}`;
+    } else if (!!userId) {
+      query = `?userId=${userId}`;
+    }
     const response = await constants.apiInstance.get(
-      `bids/getNewBids/${requestId}${!!status ? `?status=${status}` : ''}`,
+      `bids/getNewBids/${requestId}${query}`,
     );
     return response.data;
   },
 );
 const fetchOldParts = createAsyncThunk(
   'Parts/fetchOldParts',
-  async ({requestId, status}: {requestId: string | number; status: string}) => {
+  async ({
+    requestId,
+    status,
+    userId,
+  }: {
+    requestId: string | number;
+    status: string;
+    userId: string;
+  }) => {
+    let query = '';
+    if (!!status && !!userId) {
+      query = `?status=${status}&userId=${userId}`;
+    } else if (!!status) {
+      query = `?status=${status}`;
+    } else if (!!userId) {
+      query = `?userId=${userId}`;
+    }
     const response = await constants.apiInstance.get(
-      `bids/getOldBids/${requestId}${!!status ? `?status=${status}` : ''}`,
+      `bids/getOldBids/${requestId}${query}`,
     );
     return response.data;
   },
@@ -389,7 +421,6 @@ const updateFCMToken = async ({
       id: userId,
       fcmToken,
     });
-    console.log(response.data);
   } catch (error: any) {
     ToastService.error('Token updation', 'failed to update notification token');
   }

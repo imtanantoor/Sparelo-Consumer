@@ -10,21 +10,22 @@ import PartsCardModel from "../../models/partsCard";
 
 interface NewPartsProps {
   fetching: boolean
+  user: UserModel
   error: boolean
   data: PartsCardModel[]
   orderCreated: boolean
-  fetchNewParts: ({ requestId, status }: { requestId: string | number, status: string }) => void
+  fetchNewParts: ({ requestId, status, userId }: { requestId: string | number, status: string, userId: string }) => void
   route: any
 }
 
-function NewParts({ fetching, error, data, fetchNewParts, route, orderCreated }: NewPartsProps): JSX.Element {
+function NewParts({ fetching, error, data, user, fetchNewParts, route, orderCreated }: NewPartsProps): JSX.Element {
   const requestId: string | number = route.params.requestId
   const status: string = route.params.status
 
   useEffect(() => { }, [data.length])
 
   useEffect(() => {
-    fetchNewParts({ requestId, status })
+    fetchNewParts({ requestId, status, userId: user._id })
   }, [orderCreated])
 
   useEffect(() => { }, [data.length])
@@ -42,6 +43,7 @@ function NewParts({ fetching, error, data, fetchNewParts, route, orderCreated }:
 }
 
 const mapStateToProps = (state: any) => ({
+  user: state.Auth.user,
   data: state.Parts.newParts,
   fetching: state.Parts.fetching,
   error: state.Parts.error,

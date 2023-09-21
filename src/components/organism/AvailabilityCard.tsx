@@ -33,31 +33,33 @@ interface StatusAndButtonProps {
 }
 
 function StatusAndButtons({ isVendor, available, availibilityStatus, onAddToCart, handleAvailabilityStatus }: StatusAndButtonProps) {
-  const [submitting, setSubmitting] = useState<boolean>(false)
+  // const [submitting, setSubmitting] = useState<boolean>(false)
+  const [settingAvailable, setSettingAvailable] = useState<boolean>(false)
+  const [settingNotAvailable, setSettingNotAvailable] = useState<boolean>(false)
 
   if (isVendor) return <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
     <CustomButton
       title="Not Available"
       onPress={() => {
-        setSubmitting(true)
-        handleAvailabilityStatus({ isAvailable: false, onSuccess: () => setSubmitting(false), onError: () => setSubmitting(false) })
+        setSettingNotAvailable(true)
+        handleAvailabilityStatus({ isAvailable: false, onSuccess: () => setSettingNotAvailable(false), onError: () => setSubmitting(false) })
       }}
       type='primary'
       buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '48%', backgroundColor: colors.white, borderColor: colors.red, borderWidth: 1 }}
       titleStyle={{ fontSize: 12, color: colors.red }}
-      disabled={submitting}
-      submitting={submitting} />
+      disabled={settingNotAvailable}
+      submitting={settingNotAvailable} />
     <CustomButton
       title="Available"
       onPress={() => {
-        setSubmitting(true)
-        handleAvailabilityStatus({ isAvailable: true, onSuccess: () => setSubmitting(false), onError: () => setSubmitting(false) })
+        setSettingAvailable(true)
+        handleAvailabilityStatus({ isAvailable: true, onSuccess: () => setSettingAvailable(false), onError: () => setSubmitting(false) })
       }}
       type='primary'
       buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '48%' }}
       titleStyle={{ fontSize: 12 }}
-      disabled={submitting}
-      submitting={submitting} />
+      disabled={settingAvailable}
+      submitting={settingAvailable} />
   </View>
 
   return <View style={styles.voiceAndBidsContainer}>
@@ -100,7 +102,7 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
 
   }, [])
 
-  return <TouchableOpacity activeOpacity={0.9} style={styles.container}>
+  return <TouchableOpacity activeOpacity={0.9} style={[styles.container, { borderColor: availibilityStatus === 'CHECKED' && !available ? 'red' : 'transparent', borderWidth: 1 }]}>
     <View style={{ overflow: 'hidden' }}>
       <SliderBox
         ImageComponentStyle={styles.slider}
