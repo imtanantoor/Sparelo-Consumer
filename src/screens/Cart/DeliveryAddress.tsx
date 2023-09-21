@@ -59,8 +59,8 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
   }
 
 
-  function openModal(getLocation: boolean) {
-    const { position, error } = LocationServices.getCurrentLocation()
+  async function openModal(getLocation: boolean) {
+    const { position, error } = await LocationServices.getCurrentLocation()
 
     if (error === null && getLocation) {
       if (!!position.addressText === false) return ToastService.error('Location', 'failed to get current location')
@@ -72,6 +72,9 @@ function DeliveryAddress({ navigation }: any): JSX.Element {
         setModalVisible(true)
         setConfirmDisabled(false)
       }, 500)
+    } else if (error && getLocation) {
+      ToastService.error('Location', 'failed to get current location')
+      setModalVisible(true)
     } else {
       setConfirmDisabled(false)
       setFromContinue(!!locationValue.addressText ? true : false)

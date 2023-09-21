@@ -13,6 +13,37 @@ class LocationServices {
 
   constructor() {}
 
+  private async handleGeolocation(): Promise<MapPosition> {
+    return new Promise((resolve, reject) => {
+      let currentPosition: MapPosition = {
+        latitude: 34.0151,
+        longitude: 71.5249,
+        addressText: '',
+      };
+      Geolocation.getCurrentPosition(
+        position => {
+          if (position) {
+            currentPosition.latitude = position?.coords?.latitude ?? 34.0151;
+            currentPosition.longitude = position?.coords?.longitude ?? 71.5249;
+          }
+          this.getAddressFromCoords({
+            latitude: currentPosition.latitude,
+            longitude: currentPosition.longitude,
+          })
+            .then((value: any) => {
+              if (value) currentPosition.addressText = value;
+              return resolve(currentPosition);
+            })
+            .catch(error => {
+              return reject(error);
+            });
+        },
+        error => reject(error),
+        {enableHighAccuracy: true, timeout: 500},
+      );
+    });
+  }
+
   public getAddressFromCoords({
     latitude,
     longitude,
@@ -40,40 +71,26 @@ class LocationServices {
     });
   }
 
-  public getCurrentLocation(): {
+  public async getCurrentLocation(): Promise<{
     position: MapPosition;
     error: any;
-  } {
+  }> {
     this.error = null;
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log({position});
-        if (position) {
-          this.position.latitude = position?.coords?.latitude ?? 34.0151;
-          this.position.longitude = position?.coords?.longitude ?? 71.5249;
-        }
-        this.getAddressFromCoords({
-          latitude: this.position.latitude,
-          longitude: this.position.longitude,
-        })
-          .then((value: any) => {
-            console.log({value});
-            if (value) this.position.addressText = value;
-          })
-          .catch(error => {
-            console.log({addressTextError: error});
-          });
-      },
-      error => {
-        if (error) this.error = error;
-      },
-      {enableHighAccuracy: true, timeout: 500},
-    );
+    try {
+      const response = await this.handleGeolocation();
+      this.position = response;
 
-    return {
-      position: this.position,
-      error: this.error,
-    };
+      return {
+        position: this.position,
+        error: this.error,
+      };
+    } catch (error: any) {
+      this.error = error.message;
+      return {
+        position: this.position,
+        error: this.error,
+      };
+    }
   }
 }
 

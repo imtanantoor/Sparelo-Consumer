@@ -54,8 +54,8 @@ function LocationModal({ visible, addressValue, initialLocation, fromContinue, c
     }, 500)
   }, [initialLocation?.latitude, initialLocation?.longitude, fromContinue])
 
-  function handleCurrentLocation() {
-    const { position, error } = locationService.getCurrentLocation()
+  async function handleCurrentLocation() {
+    const { position, error } = await locationService.getCurrentLocation()
 
     if (error === null) {
       setDisableAddressFetching(true)

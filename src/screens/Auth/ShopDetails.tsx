@@ -128,8 +128,8 @@ function ShopDetails({
       setErrors({ ...errors, [fieldName]: '' })
   }
 
-  function handleCurrentLocation() {
-    const { position, error } = LocationServices.getCurrentLocation()
+  async function handleCurrentLocation() {
+    const { position, error } = await LocationServices.getCurrentLocation()
 
     if (error === null) {
       handleChange(position.addressText ? position.addressText : '', 'address')
