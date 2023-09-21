@@ -46,8 +46,8 @@ function CustomForm({ title, subtitle, fields, touched, errors, setTouched, hand
   return <ScrollView
     contentContainerStyle={styles.contentContainer}
     keyboardShouldPersistTaps="always">
-    <Text style={styles.title}>{title}</Text>
-    <Text style={styles.subTitle}>{subtitle}</Text>
+    {title && <Text style={styles.title}>{title}</Text>}
+    {subtitle && <Text style={styles.subTitle}>{subtitle}</Text>}
     <View style={[styles.fieldsContainer, { ...fieldsContainerStyle }]}>
       {fields && fields.length > 0 && fields.map((field: field) => (<CustomTextInput
         key={field.fieldName}

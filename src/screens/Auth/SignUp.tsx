@@ -111,8 +111,8 @@ function SignUp({ navigation }: NativeStackScreenProps<any>): JSX.Element {
 
   return <SafeAreaView style={styles.container}>
     <CustomForm
-      title="Hello"
-      subtitle="Let’s Learn More About Plants"
+      title=""
+      subtitle=""
       handleBlur={(fieldName, required) => handleBlur(fieldName, required)}
       handleChange={(text, fieldName) => handleChange(text, fieldName)}
       fields={[
