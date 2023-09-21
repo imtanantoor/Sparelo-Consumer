@@ -47,7 +47,7 @@ function StatusAndButtons({ isVendor, available, availibilityStatus, onAddToCart
       type='primary'
       buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '48%', backgroundColor: colors.white, borderColor: colors.red, borderWidth: 1 }}
       titleStyle={{ fontSize: 12, color: colors.red }}
-      disabled={settingNotAvailable}
+      disabled={settingNotAvailable || settingAvailable}
       submitting={settingNotAvailable} />
     <CustomButton
       title="Available"
@@ -58,7 +58,7 @@ function StatusAndButtons({ isVendor, available, availibilityStatus, onAddToCart
       type='primary'
       buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '48%' }}
       titleStyle={{ fontSize: 12 }}
-      disabled={settingAvailable}
+      disabled={settingAvailable || settingNotAvailable}
       submitting={settingAvailable} />
   </View>
 
