@@ -6,8 +6,16 @@ import SearchParts from "../../../screens/MainTab/Home/FindYourParts/SearchParts
 import FilterScreen from "../../../screens/MainTab/Home/FindYourParts/Filter";
 import RequestSummary from "../../../screens/MainTab/Requests/RequestSummary";
 import Results from "../../../screens/MainTab/Home/FindYourParts/Results";
+import HeaderBack from "../../../components/molecular/HeaderBack";
+import { useNavigation } from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator()
+
+function CustomHeaderLeft(): JSX.Element {
+  const navigation = useNavigation()
+
+  return <HeaderBack onPress={navigation.goBack} />
+}
 
 function FindYourPartsStack(): JSX.Element {
   return <Stack.Navigator
@@ -20,6 +28,7 @@ function FindYourPartsStack(): JSX.Element {
         fontSize: font.sizes.fourteen
       },
       headerTitleAlign: 'center',
+      headerLeft: CustomHeaderLeft
     }}
   >
     <Stack.Screen name="Filter" component={FilterScreen} />
@@ -31,7 +40,7 @@ function FindYourPartsStack(): JSX.Element {
         fontFamily: font.fontFamilies({ type: 'Inter' }).semiBold,
       }
     }} component={RequestSummary} />
-  </Stack.Navigator>
+  </ Stack.Navigator>
 }
 
 export default FindYourPartsStack

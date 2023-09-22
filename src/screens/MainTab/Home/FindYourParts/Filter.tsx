@@ -28,11 +28,11 @@ function FilterScreen({ navigation, route }: NativeStackScreenProps<any>): JSX.E
   const [dateTImePickerVisible, setDateTimePickerVisible] = useState(false)
   const [modelReset, setModelReset] = useState<boolean>(false)
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => <HeaderBack onPress={navigation.goBack} />
-    })
-  }, [])
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerLeft: () => <HeaderBack onPress={navigation.goBack} />
+  //   })
+  // }, [])
 
   function openDatePicker() {
     // if (route?.params?.buttonsDisabled) return

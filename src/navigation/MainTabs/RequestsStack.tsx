@@ -6,8 +6,16 @@ import font from "../../constants/fonts"
 import SendQuotation from "../../screens/MainTab/Home/SendQuotation"
 import RequestDetail from "../../screens/MainTab/Requests/RequestDetail"
 import BidDetail from "../../screens/MainTab/Requests/BidDetail"
+import HeaderBack from "../../components/molecular/HeaderBack"
+import { useNavigation } from "@react-navigation/native"
 
 const Stack = createNativeStackNavigator()
+function CustomHeaderLeft(props: any): JSX.Element {
+  const navigation = useNavigation()
+
+  return <HeaderBack onPress={navigation.goBack} />
+}
+
 
 function RequestsStack(): JSX.Element {
   return <Stack.Navigator screenOptions={{
@@ -20,8 +28,12 @@ function RequestsStack(): JSX.Element {
     headerBackVisible: false,
   }} initialRouteName="Requests" >
     <Stack.Screen name="Requests" component={RequestsList} />
-    <Stack.Screen name="Request Detail" options={{ headerBackVisible: true }} component={RequestDetail} />
-    <Stack.Screen name="Bid Detail" options={{ headerBackVisible: true }} component={BidDetail} />
+    <Stack.Screen name="Request Detail" options={{
+      headerLeft: CustomHeaderLeft
+    }} component={RequestDetail} />
+    <Stack.Screen name="Bid Detail" options={{
+      headerLeft: CustomHeaderLeft
+    }} component={BidDetail} />
     <Stack.Screen name="Send Quotation" component={SendQuotation} />
     <Stack.Screen name="Quotations" component={QuotationsTabs} />
   </Stack.Navigator>
