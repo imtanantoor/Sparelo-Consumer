@@ -26,6 +26,7 @@ interface PartsState {
   searchedParts: {
     newParts: PartsCardModel[];
     oldParts: PartsCardModel[];
+    allParts: PartsCardModel[];
   };
 }
 
@@ -51,16 +52,23 @@ const initialState: PartsState = {
   searchedParts: {
     newParts: [],
     oldParts: [],
+    allParts: [],
   },
 };
 
-function handleSearchedPartsResponse(newPartsData: any[], oldPartsData: any[]) {
+function handleSearchedPartsResponse(
+  newPartsData: any[],
+  oldPartsData: any[],
+  allPartsData: any[],
+) {
   let newParts = handlePartsResponse(newPartsData, true);
   let oldParts = handlePartsResponse(oldPartsData, true);
+  let allParts = handlePartsResponse(allPartsData, true);
 
   return {
     newParts,
     oldParts,
+    allParts,
   };
 }
 
@@ -169,6 +177,7 @@ const partsSlice = createSlice({
         state.searchedParts = handleSearchedPartsResponse(
           action.payload.newParts,
           action.payload.oldParts,
+          action.payload.allParts,
         );
       })
       .addCase(actions.searchParts.rejected, (state, action: any) => {

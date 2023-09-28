@@ -5,6 +5,7 @@ import font from "../../../../constants/fonts";
 import PartsTopTabs from "../../../../navigation/PartsTopTabs/PartsTopTabs";
 import { Fragment, useLayoutEffect } from "react";
 import CustomButton from "../../../../components/global/CustomButton";
+import SearchPartsTab from "../../../PartsTopTabs/SearchPartsTab";
 
 function SearchParts({ route, navigation }: NativeStackScreenProps<any>): JSX.Element {
   const { category, brand, manufacturingYear, model, carId }: any = route.params
@@ -30,7 +31,8 @@ function SearchParts({ route, navigation }: NativeStackScreenProps<any>): JSX.El
         <Text style={styles.headerText}>Last Bids</Text>
       </View>
     </View>
-    <PartsTopTabs navigation={navigation} route={route} />
+    <SearchPartsTab route={{ ...route, params: { ...route.params, type: 'all' } }} />
+    {/* <PartsTopTabs navigation={navigation} route={route} /> */}
     <CustomButton
       title="Send New Request"
       type="primary"

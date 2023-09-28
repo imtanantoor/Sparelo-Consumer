@@ -14,13 +14,15 @@ interface SearchPartsProps {
   error: boolean
   newParts: PartsCardModel[]
   oldParts: PartsCardModel[]
+  allParts: PartsCardModel[]
   searchParts: (data: SearchPartsBody) => void
   route: any
   user: UserModel
 }
 
-function SearchPartsTab({ fetching, error, newParts, user, oldParts, searchParts, route }: SearchPartsProps): JSX.Element {
-  const { category, brand, model, manufacturingYear, itemInPair, type } = route.params
+function SearchPartsTab({ fetching, error, newParts, user, oldParts, allParts, searchParts, route }: SearchPartsProps): JSX.Element {
+  console.log({ allParts })
+  const { category, brand, model, manufacturingYear, itemInPair, type } = route?.params
   const navigation: any = useNavigation()
 
   const payload: SearchPartsBody = {
@@ -43,7 +45,7 @@ function SearchPartsTab({ fetching, error, newParts, user, oldParts, searchParts
       onPress={() => searchParts(payload)}
     />}
     style={{ flex: 1, backgroundColor: colors.white }}
-    data={type == 'new' ? newParts : oldParts}
+    data={type == 'new' ? newParts : type == 'old' ? oldParts : allParts}
     renderItem={({ item, index }: any) => <AvailabilityCard
       {...item}
       type='results'
@@ -56,6 +58,7 @@ function SearchPartsTab({ fetching, error, newParts, user, oldParts, searchParts
 const mapStateToProps = (state: any) => ({
   newParts: state.Parts.searchedParts.newParts,
   oldParts: state.Parts.searchedParts.oldParts,
+  allParts: state.Parts.searchedParts.allParts,
   fetching: state.Parts.searchingParts,
   error: state.Parts.searchingPartsFailed,
   user: state.Auth.user

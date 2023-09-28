@@ -19,8 +19,10 @@ function PartsTopTabs({ navigation, route }: any) {
         fontSize: 12
       }
     }}>
-      <Tab.Screen name="New" initialParams={{ ...route.params, type: 'new' }} component={SearchPartsTab} />
-      <Tab.Screen name="Used" initialParams={{ ...route.params, type: 'old' }} component={SearchPartsTab} />
+      <Tab.Screen
+        name="New" initialParams={{ ...route.params, type: 'new' }} component={SearchPartsTab} />
+      <Tab.Screen
+        name="Used" initialParams={{ ...route.params, type: 'old' }} component={SearchPartsTab} />
     </Tab.Navigator>
   );
 }
