@@ -12,20 +12,22 @@ import ordersSlice from "../../store/slices/ordersSlice";
 
 function ConfrimOrderModal({ visible, sellerId, orderId, hideModal, }: { visible: boolean, sellerId: string, orderId: string, hideModal: () => void }): JSX.Element {
   const [rating, setRating] = useState<number>(0)
+  const [ratingStarted, setRatingStarted] = useState<boolean>(false)
   const [updatingRating, setUpdatingRating] = useState<boolean>(false)
   const [submitting, setSubmitting] = useState<boolean>(false)
   const dispatch = useDispatch()
 
   async function completeOrder() {
     dispatch(ordersSlice.actions.setRefetchHistory(false))
-    setSubmitting(true)
+    // setSubmitting(true)
     try {
       const response = await constants.apiInstance.patch(`orders/completeOrder/${orderId}`)
       if (response.status === 200 || response.status === 201) {
         ToastService.success('Complete Order', 'Order completed successfully')
         dispatch(ordersSlice.actions.setRefetchHistory(true))
+        return response.data
       }
-      setSubmitting(false)
+      // setSubmitting(false)
     } catch (error: any) {
       ToastService.error('Complete Order', error?.response?.data?.error)
     }
@@ -39,6 +41,7 @@ function ConfrimOrderModal({ visible, sellerId, orderId, hideModal, }: { visible
       if (response.status === 200 || response.status == 201) {
         ToastService.success('Rate User', response.data.message)
         hideModal()
+        return response.data
       }
       setUpdatingRating(false)
     } catch (error: any) {
@@ -47,6 +50,23 @@ function ConfrimOrderModal({ visible, sellerId, orderId, hideModal, }: { visible
       setSubmitting(false)
     }
   }
+
+  function handleOrderCompletion() {
+    let promises = []
+    promises.push(completeOrder())
+    if (ratingStarted) {
+      promises.push(handleUserRating())
+    }
+    setSubmitting(true)
+    Promise.allSettled(promises).then((values) => {
+      console.log({ values })
+      setSubmitting(false)
+    }).catch((reason) => {
+      console.log({ reason })
+      setSubmitting(false)
+    })
+  }
+
   return <Modal
     isVisible={visible}
     backdropColor={colors.lightGray}
@@ -57,7 +77,12 @@ function ConfrimOrderModal({ visible, sellerId, orderId, hideModal, }: { visible
     <View style={{ backgroundColor: colors.white, padding: 15, borderRadius: 10 }}>
       <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).semiBold, fontSize: font.sizes.subtitle }}>Rate Seller</Text>
       <Rating
+        startingValue={rating}
         ratingCount={5}
+        onStartRating={() => {
+          if (!ratingStarted)
+            setRatingStarted(true)
+        }}
         ratingColor="#EDD011"
         ratingTextColor="red"
         imageSize={30}
@@ -66,8 +91,8 @@ function ConfrimOrderModal({ visible, sellerId, orderId, hideModal, }: { visible
           setRating(rating)
         }}
       />
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <CustomButton
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+        {/* <CustomButton
           title="Rate User"
           onPress={handleUserRating}
           type='primary'
@@ -75,12 +100,12 @@ function ConfrimOrderModal({ visible, sellerId, orderId, hideModal, }: { visible
           titleStyle={{ fontSize: 12 }}
           disabled={updatingRating}
           submitting={updatingRating}
-        />
+        /> */}
         <CustomButton
           title="Complete"
-          onPress={completeOrder}
+          onPress={handleOrderCompletion}
           type='primary'
-          buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, minWidth: '48%', /* backgroundColor: '#04b347' */backgroundColor: 'green' }}
+          buttonStyle={{ padding: 10, marginBottom: 0, borderRadius: 5, width: '100%',/* minWidth: '48%', */ /* backgroundColor: '#04b347' */backgroundColor: 'green' }}
           titleStyle={{ fontSize: 12 }}
           disabled={submitting}
           submitting={submitting}

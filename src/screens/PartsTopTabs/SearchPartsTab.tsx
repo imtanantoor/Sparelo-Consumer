@@ -21,7 +21,7 @@ interface SearchPartsProps {
 }
 
 function SearchPartsTab({ fetching, error, newParts, user, oldParts, allParts, searchParts, route }: SearchPartsProps): JSX.Element {
-  console.log({ allParts })
+
   const { category, brand, model, manufacturingYear, itemInPair, type } = route?.params
   const navigation: any = useNavigation()
 
