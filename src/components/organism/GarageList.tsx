@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FlatList, FlatListProps, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, FlatListProps, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AddToGarageButtonSVG from "../../assets/AddToGarageButton";
 import EngineIcon from "../../assets/icons/EngineIcon";
 import colors from "../../constants/colors";
@@ -78,9 +78,15 @@ function GarageList({ title, cars, categories, fetchingCars, fetchingCarsError, 
     fetchCategories()
   }, [reload])
 
+  function handleApiCall() {
+    fetchCarsOfUser(user._id)
+    fetchCategories()
+  }
+
   return <View style={styles.parentView}>
     <Text style={styles.title}>{title}</Text>
     <FlatList
+      refreshControl={<RefreshControl refreshing={fetchingCars} onRefresh={handleApiCall} />}
       data={cars}
       numColumns={verticalList ? 2 : 0}
       horizontal={cars?.length > 0 && !verticalList}
@@ -182,7 +188,7 @@ const styles = StyleSheet.create({
 })
 const mapStateToProps = (state: any) => ({
   cars: state.Cars.data,
-  fetchingCars: state.Cars.loading,
+  fetchingCars: state.Cars.fetching,
   fetchingCarsError: state.Cars.error,
   categories: state.Categories.data,
   fetchingCategories: state.Categories.fetching,
