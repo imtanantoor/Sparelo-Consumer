@@ -27,6 +27,7 @@ interface GarageListProps {
   fetchingCategories: boolean,
   fetchingCategoriesError: boolean,
   reload: boolean,
+  verticalList: boolean
   user: UserModel,
   fetchCarsOfUser: (id: string | number) => void,
   fetchCategories: () => void
@@ -57,7 +58,7 @@ function SubListItemSeparator(): JSX.Element {
   return <View style={{ marginHorizontal: 7.5 }} />
 }
 
-function GarageList({ title, cars, categories, fetchingCars, fetchingCarsError, fetchingCategories, fetchingCategoriesError, user, reload, sectionActionPress, addToGaragePress, fetchCategories, fetchCarsOfUser }: GarageListProps): JSX.Element {
+function GarageList({ title, cars, categories, fetchingCars, fetchingCarsError, verticalList = false, fetchingCategories, fetchingCategoriesError, user, reload, sectionActionPress, addToGaragePress, fetchCategories, fetchCarsOfUser }: GarageListProps): JSX.Element {
   const [selectedCar, setSelectedCar] = useState<CarCardProps | null>(null)
   const navigation: any = useNavigation()
   function handleCarPress(item: CarCardProps) {
@@ -81,7 +82,8 @@ function GarageList({ title, cars, categories, fetchingCars, fetchingCarsError, 
     <Text style={styles.title}>{title}</Text>
     <FlatList
       data={cars}
-      horizontal={cars?.length > 0}
+      numColumns={verticalList ? 2 : 0}
+      horizontal={cars?.length > 0 && !verticalList}
       scrollEnabled={selectedCar == null}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
@@ -94,12 +96,14 @@ function GarageList({ title, cars, categories, fetchingCars, fetchingCarsError, 
         disabled={false}
         onPress={sectionActionPress}
       />}
-      contentContainerStyle={{ paddingHorizontal: 20 }}
+      contentContainerStyle={{ paddingHorizontal: 20, justifyContent: 'space-between' }}
       ItemSeparatorComponent={ItemSeparatorComponent}
       renderItem={({ item }) => (<CarCard
         key={item.id}
         {...item}
         onPress={handleCarPress(item)}
+        isVertical={verticalList}
+
         selected={selectedCar && selectedCar.id === item.id ? true : false}
       />
       )}

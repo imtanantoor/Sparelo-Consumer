@@ -4,15 +4,15 @@ import font from "../../constants/fonts";
 import CarCardProps from "../../models/carCard";
 import CustomImage from "../global/CustomImage";
 
-function CarCard({ imageUrl, carName, carMake, outOfStock, selected, onPress }: CarCardProps): JSX.Element {
-  return <TouchableOpacity activeOpacity={0.9} style={[styles.container, { backgroundColor: selected ? colors.primary : styles.container.backgroundColor }]} onPress={onPress}>
+function CarCard({ imageUrl, carName, carMake, outOfStock, selected, onPress, isVertical }: CarCardProps): JSX.Element {
+  return <TouchableOpacity activeOpacity={0.9} style={[styles.container, { backgroundColor: selected ? colors.primary : styles.container.backgroundColor, minHeight: isVertical ? 0 : styles.container.minHeight, width: isVertical ? '45%' : 'auto', marginRight: isVertical ? 20 : 0 }]} onPress={onPress}>
     <View>
-      <CustomImage
+      {isVertical ? null : <CustomImage
         source={{ uri: imageUrl }}
         imageUrl={imageUrl}
         isStatic={false}
         style={styles.imageStyle}
-      />
+      />}
       {/* <Image
         source={{ uri: imageUrl }}
         style={styles.imageStyle}

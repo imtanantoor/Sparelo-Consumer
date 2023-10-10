@@ -8,6 +8,7 @@ interface CarCardProps {
   imageUrl: string;
   carName: string;
   carMake: string;
+  isVertical: boolean;
   outOfStock: boolean;
   selected: boolean;
   onPress: (props?: any) => any;

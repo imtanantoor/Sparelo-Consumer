@@ -42,6 +42,15 @@ function Profile({ navigation }: NativeStackScreenProps<any>): JSX.Element {
         disabled={false}
         submitting={false}
       />
+      {mode === 'buyer' && <CustomButton
+        type="menu"
+        title="My Garage"
+        onPress={() => {
+          navigation.navigate('My Garage')
+        }}
+        disabled={false}
+        submitting={false}
+      />}
       {mode === 'vendor' && <CustomButton
         type="menu"
         title="My Store"
