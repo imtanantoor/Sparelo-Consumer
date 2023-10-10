@@ -1,7 +1,9 @@
-import { ActivityIndicator, Dimensions, Text, View } from "react-native"
+import { ActivityIndicator, Dimensions, Image, Text, View } from "react-native"
 import colors from "../../constants/colors"
 import CustomButton from "./CustomButton"
 import font from "../../constants/fonts"
+import CustomImage from "./CustomImage"
+import FastImage from "react-native-fast-image"
 
 function ListEmptyComponent({
   fetching,
@@ -32,11 +34,14 @@ function ListEmptyComponent({
       />}
     </View>
   return <View style={{ flex: 1, height: height ? height : Dimensions.get('window').height * 0.85, justifyContent: 'center', alignItems: 'center' }}>
-    <Text style={{
-      fontFamily: font.fontFamilies({ type: 'Poppins' }).medium,
-      fontSize: font.sizes.title,
-      color: colors.primary
-    }}>{emptyText ? emptyText : 'No Data Found'}</Text>
+    <CustomImage
+      isStatic
+      source={emptyText && emptyText.includes('Cart') ? require('../../assets/EmptyCart.jpeg') : require('../../assets/NoDataFound.jpeg')}
+      style={{ height: emptyText && emptyText.includes('Cart') ? 220 : 150, width: emptyText && emptyText.includes('Cart') ? 250 : 250 }}
+      resizeMode={emptyText && emptyText.includes('Cart') ? FastImage.resizeMode.contain : FastImage.resizeMode.cover}
+      imageUrl=""
+    />
+
     {hideButton ? null : <CustomButton
       title="Refresh"
       type='transparent'
