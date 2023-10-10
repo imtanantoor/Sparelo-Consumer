@@ -13,6 +13,8 @@ import actions from "../../store/actions";
 import CategoryCardProps from "../../models/categoryCard";
 import constants from "../../utils/constants";
 import { useNavigation } from "@react-navigation/native";
+import CustomImage from "../global/CustomImage";
+import FastImage from "react-native-fast-image";
 
 interface GarageListProps {
   sectionActionPress: (props?: any) => any
@@ -36,7 +38,14 @@ interface AddToGarageProps {
 
 function AddToGarageButton({ onPress }: AddToGarageProps): JSX.Element {
   return <TouchableOpacity activeOpacity={0.9} style={styles.addToGarageCardContainer} onPress={onPress}>
-    <AddToGarageButtonSVG />
+    <CustomImage
+      isStatic
+      source={require('../../assets/AddCarToGarage.jpeg')}
+      style={{ height: 90, width: 90 }}
+      resizeMode={FastImage.resizeMode.contain}
+      imageUrl=""
+    />
+    {/* <AddToGarageButtonSVG /> */}
     <Text style={styles.addToGarageText}>Add Car to Garage</Text>
   </TouchableOpacity>
 }
