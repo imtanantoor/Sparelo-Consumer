@@ -5,17 +5,18 @@ interface MultipleImagesListProps {
   assets: any[]
   handleAssets: (asset: any, index: number) => void
   handleDelete: (index: number) => void
-  contentContainerStyle?: any
+  contentContainerStyle?: any,
+  marginLeft?: number
 }
 
-function MultipleImagesList({ assets, contentContainerStyle, handleAssets, handleDelete }: MultipleImagesListProps): JSX.Element {
+function MultipleImagesList({ assets, contentContainerStyle, handleAssets, handleDelete, marginLeft }: MultipleImagesListProps): JSX.Element {
   return <FlatList
     horizontal
     data={assets}
     contentContainerStyle={{ ...contentContainerStyle }}
     ListHeaderComponent={assets.length < 3 ? <CustomImageSelector
       assets={[]}
-      style={{ marginRight: 20 }}
+      style={{ marginRight: assets.length > 0 ? 30 : 20, marginLeft: marginLeft !== undefined || marginLeft !== null ? marginLeft : 20 }}
       setAssets={(asset) => handleAssets(asset, -1)}
       selectQuantity={3 - assets.length}
       multiple={true}

@@ -6,16 +6,19 @@ import colors from "../../constants/colors"
 import OrderSummary from "../../screens/Cart/OrderSummary"
 import MyCart from "../../screens/Cart/MyCart"
 import font from "../../constants/fonts"
+import constants from "../../utils/constants"
 
 const Stack = createNativeStackNavigator()
 
 function CartStack(): JSX.Element {
   return <Stack.Navigator screenOptions={{
     headerTitleStyle: {
-      color: '#3C3A35',
+      // color: '#3C3A35',
+      ...constants.headerTitleStyle,
       fontFamily: font.fontFamilies({ type: 'Inter' }).semiBold
     },
     contentStyle: { backgroundColor: colors.white },
+    headerShadowVisible: false
   }}>
     <Stack.Screen name="My Cart" component={MyCart} />
     <Stack.Screen name="Delivery Address" component={DeliveryAddress} />

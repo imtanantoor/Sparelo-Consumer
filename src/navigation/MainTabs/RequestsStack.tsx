@@ -8,6 +8,7 @@ import RequestDetail from "../../screens/MainTab/Requests/RequestDetail"
 import BidDetail from "../../screens/MainTab/Requests/BidDetail"
 import HeaderBack from "../../components/molecular/HeaderBack"
 import { useNavigation } from "@react-navigation/native"
+import constants from "../../utils/constants"
 
 const Stack = createNativeStackNavigator()
 function CustomHeaderLeft(props: any): JSX.Element {
@@ -22,10 +23,12 @@ function RequestsStack(): JSX.Element {
     headerShown: true,
     headerTitleAlign: 'center',
     headerTitleStyle: {
-      color: '#3C3A35',
-      fontFamily: font.fontFamilies({ type: 'Inter' }).semiBold
+      // color: '#3C3A35',
+      ...constants.headerTitleStyle,
+      // fontFamily: font.fontFamilies({ type: 'Inter' }).semiBold
     },
     headerBackVisible: false,
+    headerShadowVisible: false
   }} initialRouteName="Requests" >
     <Stack.Screen name="Requests" component={RequestsList} />
     <Stack.Screen name="Request Detail" options={{

@@ -6,9 +6,11 @@ import colors from "../../constants/colors"
 import CustomButton from "../../components/global/CustomButton"
 import CartList from "../../components/organism/CartList"
 import { useSelector } from "react-redux"
+import constants from "../../utils/constants"
 
 function MyCart({ navigation }: any): JSX.Element {
   const { total, data } = useSelector((state: any) => state.Cart)
+
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -16,7 +18,7 @@ function MyCart({ navigation }: any): JSX.Element {
       headerTitleAlign: 'center',
       headerBackVisible: false,
       headerTitleStyle: {
-        color: '#3C3A35',
+        ...constants.headerTitleStyle
         // fontFamily: font.fontFamilies({ type: 'Inter' }).regular
       }
     })

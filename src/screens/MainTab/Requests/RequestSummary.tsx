@@ -128,6 +128,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
 
   return <SafeAreaView style={styles.container}>
     <ScrollView >
+      <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, marginTop: 20, }}>Images are required</Text>
       <MultipleImagesList
         assets={assets}
         handleAssets={handleAssets}
@@ -141,34 +142,40 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
         year={manufacturingYear}
       />
 
-      <View style={styles.itemRequiredCard}>
-        <Text>Item required</Text>
-        <View style={{ flexDirection: 'row', width: '100%' }}>
-          <CustomButton
-            title="Single (1)"
-            disabled={false}
-            submitting={false}
-            onPress={() => {
-              setQuantity(quantity === 1 ? 0 : 1)
-            }}
-            buttonStyle={{ backgroundColor: quantity == 0 || quantity == 2 ? '#F5F5F5' : colors.primary, paddingVertical: 10 }}
-            titleStyle={{ fontSize: 14, color: quantity === 0 || quantity == 2 ? 'black' : 'white', }}
-            type="primary"
-          />
-          <CustomButton
-            title="Pair (2)"
-            disabled={false}
-            submitting={false}
-            onPress={() => {
-              setQuantity(quantity === 2 ? 0 : 2)
-            }}
-            buttonStyle={{ marginHorizontal: 10, backgroundColor: quantity === 0 || quantity === 1 ? '#F5F5F5' : colors.primary, paddingVertical: 10 }}
-            titleStyle={{ fontSize: 14, color: quantity === 0 || quantity == 1 ? 'black' : 'white', }}
-            type="primary"
-          />
+      <View style={{ marginTop: 20 }}>
+        <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, }}>Item required</Text>
+        <View style={styles.itemRequiredCard}>
+          <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around' }}>
+            <CustomButton
+              title="Single (1)"
+              disabled={false}
+              submitting={false}
+              onPress={() => {
+                setQuantity(quantity === 1 ? 0 : 1)
+              }}
+              buttonStyle={{ backgroundColor: quantity == 0 || quantity == 2 ? '#F5F5F5' : colors.primary, paddingVertical: 10 }}
+              titleStyle={{ fontSize: 14, color: quantity === 0 || quantity == 2 ? 'black' : 'white', }}
+              type="primary"
+            />
+            <CustomButton
+              title="Pair (2)"
+              disabled={false}
+              submitting={false}
+              onPress={() => {
+                setQuantity(quantity === 2 ? 0 : 2)
+              }}
+              buttonStyle={{ marginHorizontal: 10, backgroundColor: quantity === 0 || quantity === 1 ? '#F5F5F5' : colors.primary, paddingVertical: 10 }}
+              titleStyle={{ fontSize: 14, color: quantity === 0 || quantity == 1 ? 'black' : 'white', }}
+              type="primary"
+            />
+          </View>
         </View>
       </View>
       <View style={{ paddingHorizontal: 20 }}>
+        <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginBottom: 10, }}>
+          Add Voice note for retailer (<Text style={{ color: colors.red }}>optional</Text>)
+        </Text>
+
         {!!voiceNote && <VoicePlayer
           key={voiceNote.uri}
           duration={voiceNote.timeInString}

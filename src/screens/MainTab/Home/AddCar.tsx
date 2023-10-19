@@ -129,6 +129,7 @@ function AddCar({ navigation, submitting, error, success, user, addCar, resetCre
           <Text style={styles.title}>Add Car</Text>
           <MultipleImagesList
             assets={images}
+            marginLeft={0}
             handleAssets={handleAssets}
             handleDelete={handleDelete}
           />
@@ -201,10 +202,12 @@ const styles = StyleSheet.create({
   },
   uploadSection: {},
   title: {
-    fontFamily: font.fontFamilies({ type: 'Inter' }).regular,
-    fontSize: font.sizes.fourteen,
-    color: '#3C3A35',
-    textAlign: 'center',
+    ...constants.headerTitleStyle,
+    textAlign: 'center'
+    // fontFamily: font.fontFamilies({ type: 'Inter' }).regular,
+    // fontSize: font.sizes.subtitle,
+    // color: '#3C3A35',
+    // textAlign: 'center',
   },
 
 })

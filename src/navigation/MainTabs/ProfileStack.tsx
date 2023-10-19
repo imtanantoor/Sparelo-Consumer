@@ -11,17 +11,14 @@ import ResetPassword from "../../screens/Auth/ResetPassword";
 import ChangePassword from "../../screens/Auth/ChangePassword";
 import OrdersHistoryTopTabs from "../OrderHistoryTopTabs/OrderHistoryTopTabs";
 import MyGarage from "../../screens/Auth/MyGarage";
+import constants from "../../utils/constants";
 
 const Stack = createNativeStackNavigator()
 
 function ProfileStack(): JSX.Element {
   return <Stack.Navigator screenOptions={{
     contentStyle: { backgroundColor: colors.white },
-    headerTitleStyle: {
-      fontFamily: font.fontFamilies({ type: 'Inter' }).regular,
-      color: colors.primary,
-      fontSize: font.sizes.fourteen,
-    },
+    headerTitleStyle: constants.headerTitleStyle,
     headerShadowVisible: false,
     headerTitleAlign: 'center',
   }}>

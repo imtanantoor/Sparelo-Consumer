@@ -8,6 +8,7 @@ import RequestSummary from "../../../screens/MainTab/Requests/RequestSummary";
 import Results from "../../../screens/MainTab/Home/FindYourParts/Results";
 import HeaderBack from "../../../components/molecular/HeaderBack";
 import { useNavigation } from "@react-navigation/native";
+import constants from "../../../utils/constants";
 
 const Stack = createNativeStackNavigator()
 
@@ -22,13 +23,9 @@ function FindYourPartsStack(): JSX.Element {
     initialRouteName="Filter"
     screenOptions={{
       contentStyle: { backgroundColor: colors.white },
-      headerTitleStyle: {
-        fontFamily: font.fontFamilies({ type: 'Inter' }).regular,
-        color: colors.primary,
-        fontSize: font.sizes.fourteen
-      },
+      headerTitleStyle: constants.headerTitleStyle,
       headerTitleAlign: 'center',
-      headerLeft: CustomHeaderLeft
+      headerLeft: CustomHeaderLeft,
     }}
   >
     <Stack.Screen name="Filter" component={FilterScreen} />
@@ -37,7 +34,8 @@ function FindYourPartsStack(): JSX.Element {
     <Stack.Screen name="Results" component={Results} />
     <Stack.Screen name="Request Summary" options={{
       headerTitleStyle: {
-        fontFamily: font.fontFamilies({ type: 'Inter' }).semiBold,
+        ...constants.headerTitleStyle,
+        // fontFamily: font.fontFamilies({ type: 'Inter' }).semiBold,
       }
     }} component={RequestSummary} />
   </ Stack.Navigator>

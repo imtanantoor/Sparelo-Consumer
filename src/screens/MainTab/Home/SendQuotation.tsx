@@ -139,36 +139,41 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
 
   return <SafeAreaView style={styles.container}>
     <ScrollView>
+      <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, marginTop: 20, }}>Images are required</Text>
       <MultipleImagesList
         assets={assets}
         handleAssets={handleAssets}
         handleDelete={handleDelete}
-        contentContainerStyle={{ paddingHorizontal: Platform.OS === 'ios' ? 20 : 0 }}
+        // contentContainerStyle={{ paddingHorizontal: Platform.OS === 'ios' ? 20 : 0 }}
+        contentContainerStyle={{ paddingHorizontal: 20 }}
       />
-      <View style={styles.buttonsContainer}>
-        <Text /* style={styles.text} */>Is your spare part</Text>
-        <View style={{ flexDirection: 'row', width: '100%' }}>
-          <CustomButton
-            title="New"
-            type="transparent"
-            onPress={() => { setIsNew(true) }}
-            submitting={false}
-            disabled={false}
-            // buttonStyle={{ padding: 0, marginRight: 20 }}
-            buttonStyle={{ backgroundColor: !isNew ? '#F5F5F5' : colors.primary, paddingVertical: 10, marginRight: 20 }}
-            titleStyle={{ color: isNew ? colors.white : '#262626', fontSize: font.sizes.normal }}
-          />
-          <CustomButton
-            title="Used"
-            type="transparent"
-            onPress={() => { setIsNew(false) }}
-            submitting={false}
-            disabled={false}
-            buttonStyle={{ backgroundColor: isNew ? '#F5F5F5' : colors.primary, paddingVertical: 10, }}
-            titleStyle={{ color: isNew ? '#262626' : colors.white, fontSize: font.sizes.normal }}
-          />
-        </View>
+      <View>
+        <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, }}>Is your spare part</Text>
 
+        <View style={styles.buttonsContainer}>
+          <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around' }}>
+            <CustomButton
+              title="New"
+              type="transparent"
+              onPress={() => { setIsNew(true) }}
+              submitting={false}
+              disabled={false}
+              // buttonStyle={{ padding: 0, marginRight: 20 }}
+              buttonStyle={{ backgroundColor: !isNew ? '#F5F5F5' : colors.primary, paddingVertical: 10, marginRight: 20 }}
+              titleStyle={{ color: isNew ? colors.white : '#262626', fontSize: font.sizes.normal }}
+            />
+            <CustomButton
+              title="Used"
+              type="transparent"
+              onPress={() => { setIsNew(false) }}
+              submitting={false}
+              disabled={false}
+              buttonStyle={{ backgroundColor: isNew ? '#F5F5F5' : colors.primary, paddingVertical: 10, }}
+              titleStyle={{ color: isNew ? '#262626' : colors.white, fontSize: font.sizes.normal }}
+            />
+          </View>
+
+        </View>
       </View>
       <View style={{ marginHorizontal: 20 }}>
         <CustomTextInput
@@ -187,18 +192,21 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
         />
       </View>
       <View style={{ marginHorizontal: 20 }}>
-        <Text style={{ color: 'rgba(0,0,0,0.5)' }}>Company</Text>
+        <Text style={styles.label}>Company</Text>
         <CustomButton
           disabled={data.length == 0 || fetching}
           type='transparent'
           submitting={fetching}
           title={manufacturer ? manufacturer.name : "Select Manufacturer"}
           buttonStyle={{ paddingHorizontal: 0, borderRadius: 0, margin: 0, justifyContent: 'flex-start', borderBottomWidth: 1, borderBottomColor: '#03014C' }}
-          titleStyle={{ textAlign: 'left', fontSize: font.sizes.fourteen, fontFamily: font.fontFamilies({ type: 'Poppins' }).medium, color: manufacturer ? colors.textPrimary : 'rgba(54, 69, 90, 0.5)' }}
+          titleStyle={{ textAlign: 'left', fontSize: font.sizes.input, fontFamily: font.fontFamilies({ type: 'Poppins' }).regular, color: manufacturer ? colors.textPrimary : colors.placeHolderColor }}
           onPress={showModal}
         />
       </View>
-      <View style={{ marginHorizontal: 20 }}>
+      <View style={{ margin: 20 }}>
+        <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular }}>
+          Add Voice note for retailer (<Text style={{ color: colors.red }}>optional</Text>)
+        </Text>
         {!!voiceNote && <VoicePlayer
           key={voiceNote.uri}
           duration={voiceNote.timeInString}
@@ -241,6 +249,12 @@ const styles = StyleSheet.create({
     fontFamily: font.fontFamilies({ type: 'Inter' }).regular,
     fontSize: font.sizes.normal,
     color: '#7F7F7F'
+  },
+  label: {
+    fontFamily: font.fontFamilies({ type: 'Inter' }).regular,
+    color: colors.primary,
+    fontSize: font.sizes.normal,
+    textTransform: 'capitalize'
   },
   // itemRequiredCard: {
   //   backgroundColor: colors.white,
