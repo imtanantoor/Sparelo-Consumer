@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   circle: {
-    height: 56,
-    width: 56,
-    borderRadius: 56 / 2,
+    height: 60,
+    width: 60,
+    borderRadius: 60 / 2,
     backgroundColor: colors.circleGray,
     marginBottom: 8,
     justifyContent: 'center',
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   categoryName: {
     textAlign: 'center',
-    fontSize: 8,
+    fontSize: font.sizes.ten,
     color: colors.lightGray,
     marginVertical: 7,
     fontFamily: font.fontFamilies({ type: 'Poppins' }).regular

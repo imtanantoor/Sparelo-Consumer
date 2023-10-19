@@ -37,18 +37,18 @@ function ListEmptyComponent({
     <CustomImage
       isStatic
       source={emptyText && emptyText.includes('Cart') ? require('../../assets/EmptyCart.jpeg') : require('../../assets/NoDataFound.jpeg')}
-      style={{ height: emptyText && emptyText.includes('Cart') ? 220 : 150, width: emptyText && emptyText.includes('Cart') ? 250 : 250 }}
+      style={{ height: emptyText && emptyText.includes('Cart') ? 200 : 150, width: emptyText && emptyText.includes('Cart') ? 250 : 250 }}
       resizeMode={emptyText && emptyText.includes('Cart') ? FastImage.resizeMode.contain : FastImage.resizeMode.cover}
       imageUrl=""
     />
 
-    {hideButton ? null : <CustomButton
+    {/* {hideButton ? null : <CustomButton
       title="Refresh"
       type='transparent'
       onPress={onPress}
       disabled={fetching}
       submitting={false}
-    />}
+    />} */}
   </View>
 }
 

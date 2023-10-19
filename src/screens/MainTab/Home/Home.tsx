@@ -68,6 +68,7 @@ function Home({ navigation }: NativeStackScreenProps<any>): JSX.Element {
         title="Your Garage"
         sectionActionPress={() => { setModalVisible(true) }}
         addToGaragePress={() => { setModalVisible(true) }}
+        verticalList={false}
       />
       <AdsSlider />
     </ScrollView>

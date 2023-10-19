@@ -42,12 +42,12 @@ function AddToGarageButton({ onPress }: AddToGarageProps): JSX.Element {
     <CustomImage
       isStatic
       source={require('../../assets/AddCarToGarage.jpeg')}
-      style={{ height: 90, width: 90 }}
+      style={{ height: 120, width: 150 }}
       resizeMode={FastImage.resizeMode.contain}
       imageUrl=""
     />
     {/* <AddToGarageButtonSVG /> */}
-    <Text style={styles.addToGarageText}>Add Car to Garage</Text>
+    <Text style={styles.addToGarageText}>Add to Garage</Text>
   </TouchableOpacity>
 }
 
@@ -97,7 +97,7 @@ function GarageList({ title, cars, categories, fetchingCars, fetchingCarsError, 
       ListEmptyComponent={<Section
         sectionDescription="You have currently no vehicles in your garage. Add to your garage."
         type="primary"
-        title="Add To Your Garage"
+        title="Add To Garage"
         submitting={false}
         disabled={false}
         onPress={sectionActionPress}
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 10,
     fontFamily: font.fontFamilies({ type: 'Inter' }).regular,
-    fontSize: font.sizes.fourteen
+    fontSize: font.sizes.title
   }
 })
 const mapStateToProps = (state: any) => ({
