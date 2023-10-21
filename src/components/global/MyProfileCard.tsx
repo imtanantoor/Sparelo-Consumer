@@ -15,6 +15,8 @@ interface MyProfileCardProps {
 
 function MyProfileCard({ imageUrl, name, contact, rating, onPress }: MyProfileCardProps): JSX.Element {
 
+  console.log({ rating: rating.toFixed(0) })
+
   return <TouchableOpacity activeOpacity={0.9} style={styles.container} onPress={onPress}>
     <View style={styles.imageAndInfoContainer}>
       <CustomImage
@@ -26,7 +28,8 @@ function MyProfileCard({ imageUrl, name, contact, rating, onPress }: MyProfileCa
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.contact}>{contact}</Text>
         <Rating
-          ratingCount={rating}
+          ratingCount={5}
+          startingValue={rating}
           ratingColor="#EDD011"
           ratingTextColor="red"
           imageSize={15}

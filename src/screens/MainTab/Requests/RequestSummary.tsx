@@ -128,11 +128,13 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
 
   return <SafeAreaView style={styles.container}>
     <ScrollView >
-      <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, marginTop: 20, }}>Images are required</Text>
+      <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, marginTop: 20, }}>Images required</Text>
       <MultipleImagesList
         assets={assets}
+        contentContainerStyle={{ marginTop: -10 }}
         handleAssets={handleAssets}
         handleDelete={handleDelete}
+        marginLeft={20}
       />
       <RequestSummaryCategoryCard
         title={category.title}
@@ -142,7 +144,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
         year={manufacturingYear}
       />
 
-      <View style={{ marginTop: 20 }}>
+      <View style={{ marginTop: 10 }}>
         <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, }}>Item required</Text>
         <View style={styles.itemRequiredCard}>
           <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around' }}>

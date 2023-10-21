@@ -106,7 +106,8 @@ function RequestDetail({ route, requestDetail, fetching, fetchRequestDetail }: R
             value={requestDetail?.user?.name}
           />
           {requestDetail?.user?.rating !== 0 && <Rating
-            ratingCount={requestDetail?.user?.rating}
+            ratingCount={5}
+            startingValue={requestDetail?.user?.rating}
             ratingColor="#EDD011"
             ratingTextColor="red"
             imageSize={15}

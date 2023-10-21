@@ -108,7 +108,8 @@ function BidDetail({ route, bidDetail, fetching, fetchBidDetail }: BidDetailProp
             value={bidDetail?.user?.name}
           />
           {bidDetail?.user?.rating !== 0 && <Rating
-            ratingCount={bidDetail?.user?.rating}
+            ratingCount={5}
+            startingValue={bidDetail?.user?.rating}
             ratingColor="#EDD011"
             ratingTextColor="red"
             imageSize={15}

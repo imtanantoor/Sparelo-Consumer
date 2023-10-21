@@ -139,7 +139,7 @@ function SendQuotation({ fetching, data, error, user, creatingQuotation, creatin
 
   return <SafeAreaView style={styles.container}>
     <ScrollView>
-      <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, marginTop: 20, }}>Images are required</Text>
+      <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, marginTop: 20, }}>Images required</Text>
       <MultipleImagesList
         assets={assets}
         handleAssets={handleAssets}

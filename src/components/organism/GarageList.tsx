@@ -138,6 +138,7 @@ function GarageList({ title, cars, categories, fetchingCars, fetchingCarsError, 
             }
           })
         }}
+        style={{ width: 99, overflow: 'hidden' }}
       />)}
     />}
   </View>

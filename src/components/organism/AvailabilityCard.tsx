@@ -135,7 +135,7 @@ function AvailabilityCard({ id, make, model, year, images, price, bid, rating, a
             ratingColor="#EDD011"
             ratingTextColor="red"
             imageSize={20}
-            startingValue={3.5}
+            startingValue={0}
             readonly
             style={{ padding: 0, marginVertical: 5, }}
             onFinishRating={() => { }}

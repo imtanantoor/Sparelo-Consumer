@@ -73,7 +73,7 @@ function QuotationsCard({ id, make, model, year, images, price, bid, audioNote, 
 
       {rating !== 0 && <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Rating
-          ratingCount={rating}
+          ratingCount={5}
           ratingColor="#EDD011"
           ratingTextColor="red"
           imageSize={20}
