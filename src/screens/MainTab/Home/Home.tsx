@@ -1,6 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, StyleSheet, ScrollView, Dimensions, RefreshControl } from "react-native";
-import Logo from "../../../assets/Logo";
 import colors from "../../../constants/colors";
 import font from "../../../constants/fonts";
 import Section from "../../../components/organism/Section";
@@ -23,7 +22,7 @@ function Home({ navigation }: NativeStackScreenProps<any>): JSX.Element {
       // headerTransparent: true,
       headerShadowVisible: false,
       headerTitle: '',
-      headerLeft: () => <HeaderLeft />,
+      headerLeft: () => <HeaderLeft logoStyles={{ marginTop: -20 }} />,
       headerRight: () => <CartButton navigation={navigation} />,
       header: CustomHeader,
     })

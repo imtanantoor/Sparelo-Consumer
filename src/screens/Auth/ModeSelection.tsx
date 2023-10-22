@@ -23,7 +23,7 @@ function ModeSelection(): JSX.Element {
   return <SafeAreaView style={styles.container}>
     <View style={styles.contentContainer}>
       <View style={styles.logoAndHeadingContainer}>
-        <Logo />
+        <Logo height={70} width={120} style={{ marginTop: -10 }} />
         <Text
           style={styles.heading}>Continue as</Text>
       </View>
