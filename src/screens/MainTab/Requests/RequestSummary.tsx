@@ -128,10 +128,10 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
 
   return <SafeAreaView style={styles.container}>
     <ScrollView >
-      <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, marginTop: 20, }}>Images required</Text>
+      <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, marginTop: 20 }}>Images required</Text>
       <MultipleImagesList
         assets={assets}
-        contentContainerStyle={{ marginTop: -10 }}
+        contentContainerStyle={{ marginVertical: -10 }}
         handleAssets={handleAssets}
         handleDelete={handleDelete}
         marginLeft={20}
@@ -144,7 +144,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
         year={manufacturingYear}
       />
 
-      <View style={{ marginTop: 10 }}>
+      <View style={{ marginTop: 20 }}>
         <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, }}>Item required</Text>
         <View style={styles.itemRequiredCard}>
           <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around' }}>
@@ -173,8 +173,8 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
           </View>
         </View>
       </View>
-      <View style={{ paddingHorizontal: 20 }}>
-        <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginBottom: 10, }}>
+      <View style={{ paddingHorizontal: 20, marginTop: 15 }}>
+        <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginBottom: 0, }}>
           Add Voice note for retailer (<Text style={{ color: colors.red }}>optional</Text>)
         </Text>
 
@@ -192,8 +192,8 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
             setVoiceNote({ uri: note, ...AudioServices.getDuration() })
           }} />
       </View>
-      <View style={{ marginHorizontal: 20 }}>
-        <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginBottom: 10, }}>
+      <View style={{ marginHorizontal: 20, marginVertical: 10 }}>
+        <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginBottom: 20, }}>
           Add Notes for retailer (<Text style={{ color: colors.red }}>optional</Text>)
         </Text>
         <TextInput

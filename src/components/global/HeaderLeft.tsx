@@ -5,7 +5,7 @@ import font from "../../constants/fonts";
 
 function HeaderLeft({ logoStyles }: any): JSX.Element {
   return <View style={styles.container}>
-    <Logo height={60} width={100} style={logoStyles} />
+    <Logo height={90} width={150} style={logoStyles} />
     {/* <View style={styles.textContainer}>
       <Text style={styles.title}>Sparelo</Text>
       <Text style={styles.slogan}>Reshaping the way you</Text>

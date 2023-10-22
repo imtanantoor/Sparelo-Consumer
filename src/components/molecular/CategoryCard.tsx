@@ -5,7 +5,7 @@ import font from "../../constants/fonts";
 import CategoryCardProps from "../../models/categoryCard";
 import CustomImage from "../global/CustomImage";
 
-function CategoryCard({ title, image, onPress, style, selected, hideImage }: CategoryCardProps): JSX.Element {
+function CategoryCard({ title, image, onPress, style, selected, hideImage, numberOfLines }: CategoryCardProps): JSX.Element {
   return <TouchableOpacity activeOpacity={0.8} style={[styles.container, { ...style, borderColor: selected ? colors.primary : 'transparent', borderWidth: selected ? 1 : 0 }]} onPress={onPress}>
     {hideImage ? null : < CustomImage
       source={{ uri: image }}
@@ -16,7 +16,7 @@ function CategoryCard({ title, image, onPress, style, selected, hideImage }: Cat
     {/* <View style={styles.circle}>
       {Icon}
     </View> */}
-    <Text style={styles.categoryName}>{title}</Text>
+    <Text numberOfLines={numberOfLines} style={styles.categoryName}>{title}</Text>
   </TouchableOpacity>
 }
 

@@ -6,6 +6,7 @@ interface CategoryCardProps {
   image: string;
   hideImage?: boolean;
   style?: any;
+  numberOfLines?: number;
   selected?: boolean;
 }
 
