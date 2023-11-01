@@ -127,7 +127,7 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
   if (type === 'Brand')
     return <FlatList
       data={brands}
-      numColumns={3}
+      numColumns={2}
       style={{ maxHeight: '70%' }}
       ListEmptyComponent={() => <ListEmptyComponent height={Dimensions.get('window').height * 0.5} fetching={fetchingBrands} error={fetchingBrandsError} hideButton onPress={() => { }} />}
       renderItem={({ item }) => <BrandCard
@@ -136,7 +136,7 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
         onPress={handleOnPress('brand', item)}
         selected={multiSelect ? values?.brand?.filter((value: { id: string, title: string }) => value.title == item.title).length > 0 : values?.brand?.name == item.title}
         style={{
-          width: '30.333%',
+          width: '45.333%',
           marginRight: 5,
           marginLeft: 3,
         }}
@@ -183,7 +183,7 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
 
     return <FlatList
       data={models}
-      numColumns={3}
+      numColumns={2}
       style={{ maxHeight: '70%' }}
       ListHeaderComponent={() => <View
         style={{
@@ -201,14 +201,14 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
         id={item.id}
         onPress={handleOnPress('model', item)}
         selected={multiSelect ? values?.model?.findIndex((value: { id: string, title: string }) => value.title == item.title) !== -1 ? true : false : values?.model?.name == item.title}
-        style={{ width: '30.333%', marginRight: 5, marginLeft: 3, height: 'auto' }}
+        style={{ width: '45.333%', marginRight: 5, marginLeft: 3, height: 'auto' }}
       />
       }
     />
   }
   return <FlatList
     data={categories}
-    numColumns={3}
+    numColumns={2}
     // style={{ maxHeight: '70%', minHeight: '50%' }}
     style={{ height: categoriesListHeight }}
     ListEmptyComponent={() => <ListEmptyComponent
@@ -220,7 +220,7 @@ function SearchList({ type, categories, brands, models, values, multiSelect = fa
       selected={multiSelect ? values?.category?.findIndex((value: { id: string, title: string }) => value.title == item.title) !== -1 ? true : false : values?.category?.name == item.title}
       id={item.id}
       onPress={handleOnPress('category', item)}
-      style={{ width: '30.333%', marginRight: 5, marginLeft: 3 }}
+      style={{ width: '45.333%', marginRight: 5, marginLeft: 3, height: 130 }}
     />}
   />
 }

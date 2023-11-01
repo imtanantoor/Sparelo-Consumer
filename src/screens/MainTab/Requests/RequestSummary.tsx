@@ -128,7 +128,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
 
   return <SafeAreaView style={styles.container}>
     <ScrollView >
-      <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, marginTop: 20 }}>Images required</Text>
+      <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, marginTop: 20 }}>Images (<Text style={{ color: colors.red }}>required</Text>)</Text>
       <MultipleImagesList
         assets={assets}
         contentContainerStyle={{ marginVertical: -10 }}
@@ -145,7 +145,7 @@ function RequestSummary({ navigation, creating, creationFailed, creationSuccessf
       />
 
       <View style={{ marginTop: 20 }}>
-        <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, }}>Item required</Text>
+        <Text style={{ fontFamily: font.fontFamilies({ type: 'Inter' }).regular, marginHorizontal: 20, }}>Item (<Text style={{ color: colors.red }}>required</Text>)</Text>
         <View style={styles.itemRequiredCard}>
           <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around' }}>
             <CustomButton

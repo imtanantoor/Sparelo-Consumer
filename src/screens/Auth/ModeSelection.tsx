@@ -8,6 +8,7 @@ import font from "../../constants/fonts";
 import { useDispatch } from "react-redux";
 import authSlice from "../../store/slices/authSlice";
 import { useNavigation } from "@react-navigation/native";
+import LogoWithoutText from "../../assets/LogoWithoutText";
 
 function ModeSelection(): JSX.Element {
   const dispatch = useDispatch()
@@ -23,7 +24,8 @@ function ModeSelection(): JSX.Element {
   return <SafeAreaView style={styles.container}>
     <View style={styles.contentContainer}>
       <View style={styles.logoAndHeadingContainer}>
-        <Logo height={70} width={120} style={{ marginTop: -10 }} />
+        <LogoWithoutText />
+        {/* <Logo height={70} width={120} style={{ marginTop: -10 }} /> */}
         <Text
           style={styles.heading}>Continue as</Text>
       </View>
