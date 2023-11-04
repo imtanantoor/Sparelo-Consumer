@@ -32,7 +32,7 @@ function AvailabilityHome({ data, fetching, error, user, mode, changingStatus, c
     if (changeStatusSuccess) {
       resetChangingState()
     }
-  }, [changeStatusSuccess, orderCreated])
+  }, [changeStatusSuccess, orderCreated, mode])
 
   function handleApiCall() {
     fetchAllAvailableItemsOfUser({ userId: user?._id, mode })

@@ -54,12 +54,16 @@ function AppStack(): JSX.Element | null {
     }
 
   }
-  function handleNotification(remoteMessage: any, isInitial: boolean) {
-    if (!!accessToken && !!remoteMessage && !isInitial) {
+  function handleNotification(remoteMessage: any) {
+    if (!!accessToken && !!remoteMessage) {
       const navigationHandler: any = {
         'Requests': () => navigation.navigate('MainTabs', { screen: remoteMessage.data.screen }),
         'Bid Detail': () => navigation.navigate('MainTabs', { screen: 'Requests', params: { screen: 'Bid Detail', params: { id: remoteMessage?.data?.id } } }),
-        'Request Detail': () => navigation.navigate('MainTabs', { screen: 'Requests', params: { screen: 'Request Detail', params: { id: remoteMessage?.data?.id } } })
+        'Request Detail': () => navigation.navigate('MainTabs', { screen: 'Requests', params: { screen: 'Request Detail', params: { id: remoteMessage?.data?.id } } }),
+        'Availability': () => navigation.navigate('MainTabs', { screen: 'Availability' }),
+        'Cancelled Orders': () => navigation.navigate('MainTabs', { screen: 'Profile', params: { screen: 'Order History', params: { screen: 'Cancelled Orders' } } }),
+        'Completed Orders': () => navigation.navigate('MainTabs', { screen: 'Profile', params: { screen: 'Order History', params: { screen: 'Completed Orders' } } }),
+        'Pending Orders': () => navigation.navigate('MainTabs', { screen: 'Profile', params: { screen: 'Order History', params: { screen: 'Pending Orders' } } }),
       }
       // const { data } = remoteMessage
       setTimeout(() => {
@@ -81,14 +85,14 @@ function AppStack(): JSX.Element | null {
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
     messaging().onNotificationOpenedApp(remoteMessage => {
-      handleNotification(remoteMessage, false)
+      handleNotification(remoteMessage)
     });
 
     // Check whether an initial notification is available
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {
-        handleNotification(remoteMessage, true)
+        handleNotification(remoteMessage)
       });
     getToken()
 

@@ -32,7 +32,7 @@ function OrdersHistoryList({ data, fetching, user, error, mode, refetchHistory, 
       fetchVendorsOrderHistory(user._id)
     else
       fetchOrdersHistory(user._id)
-  }, [changingOrderStatusSuccess, refetchHistory])
+  }, [changingOrderStatusSuccess, refetchHistory, mode])
 
   function handleApiCall() {
     if (!fetching) {
