@@ -63,7 +63,7 @@ function PartsCard({ id, make, model, year, images, price, bid, audioNote, ratin
     })
   }, [])
 
-  return <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('Bid Detail', { id: bid })} style={styles.container}>
+  return <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('Requests', { screen: 'Bid Detail', params: { id: bid } })} style={styles.container}>
     <View style={{ overflow: 'hidden' }}>
       <SliderBox
         ImageComponentStyle={styles.slider}

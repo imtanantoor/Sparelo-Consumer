@@ -49,8 +49,6 @@ function BidDetail({ route, bidDetail, fetching, fetchBidDetail }: BidDetailProp
     fetchBidDetail(route?.params?.id)
   }, [])
 
-  console.log({ bidDetail })
-
   if (fetching) {
     return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator color={colors.primary} size={'large'} />

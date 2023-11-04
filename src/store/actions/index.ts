@@ -248,6 +248,7 @@ const fetchAds = createAsyncThunk(
       const response = constants.apiInstance.get(`ads`);
       return (await response).data;
     } catch (error: any) {
+      console.log({error});
       return rejectWithValue(error?.response?.data);
     }
   },
@@ -441,7 +442,7 @@ const loginUser = createAsyncThunk(
       }
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error?.response?.data);
     }
   },
 );

@@ -46,13 +46,31 @@ function AppStack(): JSX.Element | null {
       await messaging().registerDeviceForRemoteMessages();
       const token = await messaging().getToken();
       dispatch(authSlice.actions.setFcmToken(token))
+      console.log({ token })
 
       return token
     } catch (error) {
-      console.log({ error })
       return error
     }
 
+  }
+  function handleNotification(remoteMessage: any, isInitial: boolean) {
+    if (!!accessToken && !!remoteMessage && !isInitial) {
+      const navigationHandler: any = {
+        'Requests': () => navigation.navigate('MainTabs', { screen: remoteMessage.data.screen }),
+        'Bid Detail': () => navigation.navigate('MainTabs', { screen: 'Requests', params: { screen: 'Bid Detail', params: { id: remoteMessage?.data?.id } } }),
+        'Request Detail': () => navigation.navigate('MainTabs', { screen: 'Requests', params: { screen: 'Request Detail', params: { id: remoteMessage?.data?.id } } })
+      }
+      // const { data } = remoteMessage
+      setTimeout(() => {
+        dispatch(authSlice?.actions?.setMode(remoteMessage?.data?.mode))
+        navigationHandler?.[remoteMessage.data.screen]?.()
+      }, 1000)
+      // user?.user_type.includes('vendor') && user?.shopAdded ? navigation.navigate('MainTabs') : navigation.navigate('Auth')
+    } else {
+      navigation?.navigate('Auth')
+    }
+    setLoading(false);
   }
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -63,26 +81,14 @@ function AppStack(): JSX.Element | null {
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
     messaging().onNotificationOpenedApp(remoteMessage => {
-      if (!!accessToken) {
-        user?.user_type.includes('vendor') && user?.shopAdded ? navigation.navigate('MainTabs') : navigation.navigate('Auth')
-      } else {
-        navigation.navigate('Auth')
-      }
-      setLoading(false);
+      handleNotification(remoteMessage, false)
     });
 
     // Check whether an initial notification is available
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {
-        // if (remoteMessage) {
-        //   console.log(
-        //     'Notification caused app to open from quit state:',
-        //     remoteMessage.notification,
-        //   );
-        //   setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
-        // }
-        setLoading(false);
+        handleNotification(remoteMessage, true)
       });
     getToken()
 

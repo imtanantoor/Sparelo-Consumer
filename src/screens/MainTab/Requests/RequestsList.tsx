@@ -15,7 +15,7 @@ function RequestsList({ navigation, route, requests, fetching, error, mode, user
       fetchRequests(user._id)
     else
       fetchRequestsOfVendor(user._id)
-  }, [creatingQuotationSuccess, orderCreated])
+  }, [creatingQuotationSuccess, orderCreated, mode])
 
   function handleApiCall() {
     if (mode === 'buyer')
