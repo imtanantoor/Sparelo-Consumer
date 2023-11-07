@@ -31,6 +31,7 @@ interface SearchScreenProps {
   fetchModels: () => void
   searchModels: ({ search, brand }: { search: string, brand: string | number }) => void
   searchBrands: (text: string) => void
+  searchCategories: (text: string) => void
 }
 
 
@@ -236,6 +237,7 @@ function Search({ route, navigation, categories, brands,
   fetchCategories,
   fetchBrands,
   fetchModels,
+  searchCategories,
   searchBrands,
   searchModels }: SearchScreenProps): JSX.Element {
   const [searchValue, setSearchValue] = useState<string>('')
@@ -260,10 +262,15 @@ function Search({ route, navigation, categories, brands,
 
   function handleSearch(query: string) {
     if (params.title === 'Category') {
-      fetchCategories()
+      if (!!query) {
+        searchCategories(query)
+      } else
+        fetchCategories()
     }
 
     if (params.title === 'Model') {
+      console.log({ title: params.title, query, brand: params.values.brand.id })
+
       // if (!!query) {
       searchModels({ search: query, brand: params.values.brand.id })
       // } else
@@ -353,7 +360,8 @@ const mapDispatchToProps = {
   fetchBrands: actions.fetchBrands,
   fetchModels: actions.fetchModels,
   searchBrands: actions.searchBrands,
-  searchModels: actions.searchModelsOfBrand
+  searchModels: actions.searchModelsOfBrand,
+  searchCategories: actions.searchCategories
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search)

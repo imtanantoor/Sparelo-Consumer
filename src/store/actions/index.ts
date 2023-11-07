@@ -70,6 +70,15 @@ const searchBrands = createAsyncThunk(
     return response.data;
   },
 );
+const searchCategories = createAsyncThunk(
+  'Categories/searchCategories',
+  async (search: string) => {
+    const response = await constants.apiInstance.get(
+      `categories/search?q=${search}`,
+    );
+    return response.data;
+  },
+);
 const searchModels = createAsyncThunk(
   'Models/searchModels',
   async (search: string) => {
@@ -84,13 +93,18 @@ const searchModelsOfBrand = createAsyncThunk(
   async (payload: any) => {
     const {brand, search} = payload;
     let brandSearch = '';
-    brand.forEach((value: any, index: number) => {
-      if (brandSearch === '') {
-        brandSearch += value.id;
-      } else {
-        brandSearch = brandSearch + `&brand=${value.id}`;
-      }
-    });
+
+    if (Array.isArray(brand))
+      brand.forEach((value: any, index: number) => {
+        if (brandSearch === '') {
+          brandSearch += value.id;
+        } else {
+          brandSearch = brandSearch + `&brand=${value.id}`;
+        }
+      });
+    else brandSearch = brand;
+
+    console.log({brand, search});
 
     const response = await constants.apiInstance.get(
       `models/search?brand=${brandSearch}&name=${search}`,
@@ -629,6 +643,7 @@ const actions = {
   cancelOrder,
   fetchRequestDetail,
   fetchBidDetail,
+  searchCategories,
 };
 
 export default actions;

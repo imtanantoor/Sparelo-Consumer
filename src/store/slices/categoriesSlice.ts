@@ -20,7 +20,7 @@ const categoriesSlice = createSlice({
   name: 'Categories',
   initialState,
   reducers: {},
-  extraReducers: builder =>
+  extraReducers: builder => {
     builder
       .addCase(actions.fetchCategories.pending, (state, action) => {
         state.fetching = true;
@@ -33,7 +33,23 @@ const categoriesSlice = createSlice({
       .addCase(actions.fetchCategories.rejected, (state, action) => {
         state.error = true;
         state.fetching = false;
-      }),
+      });
+
+    // search by query
+    builder
+      .addCase(actions.searchCategories.pending, (state, action) => {
+        state.fetching = true;
+        state.error = false;
+      })
+      .addCase(actions.searchCategories.fulfilled, (state, action) => {
+        state.fetching = false;
+        state.data = handleCategoriesResponse(action.payload.categories);
+      })
+      .addCase(actions.searchCategories.rejected, (state, action) => {
+        state.error = true;
+        state.fetching = false;
+      });
+  },
 });
 
 export default categoriesSlice;
