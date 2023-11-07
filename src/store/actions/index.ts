@@ -104,8 +104,6 @@ const searchModelsOfBrand = createAsyncThunk(
       });
     else brandSearch = brand;
 
-    console.log({brand, search});
-
     const response = await constants.apiInstance.get(
       `models/search?brand=${brandSearch}&name=${search}`,
     );
